@@ -22,3 +22,10 @@ def conn(tmp_path):
     run_seed(connection, DATAEF, SEED)
     yield connection
     connection.close()
+
+
+@pytest.fixture(scope="session")
+def copy_tb():
+    from sangkat_bot.copy import Copy, load_copy
+
+    return Copy(load_copy(SEED / "bot_copy_kh.json"), "sangkat", "ទន្លេបាសាក់")
