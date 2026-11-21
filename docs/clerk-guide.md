@@ -1,85 +1,90 @@
-# How to post news (clerk guide)
+# Clerk guide: how to post news
 
-This guide is for the sangkat clerk. Posting one news item takes about a minute.
+This guide is for the **sangkat clerk**. Posting one news item takes about a minute, all from your phone.
 
-Only clerks can post. A clerk is someone whose Telegram ID is in `ADMIN_USER_IDS` in the `.env` file.
+Every post reaches residents in **three forms**, so everyone can follow it, including older people
+who don't read well:
 
----
-
-## Before your first post (one time only)
-
-Link the bot to your sangkat's Telegram group:
-
-1. Add **@kh_svc_desk_x7_bot** to the group.
-2. Make the bot an **admin** of the group, so it can post and pin.
-3. In the group, type: **`/bind 120101`**
-   (use your own sangkat's code: Tonle Basak is 120101)
-4. Optional: type **`/guide`** in the group. The bot pins a short "how to use" message for residents.
-
-The bot will say ✅ when the group is linked.
-
----
-
-## Posting news
-
-⚠️ **Do this in your private chat with the bot, not in the group.**
-The group only listens to `/bind` and `/guide`.
-
-### 1. Start
-Open the private chat with the bot and tap **📝 ផ្សាយដំណឹង**.
-(You can also tap **Menu → /announce**.)
-
-> Don't see the 📝 button? Send **/start** first and pick your sangkat.
-
-### 2. Send the news, any way you like
-**If the AI helper is on** (the bot says *"…ខ្ញុំនឹងរៀបចំជា អត្ថបទ រូបភាព និងសំឡេង ឲ្យ"*):
-
-Just type or paste what you know. It can be messy, in any order, even mixed with English:
-*vaccine kids sat 5 dec 8am at sangkat hall bring health book*
-
-The bot replies **⏳ កំពុងរៀបចំ…**. About half a minute later it shows the finished post:
-**clean text + a flyer picture + a Khmer voice note**. Go to step 5.
-
-- Have your own picture? Send the photo and write the news in its caption. The bot keeps your
-  photo and makes only the text and voice.
-- The AI uses only what you wrote. If you leave out the time, there will be no time in the post.
-  It never guesses.
-
-**If the AI helper is off**, do it by hand: steps 2a to 2c.
-
-#### 2a. Text
-Type the news, for example:
-*ការចាក់វ៉ាក់សាំងកុមារ ថ្ងៃសៅរ៍ ទី៥ ខែធ្នូ ម៉ោង ៨:០០ ព្រឹក នៅសាលាសង្កាត់។*
-
-#### 2b. Picture
-Send a photo or a flyer from your phone's gallery.
-
-#### 2c. Voice note
-Hold the 🎤 microphone button and read the news out loud.
-This helps people who can't read.
-
-> You can tap **⏭️ រំលង** (skip) at any step, but **for best results send all three:
-> text + picture + voice.**
-
-### 5. Check and publish
-The bot shows you a **preview**, exactly how the post will look.
-**Check the date, time and place carefully**, especially on AI-made posts.
-
-Then choose who it is for:
-
-| Tap | What happens |
+| Form | For |
 | :--- | :--- |
-| **✅ ទន្លេបាសាក់** (or another sangkat name) | Posted for that one sangkat |
-| **✅ គ្រប់សង្កាត់ទាំង 5** | Posted for all five sangkats |
-| **✏️ កែ** (AI posts only) | Type what to change, e.g. *"the time is 7 PM, not 6"*. Text, picture and voice are all made again |
-| **❌ បោះបង់** | Cancelled, nothing is posted |
+| 📝 **Text** | People who read |
+| 🖼️ **Picture** (a flyer) | Quick look |
+| 🔊 **Voice note** | People who can't read |
 
-### 6. Done ✅
-- The news appears in the **sangkat group**: the picture, the text under it, and the voice note below.
-- Residents also find it in the bot under **📢 ដំណឹងថ្មី**.
+---
 
-> If a sangkat's group is not linked yet, the news still goes into **📢 ដំណឹងថ្មី**.
-> The bot tells you which groups to link and the exact `/bind` command to send.
+## Part 1: Become a clerk (one time)
+
+1. **Get a Telegram username**, if you don't have one: Telegram → **Settings → Username**,
+   for example `sok_dara`.
+2. **Send your username** and your sangkat's name to your super-admin. They add you to the bot.
+3. **Open the bot** **@kh_svc_desk_x7_bot** and press **Start**.
+4. **The bot says ✅** *"អ្នកអាចផ្សាយដំណឹងសម្រាប់…"* (you can post for your sangkat), and the button
+   **📝 ផ្សាយដំណឹង** appears at the bottom.
+
+That's it. You can post only for **your own sangkat**. Changing your username later is fine: the bot remembers your account.
+
+> Linking your sangkat's Telegram group is usually done by the super-admin. If they ask you to do it:
+> make the bot an **admin** of the group first, then send `/bind` plus your sangkat code (for example
+> `/bind 120101`) in the group.
+
+---
+
+## Part 2: Post news
+
+⚠️ Always do this in your **private chat with the bot**, never in the group.
+
+### Step 1: Tap 📝 ផ្សាយដំណឹង
+It's at the bottom of the chat, or under **Menu → /announce**.
+*No button? Send `/start` first.*
+
+### Step 2: Type the news, messy is fine
+Type or paste what you know, in Khmer, English or both. It doesn't need to be neat. For example:
+
+> *vaccine kids sat 5 dec 8am to 11am at sangkat hall bring health book*
+
+✅ **Try to include:**
+- **What** is happening.
+- **Which day.**
+- **Start and end time**, for example "8am to 11am".
+- **Where.**
+- **What to bring.**
+
+*Have your own photo or flyer? Send the photo, and type the news in the text box under the photo before sending.
+The bot keeps your photo and makes the text and voice.*
+
+### Step 3: Wait about 30 seconds
+The bot says **⏳ កំពុងរៀបចំ…** (preparing), then shows you the finished post:
+- a **flyer picture**;
+- **clean Khmer text**;
+- a **voice note** ▶️;
+- a **📍 map button**, if there's a place.
+
+### Step 4: Check it carefully
+- Is the **date** right?
+- Is the **time** right?
+- Is the **place** right?
+- Tap **▶️** to hear the voice note.
+- Tap **📍** to check the map opens the right place.
+
+If the bot asks a question under the preview, such as **"❓ …ចប់ម៉ោងប៉ុន្មាន?"** (what time does it end?),
+it's because you didn't write it. The bot never guesses. Answer it in step 5.
+
+### Step 5: Fix it if needed (✏️ កែ)
+Tap **✏️ កែ**, then type what to change or add, for example:
+- *ends 11:30*
+- *the time is 7 PM, not 6*
+- *add: free of charge*
+
+The bot makes the text, flyer, voice and map again. You can fix as many times as you like.
+
+### Step 6: Publish
+Tap **✅** with your sangkat's name, for example **✅ ទន្លេបាសាក់**.
+(**❌ បោះបង់** cancels, and nothing is posted.)
+
+### Done ✅
+- The news appears in your **sangkat's Telegram group**: picture, text, the **📱** and **📍** buttons, and the voice note.
+- Residents can also find it any time in the bot under **📢 ដំណឹងថ្មី**.
 
 ---
 
@@ -88,22 +93,32 @@ Then choose who it is for:
 | Problem | What to do |
 | :--- | :--- |
 | Want to stop while posting | Send **/cancel** |
-| Posted something wrong | Send **/delete_last**. It removes your last post from the group and from 📢 |
-| Pressed a big button (🚨, 🏥…) by accident while posting | Posting stops. Start again with **📝 ផ្សាយដំណឹង** |
+| Published something wrong | Send **/delete_last**. Your last post is removed from the group and from 📢 |
+| Pressed a big button (🚨, 🏥…) by accident while posting | Posting stops. Tap **📝 ផ្សាយដំណឹង** to start again |
+| The bot says **⚠️ មិនអាចរៀបចំដោយស្វ័យប្រវត្តិបានទេ** | The automatic helper couldn't connect. Your text is kept; follow the bot's steps to add a picture and a voice note by hand |
+| The 📝 button is gone | Send `/start`. Still gone? Ask your super-admin to check that you are still a clerk |
 
 ---
 
-## Good to know
+## If the bot asks for text, then a picture, then a voice note
 
-- **📢 ដំណឹងថ្មី shows the 3 newest posts.** A new post pushes the oldest one out.
-- **Voice notes:** speak slowly and clearly, and say times in words ("ម៉ោងប្រាំបីព្រឹក").
-- **Pictures:** a simple flyer with big text works best for older residents.
-- **AI helper:** it is on when `ANTHROPIC_API_KEY` is set in `.env`, and it needs internet.
-  If it fails, the bot says so and continues by hand, keeping what you typed.
-  Your notes are sent to Anthropic (to write the post) and Microsoft (to make the voice).
-  That is fine for public news. Don't put private details in a post.
-- **No AI helper?** The tech team can make flyers and voices from your text:
-  `scripts/make_flyer.py` and `scripts/make_voice.py`.
+When the automatic helper is switched off, posting is done by hand, one piece at a time:
+
+1. **Text:** type the news.
+2. **Picture:** send a photo or flyer from your gallery (or tap **⏭️ រំលង** to skip).
+3. **Voice:** hold the 🎤 button and read the news slowly (or tap **⏭️ រំលង**).
+4. Check the preview, then tap **✅** with your sangkat.
+
+Try to send all three: text, picture and voice.
+
+---
+
+## Tips
+
+- **📢 ដំណឹងថ្មី shows the 3 newest posts.** A new post pushes out the oldest one.
+- **Reading a voice note yourself?** Speak slowly and say times in words, such as "ម៉ោងប្រាំបីព្រឹក".
+- **Keep it public.** Post news for everyone. Never put private details (ID numbers, phone numbers of
+  private people) in a post: the text is processed by online services to make the flyer and voice.
 
 ---
 
@@ -111,13 +126,14 @@ Then choose who it is for:
 
 ```
 Private chat with the bot
-  → 📝 ផ្សាយដំណឹង
-  → type the news (messy is fine)
-    (AI off: text → picture → 🎤 voice)
-  → check the preview (✏️ កែ to fix)
-  → ✅ choose the sangkat (or all 5)
-  → done!
+ 1. 📝 ផ្សាយដំណឹង
+ 2. Type the news (messy is fine):
+    what · day · start–end time · where · what to bring
+ 3. Wait ⏳ about 30 seconds
+ 4. Check: date · time · place · ▶️ voice · 📍 map
+ 5. Wrong or ❓ question? → ✏️ កែ → type the fix
+ 6. ✅ your sangkat → done!
 
-Oops? → /delete_last
-Stop? → /cancel
+Wrong post?  /delete_last
+Stop?        /cancel
 ```

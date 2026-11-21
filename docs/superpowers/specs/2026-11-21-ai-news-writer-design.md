@@ -38,6 +38,19 @@ the notes plus every correction so far. ❌ cancels.
   Anthropic (writing) and Microsoft (voice), which is fine for public announcement text. This is
   stated in the clerk guide.
 
+## Added later (2026-11-21): map button and time ranges
+- **Times as a range.** When the notes give a start and an end, the text, speech and flyer show
+  "start – end". If only a start is given, Claude never invents the end. It returns `ask_kh` (for
+  example "ម៉ោងប៉ុន្មានចប់?"), and the preview shows it as "❓ … — ចុច ✏️ កែ ដើម្បីបន្ថែម".
+- **📍 map button** under the post: in the preview, in each group copy, and in the 📢 feed. Claude
+  returns `at_sangkat_hall`, `place_link` (copied from the notes) and `place_search` (a named place);
+  `news_ai.map_location` picks the link in this order:
+  1. a pasted Google Maps link;
+  2. `"hall"`, which becomes *each* sangkat's own `google_maps_url` when published;
+  3. a Google Maps search URL.
+- The link is stored per copy in `announcements.location_url` (migrated by `_add_missing_columns`).
+  Manual posts have no map button.
+
 ## Approaches considered
 1. **Claude structured output → existing flyer template + edge-tts (chosen).** One API call returns
    JSON (text, speech script, flyer fields). The flyer layout stays fixed and readable, and the cost

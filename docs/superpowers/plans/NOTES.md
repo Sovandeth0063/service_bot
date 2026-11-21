@@ -12,5 +12,8 @@ Built unattended on 2026-11-21. Everything that needs a real bot token or a phon
 
 - [ ] **Test-call 012 496 065** (Tonle Bassac administrative police post, from a 2020 brochure) before filming the 🚨 card. If it's wrong, set its `phone_numbers` empty in `data/seed/local_contacts.csv` and re-seed.
 
+- [ ] **Clerk roles with a second account.** As super-admin: `/addclerk @<second account> 120111` → that account presses Start → gets ✅ + 📝 → posts (sees only ✅ បឹងត្របែក) → `/removeclerk` → 📝 gone after their next tap.
+- [ ] **AI helper live:** post once with an end time missing (expect the ❓ question), fix it with ✏️ កែ, publish to the group, tap the 📍 button on a phone (should open the Tonle Basak hall pin).
+
 ## Khmer wording to review
 (Add anything that reads oddly during the manual checks.)
