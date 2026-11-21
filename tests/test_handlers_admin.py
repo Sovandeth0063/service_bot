@@ -94,8 +94,8 @@ async def test_telegram_refusal_saves_nothing(app, copy_tb):
 async def test_skip_everything_asks_again(app, copy_tb):
     _, _, session = app
     await feed(app, message_update(CLERK, text="/announce"))
-    for _ in range(3):
-        await feed(app, callback_update(CLERK, "ann:skip"))
+    for step in ("text", "photo", "voice"):
+        await feed(app, callback_update(CLERK, f"ann:skip:{step}"))
     texts = [m.text for m in session.sent(SendMessage)]
     assert copy_tb.t("admin.need_something") in texts
     await feed(app, message_update(CLERK, text="ថ្មី"))  # back on the text step
@@ -105,7 +105,7 @@ async def test_skip_everything_asks_again(app, copy_tb):
 async def test_sticker_at_photo_step_reprompts(app, copy_tb):
     _, _, session = app
     await feed(app, message_update(CLERK, text="/announce"))
-    await feed(app, callback_update(CLERK, "ann:skip"))
+    await feed(app, callback_update(CLERK, "ann:skip:text"))
     sticker = Sticker(file_id="s", file_unique_id="s", type="regular", width=1, height=1, is_animated=False, is_video=False)
     await feed(app, message_update(CLERK, sticker=sticker))
     assert session.sent(SendMessage)[-1].text == copy_tb.t("admin.wrong_type")
@@ -118,8 +118,8 @@ async def test_text_only_preview_and_publish(app):
     set_group(dp["conn"], "120101", GROUP)
     await feed(app, message_update(CLERK, text="/announce"))
     await feed(app, message_update(CLERK, text="សួស្តី"))
-    await feed(app, callback_update(CLERK, "ann:skip"))
-    await feed(app, callback_update(CLERK, "ann:skip"))
+    await feed(app, callback_update(CLERK, "ann:skip:photo"))
+    await feed(app, callback_update(CLERK, "ann:skip:voice"))
     await feed(app, callback_update(CLERK, "ann:publish"))
     group_msgs = [m for m in session.sent(SendMessage) if m.chat_id == GROUP]
     assert len(group_msgs) == 1 and "សួស្តី" in group_msgs[0].text
@@ -178,6 +178,6 @@ async def test_menu_button_during_photo_step_leaves_flow(app, copy_tb):
     _, _, session = app
     await feed(app, message_update(CLERK, text="/start 120101"))
     await feed(app, message_update(CLERK, text="/announce"))
-    await feed(app, callback_update(CLERK, "ann:skip"))
+    await feed(app, callback_update(CLERK, "ann:skip:text"))
     await feed(app, message_update(CLERK, text=copy_tb.button("health")))
     assert "មន្ទីរពេទ្យ និងមណ្ឌលសុខភាព" in session.sent(SendMessage)[-1].text

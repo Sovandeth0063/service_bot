@@ -15,6 +15,15 @@ from aiogram.types import InlineKeyboardMarkup
 CAPTION_LIMIT = 1024
 
 
+class PartialSendError(Exception):
+    """The lead message went out but a later part (e.g. the voice reply) failed."""
+
+    def __init__(self, lead_id: int, cause: Exception) -> None:
+        super().__init__(f"sent lead {lead_id}, then failed: {type(cause).__name__}")
+        self.lead_id = lead_id
+        self.cause = cause
+
+
 @dataclass(frozen=True)
 class Send:
     kind: Literal["text", "photo", "voice"]
@@ -53,21 +62,31 @@ def build_post(
 async def send_post(
     bot: Bot, chat_id: int, sends: list[Send], lead_markup: InlineKeyboardMarkup | None
 ) -> tuple[int, int | None]:
-    """Send the messages in order; return (lead message id, voice message id or None)."""
+    """Send the messages in order; return (lead message id, voice message id or None).
+
+    A failure before the lead is sent propagates as-is; a failure after it raises PartialSendError
+    so the caller can still record the lead message (and delete it later).
+    """
     lead_id: int | None = None
     voice_id: int | None = None
     for send in sends:
-        markup = lead_markup if send.is_lead else None
-        if send.kind == "text":
-            message = await bot.send_message(chat_id, send.text or "", reply_markup=markup, parse_mode="HTML")
-        elif send.kind == "photo":
-            message = await bot.send_photo(
-                chat_id, send.file_id, caption=send.text, reply_markup=markup, parse_mode="HTML"
-            )
-        else:
-            message = await bot.send_voice(chat_id, send.file_id, reply_to_message_id=lead_id)
+        try:
+            message = await _send_one(bot, chat_id, send, lead_markup if send.is_lead else None, lead_id)
+        except Exception as error:
+            if lead_id is None:
+                raise
+            raise PartialSendError(lead_id, error) from error
+        if send.kind == "voice":
             voice_id = message.message_id
         if send.is_lead:
             lead_id = message.message_id
     assert lead_id is not None  # build_post always produces a lead message
     return lead_id, voice_id
+
+
+async def _send_one(bot: Bot, chat_id: int, send: Send, markup: InlineKeyboardMarkup | None, lead_id: int | None):
+    if send.kind == "text":
+        return await bot.send_message(chat_id, send.text or "", reply_markup=markup, parse_mode="HTML")
+    if send.kind == "photo":
+        return await bot.send_photo(chat_id, send.file_id, caption=send.text, reply_markup=markup, parse_mode="HTML")
+    return await bot.send_voice(chat_id, send.file_id, reply_to_message_id=lead_id)

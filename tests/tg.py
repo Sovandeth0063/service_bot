@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import itertools
 from datetime import datetime
 
@@ -18,13 +19,20 @@ class RecordingSession(BaseSession):
     def __init__(self) -> None:
         super().__init__()
         self.requests: list[TelegramMethod] = []
-        self.fail_on: dict[type, Exception] = {}
+        # method type -> Exception, or callable(method) -> Exception | None (fail selectively)
+        self.fail_on: dict[type, object] = {}
+        self.delay = 0.0  # simulated network latency, lets concurrent updates interleave
         self._message_ids = itertools.count(1000)
 
     async def make_request(self, bot, method, timeout=None):
         self.requests.append(method)
-        if type(method) in self.fail_on:
-            raise self.fail_on[type(method)]
+        if self.delay:
+            await asyncio.sleep(self.delay)
+        failure = self.fail_on.get(type(method))
+        if callable(failure):
+            failure = failure(method)
+        if failure is not None:
+            raise failure
         if isinstance(method, GetMe):
             return BOT_USER
         if isinstance(method, (SendMessage, SendPhoto, SendVoice, SendLocation)):

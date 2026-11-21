@@ -4,10 +4,11 @@ from __future__ import annotations
 
 import logging
 
-from aiogram import Bot, Dispatcher
+from aiogram import Bot, Dispatcher, Router
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
-from aiogram.types import ErrorEvent
+from aiogram.fsm.storage.memory import SimpleEventIsolation
+from aiogram.types import CallbackQuery, ErrorEvent
 
 from sangkat_bot.config import Settings, load_settings
 from sangkat_bot.copy import Copy, load_copy
@@ -34,9 +35,15 @@ async def on_error(event: ErrorEvent, copy_data: dict, bot: Bot) -> bool:
     return True
 
 
+async def answer_leftover_tap(callback: CallbackQuery) -> None:
+    """An old or double-tapped inline button: stop its loading spinner and do nothing."""
+    await callback.answer()
+
+
 def build_dispatcher(settings: Settings) -> tuple[Bot, Dispatcher]:
     bot = Bot(settings.bot_token, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
-    dp = Dispatcher()
+    # One update at a time per chat+user, so a double tap can't run a step twice.
+    dp = Dispatcher(events_isolation=SimpleEventIsolation())
     dp["settings"] = settings
     dp["conn"] = connect(settings.db_path)
     dp["copy_data"] = load_copy(settings.seed_dir / "bot_copy_kh.json")
@@ -45,6 +52,9 @@ def build_dispatcher(settings: Settings) -> tuple[Bot, Dispatcher]:
     dp.include_router(group.make_router())
     dp.include_router(admin.make_router())
     dp.include_router(resident.make_router())  # resident last: it catches every remaining private message
+    leftovers = Router(name="leftovers")
+    leftovers.callback_query.register(answer_leftover_tap)
+    dp.include_router(leftovers)
     return bot, dp
 
 

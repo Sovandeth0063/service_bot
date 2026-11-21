@@ -47,7 +47,9 @@ def contact_block(row: Record, copy: Copy) -> str:
 
 def emergency_card(national: list[Record], local: list[Record], copy: Copy, demo_mode: bool) -> str:
     parts = [f"<b>{escape(copy.t('emergency_header_national'))}</b>"]
-    parts.append("\n".join(f"{escape(row['name_kh'])}  <b>{escape(row['number'])}</b>" for row in national))
+    parts.append("\n".join(
+        f"<b>{escape(row['name_kh'])}</b>  {escape(' / '.join(format_phone(row['number'])))}" for row in national
+    ))
     if local:
         parts.append(f"<b>{escape(copy.t('emergency_header_local'))}</b>")
         parts += [contact_block(row, copy) for row in local]
