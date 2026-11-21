@@ -3,7 +3,7 @@
 | | |
 | :--- | :--- |
 | **Date** | 2026-11-21 |
-| **Status** | Draft — awaiting approval |
+| **Status** | Approved 2026-11-21 |
 | **Build budget** | 5 hours (build only; a teammate records the video) |
 | **Demo commune** | Sangkat Tonle Basak `120101`, Khan Chamkar Mon, Phnom Penh |
 | **Background docs** | `product_requirements_document_prd.md`, `end_to_end_system_architecture.md`, `mvp_scope_and_data_refined.md`, `data/README.md` |
