@@ -1,0 +1,33 @@
+{
+  "_note": "DEMO copy. Must be reviewed by 2 native Khmer speakers and tested with older adults before a real pilot. {commune_type_kh} = ឃុំ or សង្កាត់; {commune_kh} = DataEF commune_kh.",
+  "buttons": {
+    "emergency": "🚨 សង្គ្រោះបន្ទាន់",
+    "health": "🏥 មន្ទីរពេទ្យ",
+    "announcements": "📢 ដំណឹងថ្មី",
+    "services": "📄 សេវាឯកសារ",
+    "location": "📍 សាលា{commune_type_kh}"
+  },
+  "keyboard_layout": [["emergency"], ["health", "announcements"], ["services", "location"]],
+  "welcome": "សួស្តី! នេះជាជំនួយការរបស់{commune_type_kh}{commune_kh}។\nសូមចុចប៊ូតុងខាងក្រោម ដើម្បីរកព័ត៌មាន។",
+  "fallback": "សូមអភ័យទោស ខ្ញុំមិនយល់ទេ។ សូមចុចប៊ូតុងខាងក្រោម 👇",
+  "non_text_fallback": "ខ្ញុំអាចឆ្លើយបានតែពេលអ្នកចុចប៊ូតុងខាងក្រោម 👇",
+  "pick_commune": "សូមជ្រើសរើស{commune_type_kh}របស់អ្នក៖",
+  "emergency_header_national": "🚨 លេខសង្គ្រោះបន្ទាន់ជាតិ (ចុចលើលេខដើម្បីហៅ)",
+  "emergency_header_local": "📍 នៅជិត{commune_type_kh}{commune_kh}",
+  "no_announcements": "មិនទាន់មានដំណឹងថ្មីទេ។",
+  "phone_missing": "លេខទូរស័ព្ទ៖ កំពុងផ្ទៀងផ្ទាត់",
+  "open_bot_button": "📱 សួរជំនួយការ",
+  "announcement_header": "📢 ដំណឹងពី{commune_type_kh}{commune_kh}",
+  "admin": {
+    "announce_button": "📝 ផ្សាយដំណឹង",
+    "ask_content": "សូមផ្ញើអត្ថបទ រូបភាព ឬសារជាសំឡេង ដែលចង់ផ្សាយ។",
+    "preview": "នេះជាអ្វីដែលនឹងផ្សាយទៅក្រុម។ ត្រឹមត្រូវទេ?",
+    "publish": "✅ ផ្សាយ",
+    "cancel": "❌ បោះបង់",
+    "published": "✅ បានផ្សាយរួចរាល់។",
+    "cancelled": "បានបោះបង់។",
+    "deleted": "🗑️ បានលុបដំណឹងនេះចេញ។",
+    "archive_forward": "ចង់បញ្ចូលសារនេះទៅក្នុងបញ្ជីដំណឹងទេ?",
+    "error_not_admin_in_group": "⚠️ ផ្សាយមិនបាន៖ ជំនួយការមិនមែនជាអ្នកគ្រប់គ្រងក្នុងក្រុមទេ។ សូមទាក់ទងអ្នកថែទាំប្រព័ន្ធ។"
+  }
+}

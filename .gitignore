@@ -1,0 +1,14 @@
+# secrets
+.env
+# local database (rebuilt by `python -m sangkat_bot.seed`)
+data/*.db
+# python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+*.egg-info/
+# large raw downloads (re-download via data/README.md); small DataEF CSVs are kept
+data/raw/dataef/commune_boundaries.geojson
+data/raw/dataef/villages_2025.csv
+data/raw/dataef/geographical_list_2025.csv

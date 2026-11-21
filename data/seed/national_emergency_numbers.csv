@@ -1,0 +1,6 @@
+number,category,name_kh,name_en,scope,is_active,sort_order,verification_status,source,notes
+117,police,ប៉ូលីស,Police,national,true,1,unverified_published,"https://www.gov.uk/foreign-travel-advice/cambodia/getting-help ; https://www.smartraveller.gov.au/destinations/asia/cambodia","Consistent across UK FCDO, Australia Smartraveller, CIA Factbook. Test-call before launch."
+118,fire,ពន្លត់អគ្គិភ័យ,Fire,national,true,2,unverified_published,"https://www.gov.uk/foreign-travel-advice/cambodia/getting-help ; https://travel.gc.ca/assistance/embassies-consulates/cambodia",
+119,ambulance,រថយន្តសង្គ្រោះ,Ambulance,national,true,3,unverified_published,"https://www.gov.uk/foreign-travel-advice/cambodia/getting-help ; https://cambodia.embassy.gov.au/penh/MedicalServiceProviders.html","Smartraveller: reliable mainly in Phnom Penh; outside PP contact hospital directly."
+666,fire,ពន្លត់អគ្គិភ័យ (ភ្នំពេញ),Fire (Phnom Penh),province:12,true,4,unverified_published,"https://travel.gc.ca/assistance/embassies-consulates/cambodia ; https://phnompenhpost.com/national/fire-officials-urge-dry-season-caution","Phnom Penh only. Show only when commune province_code = 12."
+115,health_hotline,ទូរស័ព្ទសុខាភិបាល,MoH hotline,national,false,5,missing,,"Listed in PRD but not confirmed by any source found. Keep inactive until verified."

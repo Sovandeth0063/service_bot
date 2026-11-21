@@ -1,0 +1,2968 @@
+{
+  "version": 0.6,
+  "generator": "Overpass API 0.7.62.11 87bfad18",
+  "osm3s": {
+    "timestamp_osm_base": "2026-11-21T01:25:02Z",
+    "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+  },
+  "elements": [
+
+{
+  "type": "node",
+  "id": 441023504,
+  "lat": 11.5314432,
+  "lon": 104.9365668,
+  "tags": {
+    "amenity": "police",
+    "name": "អធិការដ្ធននគរបាល​ខណ្ឌច្បារអំពៅ",
+    "name:en": "Chbar Ampov District Police Station",
+    "name:km": "អធិការដ្ធននគរបាល​ខណ្ឌច្បារអំពៅ"
+  }
+},
+{
+  "type": "node",
+  "id": 441992078,
+  "lat": 11.5300570,
+  "lon": 104.9375664,
+  "tags": {
+    "amenity": "police",
+    "name": "Chbar Ampov District Military Police Office",
+    "name:km": "បញ្ជាការដ្ឋានកងរាជអាវុធហត្ថខណ្ឌច្បារអំពៅ"
+  }
+},
+{
+  "type": "node",
+  "id": 442870993,
+  "lat": 11.5719987,
+  "lon": 104.9180204,
+  "tags": {
+    "amenity": "police",
+    "name": "Police Sras Chak"
+  }
+},
+{
+  "type": "node",
+  "id": 445234592,
+  "lat": 11.5693022,
+  "lon": 104.9250090,
+  "tags": {
+    "name": "Department of Forestry",
+    "office": "government"
+  }
+},
+{
+  "type": "node",
+  "id": 1255805469,
+  "lat": 11.5596737,
+  "lon": 104.9248858,
+  "tags": {
+    "amenity": "hospital",
+    "healthcare": "hospital",
+    "name": "Raffles Medical"
+  }
+},
+{
+  "type": "node",
+  "id": 1637395202,
+  "lat": 11.5576008,
+  "lon": 104.9249475,
+  "tags": {
+    "amenity": "hospital",
+    "designation": "Naga Clinic",
+    "emergency": "yes",
+    "healthcare": "hospital",
+    "name": "Naga Clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 1738845717,
+  "lat": 11.5321683,
+  "lon": 104.9364599,
+  "tags": {
+    "amenity": "townhall",
+    "name": "Chbar Ampov 2 Town Hall",
+    "name:km": "សាលាសង្កាត់ច្បារអំពៅ២"
+  }
+},
+{
+  "type": "node",
+  "id": 1792774862,
+  "lat": 11.5477588,
+  "lon": 104.9183473,
+  "tags": {
+    "amenity": "fire_station",
+    "name": "Phnom Penh Fire Brigade"
+  }
+},
+{
+  "type": "node",
+  "id": 1973472559,
+  "lat": 11.5542901,
+  "lon": 104.9051935,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic",
+    "name": "Visal Sok Clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 2055869354,
+  "lat": 11.5876090,
+  "lon": 104.9247471,
+  "tags": {
+    "amenity": "police",
+    "name": "អធិការដ្ធននគរបាល​ខណ្ឌជ្រោយចង្វារ",
+    "name:en": "Chroy Changva District Police Station"
+  }
+},
+{
+  "type": "node",
+  "id": 2055869356,
+  "lat": 11.5791634,
+  "lon": 104.9311357,
+  "tags": {
+    "amenity": "townhall",
+    "name": "Chruy Po Yaram District Hall",
+    "name:km": "សាលាខណ្ឌជ្រោយពោធិយារាម"
+  }
+},
+{
+  "type": "node",
+  "id": 2450213373,
+  "lat": 11.5505054,
+  "lon": 104.9425981,
+  "tags": {
+    "amenity": "fire_station",
+    "name": "Koh Pich Fire Brigade"
+  }
+},
+{
+  "type": "node",
+  "id": 2455257041,
+  "lat": 11.5624465,
+  "lon": 104.9255678,
+  "tags": {
+    "amenity": "police",
+    "name": "អធិការដ្ធននគរបាល​ខណ្ឌដូនពេញ",
+    "name:en": "Daun Penh District Police Station"
+  }
+},
+{
+  "type": "node",
+  "id": 2540960285,
+  "lat": 11.5307058,
+  "lon": 104.9124183,
+  "tags": {
+    "amenity": "police",
+    "name": "Boeung Tumpun Police Station",
+    "name:en": "Boeung Tumpun Police Station",
+    "name:km": "ស្ថាននីយប៉ូលីស​ សង្កាត់បឹងទំពន់"
+  }
+},
+{
+  "type": "node",
+  "id": 2591216593,
+  "lat": 11.5327034,
+  "lon": 104.9449709,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic",
+    "name": "Onn Sokunthy Clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 2697281716,
+  "lat": 11.5488244,
+  "lon": 104.9257733,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic",
+    "healthcare:speciality": "plastic_surgery",
+    "name": "Vita Longa"
+  }
+},
+{
+  "type": "node",
+  "id": 2947470022,
+  "lat": 11.5311167,
+  "lon": 104.9440372,
+  "tags": {
+    "amenity": "police",
+    "name": "Police office"
+  }
+},
+{
+  "type": "node",
+  "id": 3519006219,
+  "lat": 11.5653611,
+  "lon": 104.9280296,
+  "tags": {
+    "addr:housenumber": "72",
+    "name": "Education office",
+    "office": "government"
+  }
+},
+{
+  "type": "node",
+  "id": 4067934436,
+  "lat": 11.5299032,
+  "lon": 104.9238654,
+  "tags": {
+    "amenity": "police",
+    "name": "អធិការដ្ធននគរបាល​ខណ្ឌចំការមន",
+    "name:en": "Chamkar Mon District Police Station"
+  }
+},
+{
+  "type": "node",
+  "id": 4067934437,
+  "lat": 11.5635817,
+  "lon": 104.9106614,
+  "tags": {
+    "amenity": "police",
+    "name": "អធិការដ្ឋាននគរបាល​ខណ្ឌ៧មករា",
+    "name:en": "Prampi Makara District Police Station"
+  }
+},
+{
+  "type": "node",
+  "id": 4067934438,
+  "lat": 11.5551819,
+  "lon": 104.8952240,
+  "tags": {
+    "amenity": "police",
+    "name": "អធិការដ្ធននគរបាល​ខណ្ឌទួលគោក",
+    "name:en": "Tuol Kork District Police Station",
+    "name:km": "អធិការដ្ធននគរបាល​ខណ្ឌទួលគោក"
+  }
+},
+{
+  "type": "node",
+  "id": 4095604233,
+  "lat": 11.5546409,
+  "lon": 104.9147273,
+  "tags": {
+    "name": "International Volunteer Center of Yamagata (IVY)",
+    "office": "government"
+  }
+},
+{
+  "type": "node",
+  "id": 4118322389,
+  "lat": 11.5832373,
+  "lon": 104.9167705,
+  "tags": {
+    "addr:housenumber": "#24B, Street 2B",
+    "addr:postcode": "12401",
+    "addr:street": "Borey Lim Chheanghak Chamkar Doung",
+    "amenity": "hospital",
+    "email": "info@balegacorp.com",
+    "healthcare": "hospital",
+    "internet_access": "wlan",
+    "name": "Praram 9 Hospital Cambodia Office",
+    "name:en": "Balega Corp Ltd",
+    "opening_hours": "Mo-Su 08:00-18:00",
+    "phone": "077857788",
+    "website": "http://www.balegacorp.com"
+  }
+},
+{
+  "type": "node",
+  "id": 4142664190,
+  "lat": 11.5591200,
+  "lon": 104.9189448,
+  "tags": {
+    "addr:housenumber": "39",
+    "addr:street": "Street 105",
+    "amenity": "hospital",
+    "email": "techheng@yahoo.com",
+    "healthcare": "hospital",
+    "internet_access": "wlan",
+    "name": "Apsara Phnom Penh Hospital",
+    "opening_hours": "24/7",
+    "phone": "089588914"
+  }
+},
+{
+  "type": "node",
+  "id": 4173895720,
+  "lat": 11.5543528,
+  "lon": 104.9290601,
+  "tags": {
+    "addr:housenumber": "126",
+    "addr:street": "Preah Norodom Blvd (St: 41)",
+    "amenity": "hospital",
+    "healthcare": "hospital",
+    "name": "Praram 9 Hospital Cambodia Office",
+    "opening_hours": "Mo-Sa 08:08-17:08",
+    "phone": "077857788"
+  }
+},
+{
+  "type": "node",
+  "id": 4216672772,
+  "lat": 11.5102882,
+  "lon": 104.9328848,
+  "tags": {
+    "amenity": "police",
+    "name": "អធិការដ្ធននគរបាល​ខណ្ឌមានជ័យ",
+    "name:en": "Meanchey District Police Station"
+  }
+},
+{
+  "type": "node",
+  "id": 4237035291,
+  "lat": 11.5681600,
+  "lon": 104.9064163,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic",
+    "name": "គ្លីនិកធ្មេញ រាជធានី",
+    "name:en": "Reach Theany Dental Clinic",
+    "name:km": "គ្លីនិកធ្មេញ រាជធានី"
+  }
+},
+{
+  "type": "node",
+  "id": 4237178599,
+  "lat": 11.5542568,
+  "lon": 104.9051611,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic",
+    "name": "Chan Reah Dental Clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 4296127289,
+  "lat": 11.5710272,
+  "lon": 104.9236886,
+  "tags": {
+    "addr:street": "Preah Norodom Blvd (St: 41)",
+    "name": "General Department of Customs and Excise",
+    "office": "government",
+    "opening_hours": "Mo-Fr 07:30-22:00"
+  }
+},
+{
+  "type": "node",
+  "id": 4308785891,
+  "lat": 11.5660016,
+  "lon": 104.9200929,
+  "tags": {
+    "addr:housenumber": "11E0",
+    "addr:street": "Oknha Truong Cang (St: 158)",
+    "amenity": "police",
+    "name": "Foreigner's Police Liaison Office",
+    "name:km": "ការិយាល័យទំនាក់ទំនងប៉ូលីសបរទេស",
+    "phone": "012-330-809"
+  }
+},
+{
+  "type": "node",
+  "id": 4330629392,
+  "lat": 11.5655399,
+  "lon": 104.9247383,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic",
+    "name": "Meng Rutnin Eye Specialist"
+  }
+},
+{
+  "type": "node",
+  "id": 4358611889,
+  "lat": 11.5651010,
+  "lon": 104.9078602,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic",
+    "name": "Riiac Clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 4402144492,
+  "lat": 11.5341029,
+  "lon": 104.9204490,
+  "tags": {
+    "name:en": "Chamkar Mon Tax Branch",
+    "office": "government"
+  }
+},
+{
+  "type": "node",
+  "id": 4461607264,
+  "lat": 11.5707968,
+  "lon": 104.9289489,
+  "tags": {
+    "addr:housenumber": "Dr. Keo Vanna (Nose & Mouth)",
+    "amenity": "clinic",
+    "healthcare": "clinic",
+    "name": "Dr. Keo Vanna (Nose & Mouth)"
+  }
+},
+{
+  "type": "node",
+  "id": 4473382052,
+  "lat": 11.5773313,
+  "lon": 104.9016461,
+  "tags": {
+    "addr:housenumber": "17",
+    "addr:street": "Street 566",
+    "amenity": "clinic",
+    "name": "New World Medical Centre"
+  }
+},
+{
+  "type": "node",
+  "id": 4493482489,
+  "lat": 11.5745314,
+  "lon": 104.9012617,
+  "tags": {
+    "addr:housenumber": "22",
+    "addr:postcode": "12150",
+    "addr:street": "ផ្លូវ ៦១៤",
+    "amenity": "police",
+    "name": "ផ្ទះផ្សារ៧មករា"
+  }
+},
+{
+  "type": "node",
+  "id": 4536810091,
+  "lat": 11.5633079,
+  "lon": 104.9061078,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic",
+    "name:en": "Orthopedic&Traumatology"
+  }
+},
+{
+  "type": "node",
+  "id": 4553286590,
+  "lat": 11.5610275,
+  "lon": 104.9109230,
+  "tags": {
+    "amenity": "hospital",
+    "healthcare": "hospital"
+  }
+},
+{
+  "type": "node",
+  "id": 4586433092,
+  "lat": 11.5527557,
+  "lon": 104.9338890,
+  "tags": {
+    "addr:postcode": "12301",
+    "addr:street": "មហាវិថី សម្តេច សុធារស (៣)",
+    "email": "phnompenh@ilo.org",
+    "name:en": "International Labour Organization (ILO)",
+    "office": "government",
+    "opening_hours": "Mo-Fr",
+    "phone": "085523220417",
+    "website": "https://www.ilo.org/"
+  }
+},
+{
+  "type": "node",
+  "id": 4603410992,
+  "lat": 11.5428941,
+  "lon": 104.9126770,
+  "tags": {
+    "addr:housenumber": "#38",
+    "addr:postcode": "11311",
+    "addr:street": "ផ្លូវ ៤១៨",
+    "amenity": "doctors",
+    "name:en": "Dr.Touch Chanthy",
+    "phone": "0236333310"
+  }
+},
+{
+  "type": "node",
+  "id": 4617810489,
+  "lat": 11.5450230,
+  "lon": 104.9098660,
+  "tags": {
+    "amenity": "hospital",
+    "name:en": "ICU hospital"
+  }
+},
+{
+  "type": "node",
+  "id": 4629801742,
+  "lat": 11.5680675,
+  "lon": 104.9145090,
+  "tags": {
+    "amenity": "police",
+    "name": "Police Mitapheath"
+  }
+},
+{
+  "type": "node",
+  "id": 4707778193,
+  "lat": 11.5596864,
+  "lon": 104.9174890,
+  "tags": {
+    "amenity": "hospital",
+    "healthcare": "hospital",
+    "name": "Khum San's Hospital",
+    "name:en": "khum San's Hospital"
+  }
+},
+{
+  "type": "node",
+  "id": 4739037921,
+  "lat": 11.5484446,
+  "lon": 104.9181286,
+  "tags": {
+    "addr:housenumber": "70",
+    "addr:postcode": "855",
+    "addr:street": "ផ្លូវ ១១៣",
+    "amenity": "clinic",
+    "name:en": "Tuol Sleng Cabinet Médical",
+    "phone": "88517512504",
+    "website": "https://www.facebook.com/164561210721634/photos/a.164562494054839.1073741826.164561210721634/166618707182551/?type=3"
+  }
+},
+{
+  "type": "node",
+  "id": 4761388922,
+  "lat": 11.5519559,
+  "lon": 104.9285195,
+  "tags": {
+    "name:en": "Department of Higher Education DHE",
+    "office": "government"
+  }
+},
+{
+  "type": "node",
+  "id": 4770395822,
+  "lat": 11.5568273,
+  "lon": 104.9250713,
+  "tags": {
+    "amenity": "clinic",
+    "email": "tansokun@yahoo.com",
+    "healthcare": "clinic",
+    "name": "La Santé Medical Center",
+    "name:en": "La Santé Medical Center",
+    "name:fr": "La Santé Médical Center",
+    "phone": "078336666"
+  }
+},
+{
+  "type": "node",
+  "id": 4794328721,
+  "lat": 11.5579055,
+  "lon": 104.9306576,
+  "tags": {
+    "amenity": "doctors",
+    "description": "Eye clinic",
+    "healthcare": "doctor",
+    "healthcare:speciality": "ophthalmology",
+    "name": "Botumvatey Eye Clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 4807216184,
+  "lat": 11.5695909,
+  "lon": 104.9036795,
+  "tags": {
+    "amenity": "clinic",
+    "name": "Women-Baby's Center ANNA"
+  }
+},
+{
+  "type": "node",
+  "id": 4820434521,
+  "lat": 11.5674784,
+  "lon": 104.9132300,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic",
+    "name:en": "Eav Kiry clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 4869566098,
+  "lat": 11.5481733,
+  "lon": 104.9162014,
+  "tags": {
+    "amenity": "townhall",
+    "name": "សាលាសង្កាត់ បឹងកេងកងទី៣",
+    "name:en": "Beoung Keng Kang III Commune Hall"
+  }
+},
+{
+  "type": "node",
+  "id": 4869566099,
+  "lat": 11.5482364,
+  "lon": 104.9162001,
+  "tags": {
+    "amenity": "police",
+    "name": "ប៉ុស្តិ៍នគរបាលរដ្ឋបាលបឹងកេងកងទី៣",
+    "name:fr": "Poste de la Police ADM Boeung Keng Kang 3"
+  }
+},
+{
+  "type": "node",
+  "id": 4873960022,
+  "lat": 11.5556802,
+  "lon": 104.9080390,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic",
+    "name:en": "Mercy Clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 4939442321,
+  "lat": 11.5637393,
+  "lon": 104.9176090,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic",
+    "name:en": "Bon Sokkha",
+    "name:km": "ប៊ុន សុខគា"
+  }
+},
+{
+  "type": "node",
+  "id": 4945206114,
+  "lat": 11.5777422,
+  "lon": 104.9222100,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic",
+    "name": "វេជ្ជបណ្ឌិត លន់ សុខុន",
+    "name:en": "Doctor Lon Sokhon",
+    "name:es": "Doctor Lon Sokhón"
+  }
+},
+{
+  "type": "node",
+  "id": 4949282128,
+  "lat": 11.5486867,
+  "lon": 104.9244173,
+  "tags": {
+    "addr:housenumber": "238",
+    "addr:postcode": "12302",
+    "addr:street": "ផ្លូវ ត្រសក់ផ្អែម (៦៣)",
+    "amenity": "clinic",
+    "email": "bc.skinclinic@yahoo.com",
+    "healthcare": "clinic",
+    "internet_access": "wlan",
+    "name": "BC Skin Clinic",
+    "opening_hours": "Mo-Sa 08:30-19:00; Su 08:30-12:00",
+    "operator": "Dr. Yin Vuthy",
+    "operator:type": "private",
+    "phone": "+85578844777",
+    "shop": "cosmetics",
+    "website": "http://www.facebook.com/bcskinclinic"
+  }
+},
+{
+  "type": "node",
+  "id": 4949858822,
+  "lat": 11.5697344,
+  "lon": 104.9056123,
+  "tags": {
+    "addr:housenumber": "8A",
+    "addr:street": "ផ្លូវ ១១២",
+    "amenity": "clinic",
+    "email": "info@essenceofhealth.asia",
+    "internet_access": "wlan",
+    "name:en": "essence of health",
+    "name:fr": "essence of health",
+    "opening_hours": "Mo-Sa 08:00-11:30, 14:00-17:00",
+    "phone": "+855 889 235 306",
+    "website": "https://essenceofhealth.asia/"
+  }
+},
+{
+  "type": "node",
+  "id": 4958069921,
+  "lat": 11.5630588,
+  "lon": 104.9135945,
+  "tags": {
+    "amenity": "hospital",
+    "name:en": "វិសាខា"
+  }
+},
+{
+  "type": "node",
+  "id": 5038063521,
+  "lat": 11.5665863,
+  "lon": 104.8938191,
+  "tags": {
+    "amenity": "clinic",
+    "name:en": "Dela",
+    "opening_hours": "24/7"
+  }
+},
+{
+  "type": "node",
+  "id": 5150070918,
+  "lat": 11.5442492,
+  "lon": 104.9008054,
+  "tags": {
+    "addr:city": "Phnom Penh",
+    "addr:country": "KH",
+    "addr:housenumber": "356",
+    "addr:street": "Yothapol Khemarak Phoumin Boulevard",
+    "amenity": "clinic",
+    "name": "Clinic KHUON Viseth",
+    "phone": "+855 070612112",
+    "website": "https://www.clinickhuonviseth.com/"
+  }
+},
+{
+  "type": "node",
+  "id": 5191358648,
+  "lat": 11.5420944,
+  "lon": 104.9313787,
+  "tags": {
+    "addr:city": "Phnom Penh",
+    "addr:country": "KH",
+    "name:en": "Cambodia Passports Place",
+    "office": "government"
+  }
+},
+{
+  "type": "node",
+  "id": 5222544521,
+  "lat": 11.5593014,
+  "lon": 104.9245149,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic",
+    "name:en": "Sihanouk Hospital Center Of HOPE"
+  }
+},
+{
+  "type": "node",
+  "id": 5229409921,
+  "lat": 11.5300503,
+  "lon": 104.9157937,
+  "tags": {
+    "amenity": "clinic",
+    "name:en": "Vissa Clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 5274585664,
+  "lat": 11.5490058,
+  "lon": 104.9161806,
+  "tags": {
+    "addr:city": "សង្កាត់បឹងកេងកងទី ៣",
+    "addr:housenumber": "134",
+    "addr:postcode": "12304",
+    "addr:street": "ផ្លូវ ១៤៣",
+    "amenity": "hospital",
+    "description": "មន្ទីរ​ពហុ​ព្យាបាល​ និងសម្ភពសំពៅ​មាស ជាមន្ទីរពេទ្យដែលមានជំនាញច្បាស់លាស់ក្នុងការព្យាបាល ជំងឺតំរងនោម គ្រួសតំរងនោម ជំងឺក្រពេញ្ញប្រូស្តេត គ្រួសប្រម៉ាត់ ក្លនល្លូន ដំុគីស ពកក ជំងឺរលាកខ្នែងពោះវៀន ជំងឺវះកាត់ទូទៅ ជំងឺទូទៅ សម្ភព ឆ្លុះអេកូ4D និង ថតកាំរស្មី X-Ray។ ",
+    "email": "sampeomeas@gmail.com",
+    "emergency": "yes",
+    "healthcare": "hospital",
+    "name": "Sampeo Meas Clinic",
+    "name:en": "Sampeo Meas Polyclinic and Maternity",
+    "name:fr": "Sampeo Meas Polyclinique et Maternité",
+    "name:km": "មន្ទីរពហុព្យាបាល​ និងសម្ភពសំពៅមាស",
+    "phone": "+855 12825066"
+  }
+},
+{
+  "type": "node",
+  "id": 5276935423,
+  "lat": 11.5592652,
+  "lon": 104.9244092,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic",
+    "name:en": "Hope"
+  }
+},
+{
+  "type": "node",
+  "id": 5358429921,
+  "lat": 11.5396260,
+  "lon": 104.9224983,
+  "tags": {
+    "addr:street": "មហាវិថី ព្រះមុនីវង្ស (៩៣)",
+    "name:en": "មន្ទីរដនសស",
+    "office": "government"
+  }
+},
+{
+  "type": "node",
+  "id": 5371678321,
+  "lat": 11.5673157,
+  "lon": 104.9045278,
+  "tags": {
+    "addr:housenumber": "#413E0, St 128",
+    "addr:street": "មហាវិថី កម្ពុជាក្រោម (១២៨)",
+    "amenity": "clinic",
+    "email": "justice.dent72@gmail.com",
+    "internet_access": "wlan",
+    "name:en": "Chhunly Dental Clinic",
+    "opening_hours": "24/7",
+    "operator": "Chhunly",
+    "phone": "011222170"
+  }
+},
+{
+  "type": "node",
+  "id": 5425752034,
+  "lat": 11.5543276,
+  "lon": 104.9172675,
+  "tags": {
+    "addr:street": "ផ្លូវ ១១៧",
+    "amenity": "clinic",
+    "healthcare": "clinic",
+    "name": "ពេទ្យខេមរ៉ា",
+    "name:en": "Khemara Pediatricians Clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 5548093445,
+  "lat": 11.5534279,
+  "lon": 104.9258841,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic",
+    "name": "Khema International Polyclinic"
+  }
+},
+{
+  "type": "node",
+  "id": 5596062321,
+  "lat": 11.5529926,
+  "lon": 104.9071908,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic",
+    "name": "K1985 Va Vanthy Echo",
+    "name:en": "K1985 Va Vanthy Echo"
+  }
+},
+{
+  "type": "node",
+  "id": 5606214122,
+  "lat": 11.5835884,
+  "lon": 104.9090601,
+  "tags": {
+    "amenity": "clinic",
+    "description": "Ear Nose Throat",
+    "healthcare": "clinic",
+    "name": "Sok Koung Clinic",
+    "name:en": "Sok Koung Cinic",
+    "name:km": "ឯកទេស​ ត្រចៀក​ ច្រមុះ​ បំពង់ក",
+    "opening_hours": "Mo-Fr 13:00-18:00; Sa 07:00-12:00, 14:00-17:00; Su 07:00-12:00",
+    "phone": "010360096"
+  }
+},
+{
+  "type": "node",
+  "id": 5676879686,
+  "lat": 11.5441252,
+  "lon": 104.9142395,
+  "tags": {
+    "amenity": "police",
+    "name": "មូលដ្ឋានកងរាជអាវុធហត្ថុខណ្ឌចំការមន",
+    "name:en": "Chamkar Mon District Royal Military Police Station",
+    "name:km": "មូលដ្ឋានកងរាជអាវុធហត្ថុខណ្ឌចំការមន"
+  }
+},
+{
+  "type": "node",
+  "id": 5676879687,
+  "lat": 11.5441436,
+  "lon": 104.9143360,
+  "tags": {
+    "amenity": "townhall",
+    "name": "សាលាខណ្ឌចំការមន",
+    "name:en": "Chamkar Mon District Hall",
+    "name:km": "សាលាខណ្ឌចំការមន"
+  }
+},
+{
+  "type": "node",
+  "id": 5748858421,
+  "lat": 11.5678344,
+  "lon": 104.9155436,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic",
+    "name:en": "DUMEX dental imaging center"
+  }
+},
+{
+  "type": "node",
+  "id": 5901809385,
+  "lat": 11.5286910,
+  "lon": 104.9176869,
+  "tags": {
+    "amenity": "hospital",
+    "healthcare": "hospital",
+    "name": "ពេទ្យសរសៃ USA",
+    "name:km": "ពេទ្យសរសៃយូអេសអេ"
+  }
+},
+{
+  "type": "node",
+  "id": 5904396758,
+  "lat": 11.5251782,
+  "lon": 104.9574287,
+  "tags": {
+    "amenity": "fire_station",
+    "name": "Peng Huoth Fire Station"
+  }
+},
+{
+  "type": "node",
+  "id": 5910775885,
+  "lat": 11.5708283,
+  "lon": 104.9275185,
+  "tags": {
+    "addr:street": "ផ្លូវ ១៣៦",
+    "name:en": "Trade Promotion Department (MOC)",
+    "office": "government",
+    "opening_hours": "Mo-Fr 08:00-17:00"
+  }
+},
+{
+  "type": "node",
+  "id": 5995153885,
+  "lat": 11.5667649,
+  "lon": 104.9143871,
+  "tags": {
+    "addr:street": "ផ្លូវ ១៣៩",
+    "amenity": "clinic",
+    "healthcare": "clinic",
+    "name:en": "Clinic Sokret"
+  }
+},
+{
+  "type": "node",
+  "id": 6109070321,
+  "lat": 11.5834300,
+  "lon": 104.9085537,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic",
+    "name": "Vattanak Clinic",
+    "name:en": "Vattanak Clinic",
+    "name:km": "វឌ្ឍន គ្លីនិក"
+  }
+},
+{
+  "type": "node",
+  "id": 6125019653,
+  "lat": 11.5612494,
+  "lon": 104.9265963,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic",
+    "name": "Nairel Clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 6125019654,
+  "lat": 11.5599495,
+  "lon": 104.9269089,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic",
+    "name": "AMED clinic anesthetic and anti-aging"
+  }
+},
+{
+  "type": "node",
+  "id": 6164947976,
+  "lat": 11.5382946,
+  "lon": 104.9188358,
+  "tags": {
+    "name": "Cambodia Indigenous Peoples Organization (CIPO)",
+    "office": "government"
+  }
+},
+{
+  "type": "node",
+  "id": 6191599285,
+  "lat": 11.5581657,
+  "lon": 104.9210993,
+  "tags": {
+    "addr:housenumber": "67",
+    "addr:street": "Preah Ang Phanavong St. (240), Phnom Penh 12207, Cambodge",
+    "amenity": "clinic",
+    "healthcare": "alternative",
+    "healthcare:speciality": "chiropractic",
+    "name": "អ៊ិនធើណេសិនណល ខាយរ៉ូព្រែកធីក គ្លីនិក",
+    "name:en": "International Chiropractic Clinic (ICC)",
+    "name:es": "Clinica internacional de chiropraxia",
+    "name:fr": "Clinique Chiropractique Internationale",
+    "opening_hours": "Tu-We, Fr 08:00-18:00; Mo, Th 08:00-19:00; Sa 08:00-12:00",
+    "phone": "+855 23 223 101",
+    "website": "https://www.cambodiachiropractic.com"
+  }
+},
+{
+  "type": "node",
+  "id": 6231446786,
+  "lat": 11.5653618,
+  "lon": 104.9215140,
+  "tags": {
+    "amenity": "doctors",
+    "healthcare": "doctor",
+    "name:en": "Procare médical center"
+  }
+},
+{
+  "type": "node",
+  "id": 6231459485,
+  "lat": 11.5697760,
+  "lon": 104.9117877,
+  "tags": {
+    "amenity": "doctors",
+    "healthcare": "doctor",
+    "name:fr": "cabinet médical français"
+  }
+},
+{
+  "type": "node",
+  "id": 6236287685,
+  "lat": 11.5679174,
+  "lon": 104.9064361,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic",
+    "name": "Biomed",
+    "name:fr": "biomed"
+  }
+},
+{
+  "type": "node",
+  "id": 6250768585,
+  "lat": 11.5640694,
+  "lon": 104.9013930,
+  "tags": {
+    "addr:street": "ផ្លូវ ១៥៦",
+    "amenity": "hospital",
+    "healthcare": "hospital",
+    "name:en": "hospital"
+  }
+},
+{
+  "type": "node",
+  "id": 6251492689,
+  "lat": 11.5321480,
+  "lon": 104.9366563,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 6251522586,
+  "lat": 11.5368130,
+  "lon": 104.9700735,
+  "tags": {
+    "amenity": "clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 6251522591,
+  "lat": 11.5630064,
+  "lon": 104.9186257,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 6251534191,
+  "lat": 11.5652530,
+  "lon": 104.9182005,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 6269760186,
+  "lat": 11.5670243,
+  "lon": 104.9225305,
+  "tags": {
+    "amenity": "hospital",
+    "healthcare": "hospital"
+  }
+},
+{
+  "type": "node",
+  "id": 6319078023,
+  "lat": 11.5654981,
+  "lon": 104.9229570,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic",
+    "name:en": "Soriya"
+  }
+},
+{
+  "type": "node",
+  "id": 6319078025,
+  "lat": 11.5667551,
+  "lon": 104.9176758,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 6319103375,
+  "lat": 11.5565081,
+  "lon": 104.9178624,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 6319103379,
+  "lat": 11.5592616,
+  "lon": 104.9177887,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 6319103987,
+  "lat": 11.5666398,
+  "lon": 104.9162102,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 6319111538,
+  "lat": 11.5605867,
+  "lon": 104.9170751,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic",
+    "name:de": "Augen"
+  }
+},
+{
+  "type": "node",
+  "id": 6319111547,
+  "lat": 11.5649661,
+  "lon": 104.9151691,
+  "tags": {
+    "amenity": "doctors",
+    "healthcare": "doctor"
+  }
+},
+{
+  "type": "node",
+  "id": 6319111548,
+  "lat": 11.5652341,
+  "lon": 104.9149546,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 6319115796,
+  "lat": 11.5537450,
+  "lon": 104.9179598,
+  "tags": {
+    "amenity": "clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 6319125422,
+  "lat": 11.5451144,
+  "lon": 104.9162467,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 6320261085,
+  "lat": 11.5644128,
+  "lon": 104.9232552,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 6320261885,
+  "lat": 11.5674921,
+  "lon": 104.9252115,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 6320264588,
+  "lat": 11.5725835,
+  "lon": 104.9203075,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 6320264786,
+  "lat": 11.5728841,
+  "lon": 104.9219497,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 6320499433,
+  "lat": 11.5495479,
+  "lon": 104.9120963,
+  "tags": {
+    "amenity": "clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 6320499586,
+  "lat": 11.5626618,
+  "lon": 104.9239300,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 6320500295,
+  "lat": 11.5463125,
+  "lon": 104.9109271,
+  "tags": {
+    "amenity": "clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 6323333990,
+  "lat": 11.5622586,
+  "lon": 104.9280595,
+  "tags": {
+    "amenity": "police"
+  }
+},
+{
+  "type": "node",
+  "id": 6323343594,
+  "lat": 11.5623773,
+  "lon": 104.9138068,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 6323347889,
+  "lat": 11.5726199,
+  "lon": 104.9252268,
+  "tags": {
+    "amenity": "doctors",
+    "healthcare": "doctor"
+  }
+},
+{
+  "type": "node",
+  "id": 6325091892,
+  "lat": 11.5720572,
+  "lon": 104.9265100,
+  "tags": {
+    "amenity": "doctors",
+    "healthcare": "doctor"
+  }
+},
+{
+  "type": "node",
+  "id": 6325091897,
+  "lat": 11.5712212,
+  "lon": 104.9265100,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 6325126586,
+  "lat": 11.5709168,
+  "lon": 104.9263240,
+  "tags": {
+    "amenity": "doctors",
+    "healthcare": "doctor"
+  }
+},
+{
+  "type": "node",
+  "id": 6332862189,
+  "lat": 11.5565198,
+  "lon": 104.9062301,
+  "tags": {
+    "amenity": "clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 6332890087,
+  "lat": 11.5586191,
+  "lon": 104.9078505,
+  "tags": {
+    "amenity": "police"
+  }
+},
+{
+  "type": "node",
+  "id": 6332891490,
+  "lat": 11.5546823,
+  "lon": 104.9008067,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 6332897585,
+  "lat": 11.5548766,
+  "lon": 104.9020673,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 6335609304,
+  "lat": 11.5461903,
+  "lon": 104.9050685,
+  "tags": {
+    "amenity": "doctors"
+  }
+},
+{
+  "type": "node",
+  "id": 6335609394,
+  "lat": 11.5486894,
+  "lon": 104.8993944,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 6335609600,
+  "lat": 11.5411342,
+  "lon": 104.9095013,
+  "tags": {
+    "amenity": "doctors",
+    "healthcare": "doctor"
+  }
+},
+{
+  "type": "node",
+  "id": 6337152802,
+  "lat": 11.5577606,
+  "lon": 104.9163971,
+  "tags": {
+    "amenity": "hospital",
+    "healthcare": "hospital",
+    "name": "Sophear Maternity",
+    "name:en": "Sophear Maternity"
+  }
+},
+{
+  "type": "node",
+  "id": 6337600405,
+  "lat": 11.5452110,
+  "lon": 104.9245175,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 6337600414,
+  "lat": 11.5512559,
+  "lon": 104.9239019,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 6337600458,
+  "lat": 11.5515780,
+  "lon": 104.9205178,
+  "tags": {
+    "amenity": "doctors",
+    "healthcare": "doctor"
+  }
+},
+{
+  "type": "node",
+  "id": 6337600463,
+  "lat": 11.5700449,
+  "lon": 104.9269864,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 6337601132,
+  "lat": 11.5582963,
+  "lon": 104.9232229,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 6337601159,
+  "lat": 11.5621140,
+  "lon": 104.9242399,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 6337601168,
+  "lat": 11.5713600,
+  "lon": 104.9225655,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 6337601441,
+  "lat": 11.5695076,
+  "lon": 104.9195809,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic",
+    "name": "Medi Care Clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 6337601915,
+  "lat": 11.5699623,
+  "lon": 104.9251862,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 6337604489,
+  "lat": 11.5563333,
+  "lon": 104.9246485,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 6337604501,
+  "lat": 11.5593947,
+  "lon": 104.9161106,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 6337621694,
+  "lat": 11.5452687,
+  "lon": 104.9248230,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic",
+    "name:en": "Cmed"
+  }
+},
+{
+  "type": "node",
+  "id": 6337621719,
+  "lat": 11.5525952,
+  "lon": 104.9227005,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 6337621910,
+  "lat": 11.5718847,
+  "lon": 104.9255971,
+  "tags": {
+    "amenity": "police"
+  }
+},
+{
+  "type": "node",
+  "id": 6337621965,
+  "lat": 11.5505562,
+  "lon": 104.9063105,
+  "tags": {
+    "amenity": "clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 6337622108,
+  "lat": 11.5536460,
+  "lon": 104.9232463,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 6337622116,
+  "lat": 11.5616743,
+  "lon": 104.9213270,
+  "tags": {
+    "amenity": "doctors",
+    "healthcare": "doctor"
+  }
+},
+{
+  "type": "node",
+  "id": 6337622130,
+  "lat": 11.5783473,
+  "lon": 104.9218141,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 6337630190,
+  "lat": 11.5518264,
+  "lon": 104.9077536,
+  "tags": {
+    "amenity": "clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 6337634309,
+  "lat": 11.5499696,
+  "lon": 104.9053692,
+  "tags": {
+    "amenity": "clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 6343003335,
+  "lat": 11.5478650,
+  "lon": 104.9208560,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 6349199098,
+  "lat": 11.5613479,
+  "lon": 104.9221044,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 6349199113,
+  "lat": 11.5673998,
+  "lon": 104.9241232,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic",
+    "name:en": "Lab"
+  }
+},
+{
+  "type": "node",
+  "id": 6349200101,
+  "lat": 11.5580709,
+  "lon": 104.9196938,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 6349200107,
+  "lat": 11.5629290,
+  "lon": 104.9218720,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic",
+    "name:en": "Laboratory"
+  }
+},
+{
+  "type": "node",
+  "id": 6456938418,
+  "lat": 11.5613394,
+  "lon": 104.9226037,
+  "tags": {
+    "addr:city": "Phnom Penh",
+    "addr:postcode": "12211",
+    "addr:street": "វិថី សម្តេច ចក្រីប៉ុន (២០៨)",
+    "government": "town_council",
+    "name": "Boeung Raing Commune Hall",
+    "name:km": "សាលាសង្កាត់បឹងរាំង",
+    "office": "government",
+    "opening_hours": "Mo-Fr 09:00-17:00"
+  }
+},
+{
+  "type": "node",
+  "id": 6507765085,
+  "lat": 11.5358629,
+  "lon": 104.9286612,
+  "tags": {
+    "name:en": "International Organization for Migration (IOM), Mission for Cambodia",
+    "office": "government",
+    "phone": "023216532"
+  }
+},
+{
+  "type": "node",
+  "id": 6534990392,
+  "lat": 11.5528402,
+  "lon": 104.9285800,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic",
+    "name": "Derma Care Son Clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 6686008585,
+  "lat": 11.5562844,
+  "lon": 104.9171071,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic",
+    "name": "គីរីរម្យ​ គ្លីនិច"
+  }
+},
+{
+  "type": "node",
+  "id": 6741830923,
+  "lat": 11.5820389,
+  "lon": 104.9200686,
+  "tags": {
+    "addr:city": "Phnom Penh",
+    "addr:street": "វិថី សម្តេច អែម (៣៩)",
+    "amenity": "clinic",
+    "healthcare": "clinic",
+    "name": "Chenda Polyclinic",
+    "name:km": "មន្ទីរពហុព្យាបាលចិន្តា",
+    "website": "https://www.chendapolyclinic.com/index.html"
+  }
+},
+{
+  "type": "node",
+  "id": 6813440576,
+  "lat": 11.5694465,
+  "lon": 104.9183678,
+  "tags": {
+    "amenity": "doctors",
+    "healthcare": "doctor",
+    "name": "Dr Liv An"
+  }
+},
+{
+  "type": "node",
+  "id": 6832257190,
+  "lat": 11.5607893,
+  "lon": 104.9245872,
+  "tags": {
+    "description:fr": "Maison ong Pouxine médecin supermarket",
+    "office": "government"
+  }
+},
+{
+  "type": "node",
+  "id": 7046099207,
+  "lat": 11.5738243,
+  "lon": 104.9214492,
+  "tags": {
+    "addr:city": "Phnom Penh",
+    "addr:housenumber": "6th Floor",
+    "addr:postcode": "12202",
+    "addr:street": "Building No.19-20,Street No.106,Village 2,Wat Phnom,Daun Penh",
+    "amenity": "clinic",
+    "healthcare": "clinic",
+    "healthcare:speciality": "fertility",
+    "name": "天使国际生殖医学中心(AIC金边)",
+    "name:en": "Angel International Reproductive Medicine Center",
+    "name:zh": "天使国际生殖医学中心(AIC金边)",
+    "opening_hours": "Mo-Sa 08:00-18:00",
+    "operator": "AIC",
+    "operator:type": "private"
+  }
+},
+{
+  "type": "node",
+  "id": 7297933485,
+  "lat": 11.5482322,
+  "lon": 104.9048801,
+  "tags": {
+    "addr:housenumber": "76",
+    "addr:postcode": "12309",
+    "addr:street": "ផ្លូវ ១៩៩",
+    "amenity": "hospital",
+    "emergency": "yes",
+    "healthcare": "hospital",
+    "name": "មន្ទីរសម្ភព ណូប៊ែល",
+    "name:en": "NOBEL Maternity",
+    "opening_hours": "24/7",
+    "phone": "+85512724433"
+  }
+},
+{
+  "type": "node",
+  "id": 7335579935,
+  "lat": 11.5477265,
+  "lon": 104.9407431,
+  "tags": {
+    "name": "Chamkarmon division of land management, urbanization, construction and landuse",
+    "office": "government"
+  }
+},
+{
+  "type": "node",
+  "id": 7370461244,
+  "lat": 11.5535283,
+  "lon": 104.9306181,
+  "tags": {
+    "amenity": "hospital",
+    "healthcare": "hospital",
+    "name": "The Prestige Hospital"
+  }
+},
+{
+  "type": "node",
+  "id": 7488068185,
+  "lat": 11.5502267,
+  "lon": 104.9184302,
+  "tags": {
+    "addr:housenumber": "64C",
+    "addr:postcode": "855",
+    "addr:street": "ផ្លូវ ៣១០",
+    "amenity": "clinic",
+    "email": "laklengclinic@gmail.com",
+    "name:en": "LAK LENG Clinic",
+    "operator": "Dr. Lak Leng",
+    "phone": "015353888",
+    "website": "http://Fb.com/lakleng.dr"
+  }
+},
+{
+  "type": "node",
+  "id": 7488068285,
+  "lat": 11.5507896,
+  "lon": 104.9189000,
+  "tags": {
+    "amenity": "clinic",
+    "name:en": "Lak Leng Clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 7997026286,
+  "lat": 11.5642459,
+  "lon": 104.9136503,
+  "tags": {
+    "name:en": "CDC",
+    "office": "government"
+  }
+},
+{
+  "type": "node",
+  "id": 8310537218,
+  "lat": 11.5319015,
+  "lon": 104.9392168,
+  "tags": {
+    "addr:housenumber": "585",
+    "addr:street": "ផ្លូវជាតិលេខ១",
+    "amenity": "hospital",
+    "email": "pheng.pheany@yahoo.com",
+    "healthcare": "hospital",
+    "internet_access": "wlan",
+    "opening_hours": "24/7",
+    "phone": "010807470"
+  }
+},
+{
+  "type": "node",
+  "id": 8330268217,
+  "lat": 11.5681122,
+  "lon": 104.9122807,
+  "tags": {
+    "amenity": "hospital",
+    "healthcare": "hospital",
+    "name": "មណ្ឌលវេជ្ជសាស្ត្រសហគមន៍​ ហូប​ វេីលដ៍វ៉ាយដ៍",
+    "name:en": "Hope Worldwide - Community Medical Center"
+  }
+},
+{
+  "type": "node",
+  "id": 8334622190,
+  "lat": 11.5726695,
+  "lon": 104.9206854,
+  "tags": {
+    "amenity": "police",
+    "name": "Wat Phnom Police Station",
+    "name:km": "ប៉ុស្តិ៍នគរបាលវត្តភ្នំ"
+  }
+},
+{
+  "type": "node",
+  "id": 9676006817,
+  "lat": 11.5606456,
+  "lon": 104.9141026,
+  "tags": {
+    "addr:housenumber": "Building C5",
+    "addr:street": "Street 161 (corner of The Financial Street)",
+    "amenity": "clinic",
+    "healthcare": "clinic",
+    "name:en": "Intercare Medical Covid-19 Testing Clinic",
+    "phone": "023 996 900",
+    "website": "https://m.facebook.com/intercaremedicalcenter/"
+  }
+},
+{
+  "type": "node",
+  "id": 9936976870,
+  "lat": 11.5665209,
+  "lon": 104.8890707,
+  "tags": {
+    "amenity": "police"
+  }
+},
+{
+  "type": "node",
+  "id": 10601218906,
+  "lat": 11.5342029,
+  "lon": 104.9370175,
+  "tags": {
+    "amenity": "police",
+    "name:en": "SPEED Limit police 80 km"
+  }
+},
+{
+  "type": "node",
+  "id": 10601221305,
+  "lat": 11.5377663,
+  "lon": 104.9378375,
+  "tags": {
+    "amenity": "police",
+    "name:en": "ចាប់ល្បឿន ៨០គីឡូ"
+  }
+},
+{
+  "type": "node",
+  "id": 10722547489,
+  "lat": 11.5503792,
+  "lon": 104.9287892,
+  "tags": {
+    "name": "Department of Construction (MoEYS)",
+    "office": "government"
+  }
+},
+{
+  "type": "node",
+  "id": 10722547491,
+  "lat": 11.5514865,
+  "lon": 104.9284369,
+  "tags": {
+    "name": "Department of General Secondary Education",
+    "office": "government"
+  }
+},
+{
+  "type": "node",
+  "id": 11137596651,
+  "lat": 11.5197697,
+  "lon": 104.9500852,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 11280991771,
+  "lat": 11.5480168,
+  "lon": 104.9089316,
+  "tags": {
+    "name:en": "SMCC Phnom Penh",
+    "office": "government"
+  }
+},
+{
+  "type": "node",
+  "id": 11341076472,
+  "lat": 11.5605955,
+  "lon": 104.9176453,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic",
+    "name:en": "Kamikazer Clinic"
+  }
+},
+{
+  "type": "node",
+  "id": 11782392315,
+  "lat": 11.5446161,
+  "lon": 104.9327584,
+  "tags": {
+    "addr:city": "Sangkat Tonle Bassac,  Khan Chamkamon",
+    "addr:housenumber": "N43",
+    "addr:street": "Koh Pich Street",
+    "amenity": "clinic",
+    "healthcare": "clinic",
+    "healthcare:speciality": "general;dermatology;sexually_transmitted_diseases;surgery;aesthetics;cryotherapy",
+    "name": "BH Clinic",
+    "opening_hours": "Mo-Fr 07:30-16:30; Sa 07:30-12:30",
+    "phone": "+855 23 900 446",
+    "website": "https://bhclinic888.wixsite.com/mysite"
+  }
+},
+{
+  "type": "node",
+  "id": 12034974970,
+  "lat": 11.5457817,
+  "lon": 104.9277188,
+  "tags": {
+    "addr:street": "មហាវិថី ព្រះនរោត្តម (៤១)",
+    "name:en": "Department of Information Tecnology",
+    "office": "government"
+  }
+},
+{
+  "type": "node",
+  "id": 12034974971,
+  "lat": 11.5457780,
+  "lon": 104.9276174,
+  "tags": {
+    "addr:street": "មហាវិថី ព្រះនរោត្តម (៤១)",
+    "name:en": "Department of Information and ASEAN Affairs",
+    "office": "government"
+  }
+},
+{
+  "type": "node",
+  "id": 12446824318,
+  "lat": 11.5211664,
+  "lon": 104.9595203,
+  "tags": {
+    "addr:city": "Phnom Penh",
+    "addr:housenumber": "313-315",
+    "addr:postcode": "12000",
+    "addr:street": "Cluster Boulevard",
+    "amenity": "doctors",
+    "healthcare": "doctor",
+    "healthcare:speciality": "dermatology;ophthalmology",
+    "name": "HLCC Plus Peng Huot Boeng Snor",
+    "opening_hours": "Mo-Su 09:00-19:00",
+    "operator": "HLCC+"
+  }
+},
+{
+  "type": "node",
+  "id": 12672673334,
+  "lat": 11.5674336,
+  "lon": 104.9227940,
+  "tags": {
+    "amenity": "police",
+    "name": "khách sạn",
+    "name:en": "khách sạn",
+    "source": "Bing, Local knowledge"
+  }
+},
+{
+  "type": "node",
+  "id": 13279003801,
+  "lat": 11.5313789,
+  "lon": 104.9288041,
+  "tags": {
+    "amenity": "police",
+    "name:en": "Tourist Police Department"
+  }
+},
+{
+  "type": "node",
+  "id": 13463491700,
+  "lat": 11.5357023,
+  "lon": 104.9124069,
+  "tags": {
+    "amenity": "clinic",
+    "healthcare": "clinic",
+    "name": "Ly Srey Vyna"
+  }
+},
+{
+  "type": "node",
+  "id": 14307165030,
+  "lat": 11.5611786,
+  "lon": 104.9141204,
+  "tags": {
+    "amenity": "hospital",
+    "name": "Intercare Medical Center"
+  }
+},
+{
+  "type": "way",
+  "id": 165927974,
+  "center": {
+    "lat": 11.5813561,
+    "lon": 104.9156946
+  },
+  "tags": {
+    "addr:city": "Phnom Penh",
+    "addr:street": "Preah Monivong Blvd (St: 93)",
+    "amenity": "hospital",
+    "emergency": "yes",
+    "healthcare": "hospital",
+    "name": "មន្ទីរពេទ្យ​ កាល់ម៉ែត",
+    "name:en": "Calmette Hospital",
+    "name:fr": "L'Hôpital Calmette",
+    "wikidata": "Q5023043",
+    "wikimedia_commons": "Category:Calmette Hospital",
+    "wikipedia": "en:Calmette Hospital"
+  }
+},
+{
+  "type": "way",
+  "id": 171308661,
+  "center": {
+    "lat": 11.5540027,
+    "lon": 104.9197461
+  },
+  "tags": {
+    "amenity": "hospital",
+    "healthcare": "hospital",
+    "name": "មជ្ឈមណ្ឌលជាតិ​កំចាត់រោគ របេង និង ហង់សិន (CENAT)",
+    "name:en": "National Center for Tuberculosis and Leprosy (CENAT)",
+    "name:km": "មជ្ឈមណ្ឌលជាតិ​កំចាត់រោគ របេង និង ហង់សិន"
+  }
+},
+{
+  "type": "way",
+  "id": 171309627,
+  "center": {
+    "lat": 11.5717846,
+    "lon": 104.9232124
+  },
+  "tags": {
+    "amenity": "hospital",
+    "healthcare": "hospital",
+    "name": "មន្ទីរពេទ្យ​ព្រះអង្គឌួង",
+    "name:en": "Preah Ang Duong Hospital",
+    "name:km": "មន្ទីរពេទ្យ​ព្រះអង្គឌួង",
+    "name:th": "โรงพยาบาลพระองค์ด้วง"
+  }
+},
+{
+  "type": "way",
+  "id": 171309629,
+  "center": {
+    "lat": 11.5453433,
+    "lon": 104.9038304
+  },
+  "tags": {
+    "amenity": "hospital",
+    "healthcare": "hospital",
+    "name": "មន្ទីរពេទ្យ​មិត្តភាព​ខ្មែរ-សូវៀត",
+    "name:en": "Khmer-Soviet Friendship Hospital",
+    "name:tr": "Khmer-Sovyet Dostluk Hastanesi",
+    "name:vi": "Bệnh viện Hữu nghị Khmer-Xô viết",
+    "wheelchair": "yes",
+    "wikidata": "Q16893316",
+    "wikipedia": "en:Khmer–Soviet Friendship Hospital"
+  }
+},
+{
+  "type": "way",
+  "id": 171309635,
+  "center": {
+    "lat": 11.5793177,
+    "lon": 104.9203360
+  },
+  "tags": {
+    "alt_name": "Japanese Maternity Hospital",
+    "alt_name1": "Japon Hospital",
+    "amenity": "hospital",
+    "healthcare": "hospital",
+    "name": "មជ្ឈមណ្ឌលជាតិ​គាំពារមាតា និង ទារក",
+    "name:en": "National Maternal and Child Health Center"
+  }
+},
+{
+  "type": "way",
+  "id": 171309638,
+  "center": {
+    "lat": 11.5683573,
+    "lon": 104.8968256
+  },
+  "tags": {
+    "amenity": "hospital",
+    "healthcare": "hospital",
+    "name": "មន្ទីរពេទ្យ​កុមារ​ជាតិ",
+    "name:en": "National Pediatric Hospital",
+    "wikidata": "Q6974852",
+    "wikipedia": "en:National Pediatric Hospital, Cambodia"
+  }
+},
+{
+  "type": "way",
+  "id": 171309640,
+  "center": {
+    "lat": 11.5798191,
+    "lon": 104.9216112
+  },
+  "tags": {
+    "amenity": "hospital",
+    "healthcare": "hospital",
+    "name": "មន្ទីរពេទ្យ​ព្រះកេតុ​មាលា:",
+    "name:en": "Preah Ket Mealea Hospital"
+  }
+},
+{
+  "type": "way",
+  "id": 171309992,
+  "center": {
+    "lat": 11.5669721,
+    "lon": 104.9124256
+  },
+  "tags": {
+    "amenity": "hospital",
+    "healthcare": "hospital",
+    "name": "មន្ទីរពេទ្យ​រាជធានីភ្នំពេញ",
+    "name:en": "Phnom Penh Municipal Hospital"
+  }
+},
+{
+  "type": "way",
+  "id": 178591094,
+  "center": {
+    "lat": 11.5301012,
+    "lon": 104.9371076
+  },
+  "tags": {
+    "amenity": "hospital",
+    "healthcare": "hospital",
+    "name": "មន្ទីរពេទ្យ​ច្បារអំពៅ",
+    "name:en": "Chbar Ampov Hospital",
+    "name:km": "មន្ទីរពេទ្យ​ច្បារអំពៅ"
+  }
+},
+{
+  "type": "way",
+  "id": 184258807,
+  "center": {
+    "lat": 11.5778557,
+    "lon": 104.9213168
+  },
+  "tags": {
+    "amenity": "hospital",
+    "healthcare": "hospital",
+    "name": "មន្ទីរពេទ្យ គន្ធបុប្ផា",
+    "name:en": "Kantha Bopha IV Children Hospital",
+    "name:km": "មន្ទីរពេទ្យ គន្ធបុប្ផា"
+  }
+},
+{
+  "type": "way",
+  "id": 189324433,
+  "center": {
+    "lat": 11.5288135,
+    "lon": 104.9363012
+  },
+  "tags": {
+    "amenity": "police",
+    "building": "yes",
+    "name": "Police Office"
+  }
+},
+{
+  "type": "way",
+  "id": 204350658,
+  "center": {
+    "lat": 11.5434392,
+    "lon": 104.9267166
+  },
+  "tags": {
+    "addr:city": "Phnom Penh",
+    "addr:country": "KH",
+    "addr:housenumber": "200",
+    "addr:street": "មហាវិថី ព្រះនរោត្តម (៤១)",
+    "barrier": "fence",
+    "email": "info@maff.gov.kh",
+    "government": "ministry",
+    "name": "ក្រសួង​កសិកម្ម រុក្ខាប្រមាញ់ និង​នេសាទ",
+    "name:en": "Ministry of Agriculture Forestry & Fisheries",
+    "name:vi": "Bộ Nông Lâm Ngư",
+    "office": "government",
+    "phone": "+855 23 726 128",
+    "website": "https://www.maff.gov.kh/"
+  }
+},
+{
+  "type": "way",
+  "id": 204350659,
+  "center": {
+    "lat": 11.5374758,
+    "lon": 104.9271851
+  },
+  "tags": {
+    "barrier": "fence",
+    "government": "ministry",
+    "name": "ក្រសួង​មហាផ្ទៃ",
+    "name:en": "Ministry of Interior",
+    "name:th": "กระทรวงมหาดไทย",
+    "name:vi": "Bộ Nội vụ",
+    "office": "government"
+  }
+},
+{
+  "type": "way",
+  "id": 204359303,
+  "center": {
+    "lat": 11.5373697,
+    "lon": 104.9227234
+  },
+  "tags": {
+    "amenity": "public_building",
+    "barrier": "fence",
+    "government": "ministry",
+    "name": "ក្រសួងសង្គមកិច្ជ អតីតយុទ្ធជន និងយុវនីតិសម្បទា",
+    "name:en": "Ministry of Social Affairs, Veterans and Youth Rehabilitation",
+    "office": "government"
+  }
+},
+{
+  "type": "way",
+  "id": 204359307,
+  "center": {
+    "lat": 11.5399985,
+    "lon": 104.9227127
+  },
+  "tags": {
+    "amenity": "public_building",
+    "government": "ministry",
+    "name": "ក្រសួងអភិវឌ្ឍន៍ជន",
+    "name:en": "Ministry of Rural Development",
+    "office": "government"
+  }
+},
+{
+  "type": "way",
+  "id": 204363131,
+  "center": {
+    "lat": 11.5543223,
+    "lon": 104.9371807
+  },
+  "tags": {
+    "area": "yes",
+    "barrier": "fence",
+    "government": "ministry",
+    "name": "ក្រសួងការបរទេស និង​សហប្រតិបត្តិការ​អន្តរជាតិ",
+    "name:en": "Ministry of Foreign Affairs & International Cooperation",
+    "name:vi": "Bộ Ngoại giao và Hợp tác Quốc tế",
+    "name:zh": "外交部",
+    "office": "government"
+  }
+},
+{
+  "type": "way",
+  "id": 206344300,
+  "center": {
+    "lat": 11.5691283,
+    "lon": 104.9241017
+  },
+  "tags": {
+    "barrier": "fence",
+    "government": "ministry",
+    "name": "ក្រសួងឧស្សាហកម្ម និងសិប្បកម្ម",
+    "name:en": "Ministry of Industry, Science, Technology & Innovation",
+    "office": "government"
+  }
+},
+{
+  "type": "way",
+  "id": 222809115,
+  "center": {
+    "lat": 11.5617432,
+    "lon": 104.9346486
+  },
+  "tags": {
+    "alt_name": "GINBEC",
+    "building": "yes",
+    "name": "អគ្គា​ ធិការ ​ដ្ឋាន ពុទ្ធិក សិក្សា ជាតិ នៃ ព្រះ រាឆាណ ចក្រកម្ពុជា",
+    "name:en": "General Inspectorate for National Buddhist Education of the Kingdom of Cambodia",
+    "office": "government",
+    "source": "Bing, Local knowledge"
+  }
+},
+{
+  "type": "way",
+  "id": 223937748,
+  "center": {
+    "lat": 11.5610612,
+    "lon": 104.9272471
+  },
+  "tags": {
+    "barrier": "fence",
+    "building": "no",
+    "government": "ministry",
+    "name": "ក្រសួងអប់រំ យុវជន និង កីឡា",
+    "name:en": "Ministry of Education, Youth & Sports",
+    "office": "government"
+  }
+},
+{
+  "type": "way",
+  "id": 223937896,
+  "center": {
+    "lat": 11.5392260,
+    "lon": 104.9133219
+  },
+  "tags": {
+    "amenity": "police",
+    "building": "yes",
+    "name:en": "Poste de la Police Tuol Tum Poung II"
+  }
+},
+{
+  "type": "way",
+  "id": 223939573,
+  "center": {
+    "lat": 11.5326329,
+    "lon": 104.9291828
+  },
+  "tags": {
+    "barrier": "fence",
+    "government": "ministry",
+    "layer": "-1",
+    "name": "ក្រសួងវប្បធម៌ និងវិចិត្រសិល្បៈ",
+    "name:en": "Ministry of Culture & Fine Arts",
+    "office": "government"
+  }
+},
+{
+  "type": "way",
+  "id": 223939574,
+  "center": {
+    "lat": 11.5317180,
+    "lon": 104.9289488
+  },
+  "tags": {
+    "amenity": "police",
+    "barrier": "fence",
+    "name": "អគ្គស្នងការដ្ឋាន​នគរបាលជាតិ",
+    "name:en": "National Police Headquarters",
+    "name:vi": "Tổng Nha Cảnh sát Quốc gia"
+  }
+},
+{
+  "type": "way",
+  "id": 237177644,
+  "center": {
+    "lat": 11.5411155,
+    "lon": 104.9263093
+  },
+  "tags": {
+    "architect": "Vann Molyvann",
+    "architect:wikidata": "Q379178",
+    "architect:wikipedia": "en:Vann Molyvann",
+    "building": "yes",
+    "government": "senate",
+    "historic": "building",
+    "name": "ព្រឹទ្ធសភា",
+    "name:en": "Senate",
+    "name:th": "พฤฒสภา",
+    "office": "government",
+    "old_name:1966-1971": "Chamkar Mon Palace",
+    "website": "https://senate.gov.kh/",
+    "wikipedia": "en:Senate (Cambodia)"
+  }
+},
+{
+  "type": "way",
+  "id": 253146032,
+  "center": {
+    "lat": 11.5339086,
+    "lon": 104.9455277
+  },
+  "tags": {
+    "amenity": "hospital",
+    "emergency": "yes",
+    "healthcare": "hospital",
+    "name": "Niroth Health Centre"
+  }
+},
+{
+  "type": "way",
+  "id": 254099716,
+  "center": {
+    "lat": 11.5623859,
+    "lon": 104.9344019
+  },
+  "tags": {
+    "barrier": "fence",
+    "building": "public",
+    "government": "ministry",
+    "layer": "1",
+    "name": "ក្រសួងធម្មការ និងសាសនា",
+    "name:en": "Ministry of Cult and Religion",
+    "name:vi": "Bộ Tín ngưỡng và Tôn giáo",
+    "office": "government"
+  }
+},
+{
+  "type": "way",
+  "id": 254102565,
+  "center": {
+    "lat": 11.5632613,
+    "lon": 104.9335388
+  },
+  "tags": {
+    "building": "yes",
+    "office": "government"
+  }
+},
+{
+  "type": "way",
+  "id": 254608236,
+  "center": {
+    "lat": 11.5758059,
+    "lon": 104.8989222
+  },
+  "tags": {
+    "amenity": "hospital",
+    "name": "វិទ្យាស្ថានជាតិ​សុខភាព​សាធារណៈ",
+    "name:en": "National Institute of Public Health"
+  }
+},
+{
+  "type": "way",
+  "id": 257728428,
+  "center": {
+    "lat": 11.5785823,
+    "lon": 104.9207126
+  },
+  "tags": {
+    "amenity": "hospital",
+    "healthcare": "hospital",
+    "name": "មន្ទីរពេទ្យ គន្ធបុប្ផា",
+    "name:en": "Kantha Bopha Children Hospital",
+    "name:km": "មន្ទីរពេទ្យ គន្ធបុប្ផា"
+  }
+},
+{
+  "type": "way",
+  "id": 257728591,
+  "center": {
+    "lat": 11.5614292,
+    "lon": 104.9308898
+  },
+  "tags": {
+    "amenity": "hospital",
+    "healthcare": "hospital",
+    "name": "មន្ទីរពេទ្យ គន្ធបុប្ផា",
+    "name:en": "Kantha Bopha Hospital"
+  }
+},
+{
+  "type": "way",
+  "id": 259153697,
+  "center": {
+    "lat": 11.5798626,
+    "lon": 104.9166654
+  },
+  "tags": {
+    "amenity": "clinic",
+    "emergency": "no",
+    "healthcare": "clinic",
+    "name": "Chea Sim Dialysis Center"
+  }
+},
+{
+  "type": "way",
+  "id": 265697831,
+  "center": {
+    "lat": 11.5354982,
+    "lon": 104.9606902
+  },
+  "tags": {
+    "amenity": "hospital",
+    "emergency": "yes",
+    "healthcare": "hospital",
+    "name": "មន្ទីរពេទ្យ ជោរែ ភ្នំពេញ",
+    "name:en": "Cho Ray Phnom Penh Hospital"
+  }
+},
+{
+  "type": "way",
+  "id": 295124083,
+  "center": {
+    "lat": 11.5806000,
+    "lon": 104.9157838
+  },
+  "tags": {
+    "addr:city": "Phnom Penh",
+    "addr:housenumber": "5",
+    "addr:street": "មហាវិថី ព្រះមុនីវង្ស (៩៣)",
+    "amenity": "hospital",
+    "emergency": "no",
+    "healthcare": "hospital",
+    "name": "Institut Pasteur du Cambodge",
+    "opening_hours": "Mo-Fr 07:00-17:00; Sa 07:00-11:30",
+    "phone": "+855 23 428 561",
+    "short_name": "IPC",
+    "website": "https://www.pasteur-kh.org/",
+    "wikidata": "Q30281766",
+    "wikipedia": "en:Institut Pasteur du Cambodge"
+  }
+},
+{
+  "type": "way",
+  "id": 311065716,
+  "center": {
+    "lat": 11.5608011,
+    "lon": 104.9314584
+  },
+  "tags": {
+    "amenity": "police",
+    "name": "Bodyguard Department",
+    "source": "Bing, Local knowledge"
+  }
+},
+{
+  "type": "way",
+  "id": 311350331,
+  "center": {
+    "lat": 11.5517403,
+    "lon": 104.9324098
+  },
+  "tags": {
+    "barrier": "fence",
+    "government": "ministry",
+    "name": "ក្រសួងទំនាក់ទំនង​ជាមួយ​រដ្ឋសភា-ព្រឹទ្ធសភា និងអធិការកិច្ច",
+    "name:en": "Ministry of National Assembly - Senate Relationship",
+    "office": "government"
+  }
+},
+{
+  "type": "way",
+  "id": 372792047,
+  "center": {
+    "lat": 11.5515489,
+    "lon": 104.9312724
+  },
+  "tags": {
+    "building": "yes",
+    "name": "National Election Committee (NEC)",
+    "office": "government"
+  }
+},
+{
+  "type": "way",
+  "id": 376278875,
+  "center": {
+    "lat": 11.5486613,
+    "lon": 104.9224691
+  },
+  "tags": {
+    "barrier": "fence",
+    "government": "ministry",
+    "name": "ក្រសួង​ផែនការ",
+    "name:en": "Ministry of Planning",
+    "office": "government"
+  }
+},
+{
+  "type": "way",
+  "id": 376360306,
+  "center": {
+    "lat": 11.5543699,
+    "lon": 104.9360276
+  },
+  "tags": {
+    "area": "yes",
+    "barrier": "fence",
+    "name": "រដ្ឋសភា",
+    "name:en": "National Assembly",
+    "name:vi": "Quốc Hội",
+    "name:zh": "国民议会",
+    "office": "government"
+  }
+},
+{
+  "type": "way",
+  "id": 389636151,
+  "center": {
+    "lat": 11.5549058,
+    "lon": 104.9388623
+  },
+  "tags": {
+    "building": "yes",
+    "government": "ministry",
+    "name": "ក្រសួង​បរិស្ថាន",
+    "name:en": "Ministry of Environment",
+    "office": "government"
+  }
+},
+{
+  "type": "way",
+  "id": 399828223,
+  "center": {
+    "lat": 11.5308335,
+    "lon": 104.9303884
+  },
+  "tags": {
+    "amenity": "hospital",
+    "emergency": "yes",
+    "name": "Policlinic Bayon"
+  }
+},
+{
+  "type": "way",
+  "id": 404340151,
+  "center": {
+    "lat": 11.5631535,
+    "lon": 104.9334712
+  },
+  "tags": {
+    "barrier": "fence",
+    "government": "ministry",
+    "name": "ក្រសួងយុត្ដិធម៌",
+    "name:en": "Ministry of Justice",
+    "name:vi": "Bộ Tư pháp",
+    "office": "government"
+  }
+},
+{
+  "type": "way",
+  "id": 404340605,
+  "center": {
+    "lat": 11.5619442,
+    "lon": 104.9344069
+  },
+  "tags": {
+    "alt_name": "SFDCM",
+    "building": "yes",
+    "name": "National Council for Solidarity Front for the Development of Cambodia Motherland",
+    "office": "government",
+    "source": "Bing, Local knowledge"
+  }
+},
+{
+  "type": "way",
+  "id": 404360044,
+  "center": {
+    "lat": 11.5678753,
+    "lon": 104.9244868
+  },
+  "tags": {
+    "barrier": "wall",
+    "building": "no",
+    "government": "ministry",
+    "name": "ក្រសួងធនធានទឹក និងឧតុនិយម",
+    "name:en": "Ministry of Water Resource & Meteorology",
+    "office": "government",
+    "source": "Bing, Local knowledge",
+    "wikidata": "Q52842797"
+  }
+},
+{
+  "type": "way",
+  "id": 449301941,
+  "center": {
+    "lat": 11.5666812,
+    "lon": 104.9245597
+  },
+  "tags": {
+    "barrier": "wall",
+    "email": "info@acu.gov.kh",
+    "name": "អង្គភាព​ប្រឆាំង​អំពើពុករលួយ",
+    "name:en": "Anti-Corruption Unit (ACU)",
+    "office": "government",
+    "website": "https://www.acu.gov.kh/"
+  }
+},
+{
+  "type": "way",
+  "id": 449492056,
+  "center": {
+    "lat": 11.5488300,
+    "lon": 104.9224886
+  },
+  "tags": {
+    "building": "yes",
+    "government": "statistics",
+    "name": "National Institute of Statistics",
+    "office": "government"
+  }
+},
+{
+  "type": "way",
+  "id": 533969818,
+  "center": {
+    "lat": 11.5602140,
+    "lon": 104.9230626
+  },
+  "tags": {
+    "building": "yes",
+    "name": "ក្រសួងវប្បធម៌ និង វិចិត្រសិល្បៈ - នាយកដ្ឋាន សៀវភៅ និង ការអាន",
+    "name:en": "Ministry of Culture and Fine Arts - Department of Books and Reading",
+    "name:es": "Ministerio de Cultura y Bellas Artes - Departamento de Libros y Lectura",
+    "name:ja": "文化芸術省 - 書籍と読書学科",
+    "name:ko": "문화 예술부 - 도서 및 독서학과",
+    "office": "government"
+  }
+},
+{
+  "type": "way",
+  "id": 538338287,
+  "center": {
+    "lat": 11.5634887,
+    "lon": 104.8983392
+  },
+  "tags": {
+    "amenity": "townhall",
+    "building": "yes",
+    "name": "សាលាសង្កាត់ទឹកល្អក់ទី២",
+    "name:en": "Teuk La'ak 2 Commune Hall"
+  }
+},
+{
+  "type": "way",
+  "id": 561746525,
+  "center": {
+    "lat": 11.5812076,
+    "lon": 104.9311356
+  },
+  "tags": {
+    "amenity": "hospital",
+    "healthcare": "hospital",
+    "name": "Sunrise Japan Hospital Phnom Penh",
+    "name:km": "មន្ទីរពេទ្យជប៉ុនសាន់រ៉ាយស៍",
+    "name:zh-Hans": "日升日本医院 金边",
+    "name:zh-Hant": "日升日本醫院 金邊",
+    "website": "https://www.sunrise-hs.com/"
+  }
+},
+{
+  "type": "way",
+  "id": 872874145,
+  "center": {
+    "lat": 11.5600026,
+    "lon": 104.9321978
+  },
+  "tags": {
+    "amenity": "townhall",
+    "building": "yes",
+    "name": "សាលាសង្កាត់ចតុមុខ",
+    "name:en": "Chaktomuk Sangkat Hall",
+    "townhall:type": "quarter"
+  }
+},
+{
+  "type": "way",
+  "id": 1042082473,
+  "center": {
+    "lat": 11.5599259,
+    "lon": 104.9347836
+  },
+  "tags": {
+    "amenity": "hospital",
+    "building": "yes",
+    "building:levels": "11",
+    "healthcare": "hospital",
+    "start_date": "2009"
+  }
+},
+{
+  "type": "way",
+  "id": 1136337207,
+  "center": {
+    "lat": 11.5203575,
+    "lon": 104.9477609
+  },
+  "tags": {
+    "amenity": "townhall",
+    "area": "yes",
+    "name": "សាលាសង្កាត់និរោធ",
+    "name:en": "Sangkat Niroth Commune Office"
+  }
+},
+{
+  "type": "way",
+  "id": 1157104784,
+  "center": {
+    "lat": 11.5683573,
+    "lon": 104.8968256
+  },
+  "tags": {
+    "addr:city": "Phnom Penh",
+    "addr:housenumber": "100",
+    "addr:postcode": "120401",
+    "addr:street": "មហាវិថី សហព័ន្ធរុស្ស៊ី",
+    "amenity": "hospital",
+    "emergency": "yes",
+    "healthcare": "hospital",
+    "healthcare:speciality": "paediatrics",
+    "name": "មន្ទីរពេទ្យកុមារជាតិ",
+    "name:en": "National Pediatric Hospital",
+    "operator:type": "public"
+  }
+},
+{
+  "type": "way",
+  "id": 1197251272,
+  "center": {
+    "lat": 11.5273858,
+    "lon": 104.9364506
+  },
+  "tags": {
+    "amenity": "clinic",
+    "building": "yes",
+    "healthcare": "clinic"
+  }
+},
+{
+  "type": "way",
+  "id": 1217956397,
+  "center": {
+    "lat": 11.5375396,
+    "lon": 104.9275836
+  },
+  "tags": {
+    "building": "yes",
+    "government": "ministry",
+    "name": "ក្រសួង​មហាផ្ទៃ",
+    "name:en": "Ministry of Interior",
+    "name:km": "ក្រសួង​មហាផ្ទៃ",
+    "name:th": "กระทรวงมหาดไทย",
+    "office": "government"
+  }
+},
+{
+  "type": "way",
+  "id": 1267352496,
+  "center": {
+    "lat": 11.5860325,
+    "lon": 104.9197072
+  },
+  "tags": {
+    "amenity": "police",
+    "building": "yes",
+    "name": "អង្គភាពការពារគោលដៅទី ៣",
+    "name:en": "Third Direction Protection Unit",
+    "source": "microsoft/BuildingFootprints"
+  }
+},
+{
+  "type": "way",
+  "id": 1308135988,
+  "center": {
+    "lat": 11.5875948,
+    "lon": 104.9247172
+  },
+  "tags": {
+    "amenity": "police",
+    "building": "yes",
+    "source": "microsoft/BuildingFootprints"
+  }
+},
+{
+  "type": "way",
+  "id": 1561435303,
+  "center": {
+    "lat": 11.5507728,
+    "lon": 104.9206625
+  },
+  "tags": {
+    "amenity": "clinic",
+    "building": "yes",
+    "name": "华夏医院"
+  }
+}
+
+  ]
+}
