@@ -137,7 +137,8 @@ def run_seed(conn: sqlite3.Connection, dataef_dir: Path, seed_dir: Path) -> dict
     for row in _rows(seed_dir / "demo_announcements.csv"):
         insert_announcement(
             conn, commune_code=row["commune_code"], source="seed", posted_by=None, text_kh=row["text_kh"],
-            photo_file_id=None, voice_file_id=None, event_date=row["event_date"],
+            photo_file_id=None, voice_file_id=None, photo_path=row["photo_path"] or None,
+            voice_path=row["voice_path"] or None, event_date=row["event_date"],
             expires_at=_moment(row["expires_at"]), created_at=_moment(row["created_at"]),
         )
     counts = {

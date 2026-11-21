@@ -36,6 +36,20 @@ The bot uses long polling, so it runs on a laptop with no public URL. Re-running
 3. The clerk opens the bot privately and taps **📝 ផ្សាយដំណឹង** (or `/announce`): send text → a picture → a voice note (each can be skipped) → preview → **✅ ផ្សាយ**. `/cancel` stops at any step; `/delete_last` removes the clerk's latest post from the group and the feed.
 4. **Guides:** residents tap **Menu → /help** in the bot for a step-by-step Khmer guide to every button. In the group, the clerk sends **`/guide`** to post and pin a short "how to start" message with the 📱 button. Guide wording lives under `guide` in `data/seed/bot_copy_kh.json`.
 
+## Demo news: text + picture + voice
+
+Every demo news item has a flyer and a Khmer voice note in `data/demo_media/<news>/`, listed in `data/seed/demo_announcements.csv` (`photo_path`, `voice_path`). The bot uploads each file the first time someone taps 📢 and reuses Telegram's copy after that.
+
+To make a new one (needs `pip install -e ".[media]"`, Chrome, internet):
+
+```powershell
+.venv\Scripts\python scripts/make_flyer.py data/demo_media/<news>/flyer.json        # flyer.png from a small JSON spec
+.venv\Scripts\python scripts/make_voice.py data/demo_media/<news>/speech_kh.txt data/demo_media/<news>/voice.ogg
+.venv\Scripts\python scripts/publish_news.py --text-file news.txt --photo flyer.png --voice voice.ogg   # post as the clerk
+```
+
+Write `speech_kh.txt` the way it should be *said* (numbers and times in words). The voice is Microsoft's free Khmer neural voice via edge-tts; the text is sent to Microsoft to make the audio.
+
 ## Tests
 
 ```powershell

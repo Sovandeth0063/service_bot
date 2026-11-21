@@ -24,7 +24,17 @@ def connect(db_path: Path) -> sqlite3.Connection:
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA foreign_keys = ON")
     conn.executescript(resources.files("sangkat_bot").joinpath("schema.sql").read_text(encoding="utf-8"))
+    _add_missing_columns(conn)
     return conn
+
+
+def _add_missing_columns(conn: sqlite3.Connection) -> None:
+    """Bring a database made by an older version up to date (CREATE TABLE IF NOT EXISTS won't)."""
+    have = {row["name"] for row in conn.execute("PRAGMA table_info(announcements)")}
+    for column in ("photo_path", "voice_path"):
+        if column not in have:
+            conn.execute(f"ALTER TABLE announcements ADD COLUMN {column} TEXT")
+    conn.commit()
 
 
 _COMMUNE_SELECT = """
@@ -129,6 +139,18 @@ def unposted_admin_announcement(conn: sqlite3.Connection, commune_code: str, tex
     ).fetchone()
 
 
+def cache_announcement_media(
+    conn: sqlite3.Connection, announcement_id: int, photo_file_id: str | None, voice_file_id: str | None
+) -> None:
+    """Remember Telegram's copy of an uploaded file, so later sends reuse it instead of uploading again."""
+    conn.execute(
+        "UPDATE announcements SET photo_file_id = COALESCE(photo_file_id, ?), voice_file_id = COALESCE(voice_file_id, ?)"
+        " WHERE id = ?",
+        (photo_file_id, voice_file_id, announcement_id),
+    )
+    conn.commit()
+
+
 def hide_seed_duplicates(conn: sqlite3.Connection, commune_code: str, text_kh: str) -> int:
     """Hide seeded copies of a news text once a clerk publishes it for real; returns rows hidden."""
     cursor = conn.execute(
@@ -151,12 +173,14 @@ def insert_announcement(
     event_date: str | None,
     expires_at: datetime | None,
     created_at: datetime,
+    photo_path: str | None = None,
+    voice_path: str | None = None,
 ) -> int:
     cursor = conn.execute(
         """INSERT INTO announcements
-           (commune_code, source, posted_by, text_kh, photo_file_id, voice_file_id,
+           (commune_code, source, posted_by, text_kh, photo_file_id, voice_file_id, photo_path, voice_path,
             event_date, expires_at, created_at)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
         (
             commune_code,
             source,
@@ -164,6 +188,8 @@ def insert_announcement(
             text_kh,
             photo_file_id,
             voice_file_id,
+            photo_path,
+            voice_path,
             event_date,
             utc_iso(expires_at) if expires_at else None,
             utc_iso(created_at),

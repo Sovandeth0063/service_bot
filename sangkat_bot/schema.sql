@@ -119,6 +119,8 @@ CREATE TABLE IF NOT EXISTS announcements (
     text_kh                TEXT,
     photo_file_id          TEXT,
     voice_file_id          TEXT,
+    photo_path             TEXT,  -- local file, uploaded on first send, then photo_file_id is cached
+    voice_path             TEXT,
     group_message_id       INTEGER,
     group_voice_message_id INTEGER,
     event_date             TEXT,

@@ -6,10 +6,11 @@ import logging
 import sqlite3
 import time
 from datetime import UTC, datetime
+from pathlib import Path
 
 from aiogram import Bot, F, Router
 from aiogram.filters import Command, CommandObject, CommandStart
-from aiogram.types import CallbackQuery, Message
+from aiogram.types import CallbackQuery, FSInputFile, Message
 
 from sangkat_bot.config import Settings
 from sangkat_bot.copy import Copy
@@ -18,6 +19,7 @@ from sangkat_bot.db import (
     emergency_numbers,
     get_service,
     get_user_commune,
+    cache_announcement_media,
     latest_announcements,
     list_active_communes,
     local_contacts,
@@ -29,7 +31,7 @@ from sangkat_bot.guide import resident_guide
 from sangkat_bot.handlers.common import active_codes, commune_or_none, copy_for
 from sangkat_bot.keyboards import commune_picker, resident_keyboard, services_menu
 from sangkat_bot.keywords import match_intent
-from sangkat_bot.posts import build_post, send_post
+from sangkat_bot.posts import build_post, send_post_detailed
 
 log = logging.getLogger(__name__)
 
@@ -45,6 +47,11 @@ def resolve_commune(payload: str | None, stored: str | None, active: set[str]) -
 
 def resolve_intent(text: str, copy: Copy, keywords: list[tuple[str, str]]) -> str | None:
     return copy.button_intent(text) or match_intent(text, keywords)
+
+
+def _local_file(path: str | None) -> FSInputFile | None:
+    """A news picture/voice stored on disk (paths are relative to the project folder)."""
+    return FSInputFile(path) if path and Path(path).is_file() else None
 
 
 def _keyboard(copy: Copy, user_id: int, settings: Settings):
@@ -124,8 +131,12 @@ async def answer_intent(
         if not rows:
             await message.answer(copy.t("no_announcements"), reply_markup=keyboard)
         for row in rows:
-            sends = build_post(copy.t("announcement_header"), row["text_kh"], row["photo_file_id"], row["voice_file_id"])
-            await send_post(bot, message.chat.id, sends, None)
+            photo = row["photo_file_id"] or _local_file(row["photo_path"])
+            voice = row["voice_file_id"] or _local_file(row["voice_path"])
+            sends = build_post(copy.t("announcement_header"), row["text_kh"], photo, voice)
+            posted = await send_post_detailed(bot, message.chat.id, sends, None)
+            if not row["photo_file_id"] or not row["voice_file_id"]:
+                cache_announcement_media(conn, row["id"], posted.photo_file_id, posted.voice_file_id)
     elif intent == "services":
         await message.answer(copy.t("services_header"), reply_markup=services_menu(public_services(conn, code)))
     elif intent == "location":

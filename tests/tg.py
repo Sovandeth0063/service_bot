@@ -9,7 +9,7 @@ from datetime import datetime
 from aiogram import Bot
 from aiogram.client.session.base import BaseSession
 from aiogram.methods import GetMe, SendLocation, SendMessage, SendPhoto, SendVoice, TelegramMethod
-from aiogram.types import CallbackQuery, Chat, Message, Update, User
+from aiogram.types import CallbackQuery, Chat, Message, PhotoSize, Update, User, Voice
 
 BOT_USER = User(id=999, is_bot=True, first_name="Sangkat", username="SangkatBot")
 _ids = itertools.count(1)
@@ -37,8 +37,14 @@ class RecordingSession(BaseSession):
             return BOT_USER
         if isinstance(method, (SendMessage, SendPhoto, SendVoice, SendLocation)):
             chat_type = "private" if int(method.chat_id) > 0 else "supergroup"
+            message_id = next(self._message_ids)
+            media = {}
+            if isinstance(method, SendPhoto):
+                media["photo"] = [PhotoSize(file_id=f"photo-{message_id}", file_unique_id=f"p{message_id}", width=1, height=1)]
+            if isinstance(method, SendVoice):
+                media["voice"] = Voice(file_id=f"voice-{message_id}", file_unique_id=f"v{message_id}", duration=1)
             return Message(
-                message_id=next(self._message_ids), date=datetime.now(), chat=Chat(id=method.chat_id, type=chat_type)
+                message_id=message_id, date=datetime.now(), chat=Chat(id=method.chat_id, type=chat_type), **media
             )
         return True
 

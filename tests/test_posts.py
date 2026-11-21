@@ -61,7 +61,7 @@ class FakeBot:
 
     def _msg(self, kind, **kwargs):
         self.calls.append((kind, kwargs))
-        return type("M", (), {"message_id": 100 + len(self.calls)})()
+        return type("M", (), {"message_id": 100 + len(self.calls), "photo": None, "voice": None})()
 
     async def send_message(self, chat_id, text, **kw):
         return self._msg("text", chat_id=chat_id, text=text, **kw)
