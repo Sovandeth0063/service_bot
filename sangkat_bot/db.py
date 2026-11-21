@@ -115,6 +115,11 @@ def set_group(conn: sqlite3.Connection, commune_code: str, group_id: int) -> Non
     conn.commit()
 
 
+def commune_for_group(conn: sqlite3.Connection, group_id: int) -> str | None:
+    row = conn.execute("SELECT commune_code FROM commune_configs WHERE telegram_group_id = ?", (group_id,)).fetchone()
+    return row["commune_code"] if row else None
+
+
 def insert_announcement(
     conn: sqlite3.Connection,
     *,

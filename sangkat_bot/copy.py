@@ -30,12 +30,19 @@ class Copy:
             template = template.replace("{" + name + "}", value)
         return template
 
-    def t(self, key: str) -> str:
-        """Look up a dotted key such as "admin.publish"."""
+    def _lookup(self, key: str) -> object:
         value: object = self._data
         for part in key.split("."):
             value = value[part]  # type: ignore[index]
-        return self._render(str(value))
+        return value
+
+    def t(self, key: str) -> str:
+        """Look up a dotted key such as "admin.publish"."""
+        return self._render(str(self._lookup(key)))
+
+    def lines(self, key: str) -> list[str]:
+        """Look up a list of strings, such as "guide.tips"."""
+        return [self._render(str(line)) for line in self._lookup(key)]  # type: ignore[union-attr]
 
     def button(self, intent: str) -> str:
         return self._render(self._data["buttons"][intent])

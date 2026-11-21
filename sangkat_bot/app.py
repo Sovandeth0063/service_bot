@@ -8,7 +8,15 @@ from aiogram import Bot, Dispatcher, Router
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from aiogram.fsm.storage.memory import SimpleEventIsolation
-from aiogram.types import CallbackQuery, ErrorEvent
+from aiogram.exceptions import TelegramAPIError
+from aiogram.types import (
+    BotCommand,
+    BotCommandScopeAllChatAdministrators,
+    BotCommandScopeAllPrivateChats,
+    BotCommandScopeChat,
+    CallbackQuery,
+    ErrorEvent,
+)
 
 from sangkat_bot.config import Settings, load_settings
 from sangkat_bot.copy import Copy, load_copy
@@ -33,6 +41,27 @@ async def on_error(event: ErrorEvent, copy_data: dict, bot: Bot) -> bool:
         except Exception:  # the reply itself failed (e.g. network); nothing more to do
             log.exception("event=error_reply_failed update=%s", update.update_id)
     return True
+
+
+RESIDENT_COMMANDS = ("start", "help")
+CLERK_COMMANDS = RESIDENT_COMMANDS + ("announce", "delete_last", "cancel")
+GROUP_ADMIN_COMMANDS = ("bind", "guide")
+
+
+async def setup_commands(bot: Bot, copy_data: dict, settings: Settings) -> None:
+    """Fill Telegram's Menu button, so nobody has to remember or type a command."""
+    labels = copy_data["commands"]
+
+    def menu(names: tuple[str, ...]) -> list[BotCommand]:
+        return [BotCommand(command=name, description=labels[name]) for name in names]
+
+    await bot.set_my_commands(menu(RESIDENT_COMMANDS), scope=BotCommandScopeAllPrivateChats())
+    await bot.set_my_commands(menu(GROUP_ADMIN_COMMANDS), scope=BotCommandScopeAllChatAdministrators())
+    for user_id in settings.admin_user_ids:
+        try:
+            await bot.set_my_commands(menu(CLERK_COMMANDS), scope=BotCommandScopeChat(chat_id=user_id))
+        except TelegramAPIError:  # the clerk hasn't pressed Start yet
+            log.warning("event=commands_skipped admin=%s", user_id)
 
 
 async def answer_leftover_tap(callback: CallbackQuery) -> None:
@@ -65,6 +94,10 @@ async def run() -> None:
     me = await bot.get_me()
     dp["bot_username"] = me.username
     log.info("event=start bot=@%s commune=%s demo_mode=%s", me.username, settings.demo_commune_code, settings.demo_mode)
+    try:
+        await setup_commands(bot, dp["copy_data"], settings)
+    except TelegramAPIError as error:  # a missing menu must never stop the bot
+        log.warning("event=commands_failed error=%s", type(error).__name__)
     try:
         await dp.start_polling(bot)
     finally:

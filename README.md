@@ -34,6 +34,7 @@ The bot uses long polling, so it runs on a laptop with no public URL. Re-running
 1. Add the bot to the commune group and **make it an admin first** (post + pin rights). Doing this can turn a small group into a "supergroup" with a new id, so bind afterwards. Then the clerk (as a normal admin, not "remain anonymous") sends **`/bind 120101`** (or `/bind@kh_svc_desk_x7_bot 120101`). The bot confirms, posts the welcome message with a **📱 សួរជំនួយការ** button, and pins it.
 2. The resident taps that button → the bot opens already set to Tonle Basak, with five big buttons.
 3. The clerk opens the bot privately and taps **📝 ផ្សាយដំណឹង** (or `/announce`): send text → a picture → a voice note (each can be skipped) → preview → **✅ ផ្សាយ**. `/cancel` stops at any step; `/delete_last` removes the clerk's latest post from the group and the feed.
+4. **Guides:** residents tap **Menu → /help** in the bot for a step-by-step Khmer guide to every button. In the group, the clerk sends **`/guide`** to post and pin a short "how to start" message with the 📱 button. Guide wording lives under `guide` in `data/seed/bot_copy_kh.json`.
 
 ## Tests
 

@@ -8,7 +8,7 @@ import time
 from datetime import UTC, datetime
 
 from aiogram import Bot, F, Router
-from aiogram.filters import CommandObject, CommandStart
+from aiogram.filters import Command, CommandObject, CommandStart
 from aiogram.types import CallbackQuery, Message
 
 from sangkat_bot.config import Settings
@@ -25,6 +25,7 @@ from sangkat_bot.db import (
     upsert_user,
 )
 from sangkat_bot.formatting import emergency_card, hall_card, health_card, service_card
+from sangkat_bot.guide import resident_guide
 from sangkat_bot.handlers.common import active_codes, commune_or_none, copy_for
 from sangkat_bot.keyboards import commune_picker, resident_keyboard, services_menu
 from sangkat_bot.keywords import match_intent
@@ -71,6 +72,18 @@ async def on_start(
         return
     upsert_user(conn, user_id, code)
     await _welcome(message, commune_or_none(conn, code), copy_data, settings, user_id)
+
+
+async def on_help(message: Message, conn: sqlite3.Connection, copy_data: dict, settings: Settings) -> None:
+    """The step-by-step guide; residents who haven't chosen a commune get the picker after it."""
+    code = resolve_commune(None, get_user_commune(conn, message.from_user.id), active_codes(conn))
+    commune = commune_or_none(conn, code) if code else None
+    copy = copy_for(copy_data, commune)
+    if commune is None:
+        await message.answer(resident_guide(copy))
+        await _send_picker(message, conn, copy_data)
+        return
+    await message.answer(resident_guide(copy), reply_markup=_keyboard(copy, message.from_user.id, settings))
 
 
 async def on_pick(callback: CallbackQuery, conn: sqlite3.Connection, copy_data: dict, settings: Settings) -> None:
@@ -161,6 +174,7 @@ def make_router() -> Router:
     router = Router(name="resident")
     router.message.filter(F.chat.type == "private")
     router.message.register(on_start, CommandStart())
+    router.message.register(on_help, Command("help"))
     router.callback_query.register(on_pick, F.data.startswith("pick:"))
     router.callback_query.register(on_service, F.data.startswith("svc:"))
     router.message.register(on_text, F.text)
