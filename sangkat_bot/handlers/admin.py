@@ -116,8 +116,12 @@ async def on_text_step(message: Message, state: FSMContext, conn: sqlite3.Connec
     await _ask_photo(message, state, copy)
 
 
-def _is_menu_button(message: Message, conn: sqlite3.Connection, settings: Settings, copy_data: dict) -> bool:
-    """True for a resident keyboard label, e.g. 🚨 tapped in the middle of posting."""
+async def _is_menu_button(message: Message, conn: sqlite3.Connection, settings: Settings, copy_data: dict) -> bool:
+    """True for a resident keyboard label, e.g. 🚨 tapped in the middle of posting.
+
+    Async on purpose: aiogram runs sync filters in a worker thread, and the SQLite
+    connection may only be used on the thread that opened it.
+    """
     return bool(message.text) and _context(conn, settings, copy_data)[1].button_intent(message.text) is not None
 
 
