@@ -2,6 +2,8 @@
 .env
 # local database (rebuilt by `python -m sangkat_bot.seed`)
 data/*.db
+# flyers and voice notes made by the AI writer (uploaded to Telegram once)
+data/generated/
 # python
 __pycache__/
 *.pyc

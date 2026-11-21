@@ -1,4 +1,8 @@
-"""Clerk side: post news (text → photo → voice → preview → publish) and /delete_last."""
+"""Clerk side: post news (text → photo → voice → preview → publish) and /delete_last.
+
+With the AI writer on (ANTHROPIC_API_KEY), step 1 takes messy notes and the bot makes the text,
+flyer and voice itself; the preview then offers ✏️ fix, which remakes all three with a correction.
+"""
 
 from __future__ import annotations
 
@@ -12,7 +16,7 @@ from aiogram.exceptions import TelegramAPIError, TelegramMigrateToChat
 from aiogram.filters import Command, StateFilter
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
-from aiogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup, Message
+from aiogram.types import CallbackQuery, FSInputFile, InlineKeyboardButton, InlineKeyboardMarkup, Message
 
 from sangkat_bot.config import Settings
 from sangkat_bot.copy import Copy, commune_type_kh
@@ -30,7 +34,8 @@ from sangkat_bot.db import (
 from sangkat_bot.handlers.common import copy_for
 from sangkat_bot.handlers.resident import answer_intent
 from sangkat_bot.keyboards import open_bot_button, resident_keyboard
-from sangkat_bot.posts import PartialSendError, build_post, send_post
+from sangkat_bot.news_ai import NewsMaker
+from sangkat_bot.posts import PartialSendError, build_post, send_post, send_post_detailed
 
 log = logging.getLogger(__name__)
 
@@ -40,6 +45,7 @@ class AnnounceForm(StatesGroup):
     photo = State()
     voice = State()
     preview = State()
+    fix = State()  # waiting for the clerk's correction to an AI draft
 
 
 def is_admin(user_id: int, settings: Settings) -> bool:
@@ -63,8 +69,8 @@ def _skip_markup(copy: Copy, step: str) -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(inline_keyboard=[[button]])
 
 
-def _confirm_markup(copy: Copy, communes: list[Row]) -> InlineKeyboardMarkup:
-    """One ✅ per sangkat, then ✅ all of them, then ❌ — the clerk picks who the post is for."""
+def _confirm_markup(copy: Copy, communes: list[Row], fix: bool = False) -> InlineKeyboardMarkup:
+    """One ✅ per sangkat, then ✅ all of them, (✏️ fix for AI drafts,) then ❌ — the clerk picks who the post is for."""
     rows = [
         [InlineKeyboardButton(text=copy.t("admin.publish_to").replace("{name}", c["commune_kh"]),
                               callback_data=f"ann:publish:{c['commune_code']}")]
@@ -73,6 +79,8 @@ def _confirm_markup(copy: Copy, communes: list[Row]) -> InlineKeyboardMarkup:
     if len(communes) > 1:
         label = copy.t("admin.publish_all").replace("{count}", str(len(communes)))
         rows.append([InlineKeyboardButton(text=label, callback_data="ann:publish:all")])
+    if fix:
+        rows.append([InlineKeyboardButton(text=copy.t("admin.fix"), callback_data="ann:fix")])
     rows.append([InlineKeyboardButton(text=copy.t("admin.cancel"), callback_data="ann:cancel")])
     return InlineKeyboardMarkup(inline_keyboard=rows)
 
@@ -106,17 +114,64 @@ async def _preview(
         await message.answer(copy.t("admin.need_something"), reply_markup=_skip_markup(copy, "text"))
         return
     await state.set_state(AnnounceForm.preview)
-    sends = build_post(copy.t("announcement_header"), data.get("text_kh"), data.get("photo_file_id"), data.get("voice_file_id"))
+    # AI-made files are uploaded here once; publishing then reuses Telegram's file ids.
+    photo = FSInputFile(data["photo_path"]) if data.get("photo_path") else data.get("photo_file_id")
+    voice = FSInputFile(data["voice_path"]) if data.get("voice_path") else data.get("voice_file_id")
+    sends = build_post(copy.t("announcement_header"), data.get("text_kh"), photo, voice)
     code = commune["commune_code"] if commune else ""
-    await send_post(bot, message.chat.id, sends, open_bot_button(copy, bot_username, code))
-    await message.answer(copy.t("admin.preview"), reply_markup=_confirm_markup(copy, list_active_communes(conn)))
+    posted = await send_post_detailed(bot, message.chat.id, sends, open_bot_button(copy, bot_username, code))
+    if data.get("photo_path") or data.get("voice_path"):
+        await state.update_data(
+            photo_file_id=posted.photo_file_id if data.get("photo_path") else data.get("photo_file_id"),
+            voice_file_id=posted.voice_file_id if data.get("voice_path") else data.get("voice_file_id"),
+            photo_path=None, voice_path=None,
+        )
+    from_ai = bool(data.get("ai_notes"))
+    await message.answer(
+        copy.t("admin.preview_ai" if from_ai else "admin.preview"),
+        reply_markup=_confirm_markup(copy, list_active_communes(conn), fix=from_ai),
+    )
 
 
-async def start_announce(message: Message, state: FSMContext, conn: sqlite3.Connection, settings: Settings, copy_data: dict) -> None:
+async def _make_and_preview(
+    message: Message, state: FSMContext, copy: Copy, commune: Row | None, bot: Bot, bot_username: str,
+    conn: sqlite3.Connection, news_maker: NewsMaker, notes: str, corrections: list[str],
+) -> None:
+    """Let the AI writer make text + flyer + voice from the notes, then preview. On failure: manual steps."""
+    data = await state.get_data()
+    own_photo = data.get("own_photo_file_id")
+    await message.answer(copy.t("admin.making"))
+    try:
+        made = await news_maker.make(notes, corrections, want_flyer=own_photo is None)
+    except Exception as error:  # Claude, the browser or the voice service: never leave the clerk stuck
+        log.warning("event=news_ai_failed error=%s", type(error).__name__)
+        if corrections:  # keep the draft they already have; this correction can be tried again
+            await state.set_state(AnnounceForm.preview)
+            markup = _confirm_markup(copy, list_active_communes(conn), fix=True)
+            await message.answer(copy.t("admin.ai_failed_fix"), reply_markup=markup)
+            return
+        await state.update_data(text_kh=notes, photo_file_id=own_photo, ai_notes=None)
+        await message.answer(copy.t("admin.ai_failed"))
+        await (_ask_voice if own_photo else _ask_photo)(message, state, copy)
+        return
+    await state.update_data(
+        ai_notes=notes, ai_corrections=corrections, text_kh=made.text_kh,
+        photo_file_id=own_photo, photo_path=str(made.photo_path) if made.photo_path else None,
+        voice_file_id=None, voice_path=str(made.voice_path),
+    )
+    log.info("event=news_ai_made corrections=%d own_photo=%s", len(corrections), own_photo is not None)
+    await _preview(message, state, copy, commune, bot, bot_username, conn)
+
+
+async def start_announce(
+    message: Message, state: FSMContext, conn: sqlite3.Connection, settings: Settings, copy_data: dict,
+    news_maker: NewsMaker | None = None,
+) -> None:
     _, copy = _context(conn, settings, copy_data)
     await state.clear()
     await state.set_state(AnnounceForm.text)
-    await message.answer(copy.t("admin.ask_content"), reply_markup=_skip_markup(copy, "text"))
+    ask = "admin.ask_content_ai" if news_maker else "admin.ask_content"
+    await message.answer(copy.t(ask), reply_markup=_skip_markup(copy, "text"))
 
 
 async def cancel(message: Message, state: FSMContext, conn: sqlite3.Connection, settings: Settings, copy_data: dict) -> None:
@@ -126,11 +181,17 @@ async def cancel(message: Message, state: FSMContext, conn: sqlite3.Connection, 
 
 
 async def on_text_step(
-    message: Message, state: FSMContext, conn: sqlite3.Connection, settings: Settings, copy_data: dict, bot: Bot, bot_username: str
+    message: Message, state: FSMContext, conn: sqlite3.Connection, settings: Settings, copy_data: dict, bot: Bot, bot_username: str,
+    news_maker: NewsMaker | None = None,
 ) -> None:
     """Step 1 asks for "text, picture or voice": accept whichever arrives and jump ahead."""
     commune, copy = _context(conn, settings, copy_data)
-    if message.text:
+    notes = message.text or (message.caption if message.photo else None)
+    if news_maker and notes:
+        if message.photo:  # their own picture stays; the AI writes the text and voice
+            await state.update_data(own_photo_file_id=message.photo[-1].file_id)
+        await _make_and_preview(message, state, copy, commune, bot, bot_username, conn, news_maker, notes, [])
+    elif message.text:
         await state.update_data(text_kh=message.text)
         await _ask_photo(message, state, copy)
     elif message.photo:
@@ -197,6 +258,26 @@ async def on_skip(
         await _ask_voice(callback.message, state, copy)
     elif current == AnnounceForm.voice.state:
         await _preview(callback.message, state, copy, commune, bot, bot_username, conn)
+
+
+async def on_fix_button(callback: CallbackQuery, state: FSMContext, conn: sqlite3.Connection, settings: Settings, copy_data: dict) -> None:
+    await callback.answer()
+    _, copy = _context(conn, settings, copy_data)
+    await state.set_state(AnnounceForm.fix)
+    await callback.message.answer(copy.t("admin.ask_fix"))
+
+
+async def on_fix_step(
+    message: Message, state: FSMContext, conn: sqlite3.Connection, settings: Settings, copy_data: dict, bot: Bot, bot_username: str,
+    news_maker: NewsMaker | None = None,
+) -> None:
+    commune, copy = _context(conn, settings, copy_data)
+    data = await state.get_data()
+    if not message.text or news_maker is None or not data.get("ai_notes"):
+        await message.answer(copy.t("admin.ask_fix"))
+        return
+    corrections = [*data.get("ai_corrections", []), message.text]
+    await _make_and_preview(message, state, copy, commune, bot, bot_username, conn, news_maker, data["ai_notes"], corrections)
 
 
 async def on_cancel_button(callback: CallbackQuery, state: FSMContext, conn: sqlite3.Connection, settings: Settings, copy_data: dict) -> None:
@@ -310,12 +391,16 @@ def make_router() -> Router:
     router.message.register(start_announce, Command("announce"))
     router.message.register(start_announce, lambda m, copy_data: m.text == copy_data["admin"]["announce_button"])
     router.message.register(
-        leave_flow_for_menu, StateFilter(AnnounceForm.text, AnnounceForm.photo, AnnounceForm.voice), _is_menu_button
+        leave_flow_for_menu,
+        StateFilter(AnnounceForm.text, AnnounceForm.photo, AnnounceForm.voice, AnnounceForm.fix),
+        _is_menu_button,
     )
     router.message.register(on_text_step, AnnounceForm.text)
     router.message.register(on_photo_step, AnnounceForm.photo)
     router.message.register(on_voice_step, AnnounceForm.voice)
+    router.message.register(on_fix_step, AnnounceForm.fix)
     router.callback_query.register(on_skip, F.data.startswith("ann:skip:"))
     router.callback_query.register(on_cancel_button, F.data == "ann:cancel")
+    router.callback_query.register(on_fix_button, F.data == "ann:fix", AnnounceForm.preview)
     router.callback_query.register(on_publish, F.data.startswith("ann:publish:"), AnnounceForm.preview)
     return router

@@ -31,14 +31,30 @@ Open the private chat with the bot and tap **📝 ផ្សាយដំណឹង
 
 > Don't see the 📝 button? Send **/start** first and pick your sangkat.
 
-### 2. Send the text
+### 2. Send the news, any way you like
+**If the AI helper is on** (the bot says *"…ខ្ញុំនឹងរៀបចំជា អត្ថបទ រូបភាព និងសំឡេង ឲ្យ"*):
+
+Just type or paste what you know. It can be messy, in any order, even mixed with English:
+*vaccine kids sat 5 dec 8am at sangkat hall bring health book*
+
+The bot replies **⏳ កំពុងរៀបចំ…**. About half a minute later it shows the finished post:
+**clean text + a flyer picture + a Khmer voice note**. Go to step 5.
+
+- Have your own picture? Send the photo and write the news in its caption. The bot keeps your
+  photo and makes only the text and voice.
+- The AI uses only what you wrote. If you leave out the time, there will be no time in the post.
+  It never guesses.
+
+**If the AI helper is off**, do it by hand: steps 2a to 2c.
+
+#### 2a. Text
 Type the news, for example:
 *ការចាក់វ៉ាក់សាំងកុមារ ថ្ងៃសៅរ៍ ទី៥ ខែធ្នូ ម៉ោង ៨:០០ ព្រឹក នៅសាលាសង្កាត់។*
 
-### 3. Send a picture
+#### 2b. Picture
 Send a photo or a flyer from your phone's gallery.
 
-### 4. Send a voice note
+#### 2c. Voice note
 Hold the 🎤 microphone button and read the news out loud.
 This helps people who can't read.
 
@@ -47,6 +63,7 @@ This helps people who can't read.
 
 ### 5. Check and publish
 The bot shows you a **preview**, exactly how the post will look.
+**Check the date, time and place carefully**, especially on AI-made posts.
 
 Then choose who it is for:
 
@@ -54,6 +71,7 @@ Then choose who it is for:
 | :--- | :--- |
 | **✅ ទន្លេបាសាក់** (or another sangkat name) | Posted for that one sangkat |
 | **✅ គ្រប់សង្កាត់ទាំង 5** | Posted for all five sangkats |
+| **✏️ កែ** (AI posts only) | Type what to change, e.g. *"the time is 7 PM, not 6"*. Text, picture and voice are all made again |
 | **❌ បោះបង់** | Cancelled, nothing is posted |
 
 ### 6. Done ✅
@@ -80,10 +98,12 @@ Then choose who it is for:
 - **📢 ដំណឹងថ្មី shows the 3 newest posts.** A new post pushes the oldest one out.
 - **Voice notes:** speak slowly and clearly, and say times in words ("ម៉ោងប្រាំបីព្រឹក").
 - **Pictures:** a simple flyer with big text works best for older residents.
-- **No flyer or voice?** The tech team can make them from your text:
-  - flyer: `scripts/make_flyer.py`
-  - Khmer voice: `scripts/make_voice.py`
-  Then you send them in steps 3 and 4.
+- **AI helper:** it is on when `ANTHROPIC_API_KEY` is set in `.env`, and it needs internet.
+  If it fails, the bot says so and continues by hand, keeping what you typed.
+  Your notes are sent to Anthropic (to write the post) and Microsoft (to make the voice).
+  That is fine for public news. Don't put private details in a post.
+- **No AI helper?** The tech team can make flyers and voices from your text:
+  `scripts/make_flyer.py` and `scripts/make_voice.py`.
 
 ---
 
@@ -92,8 +112,9 @@ Then choose who it is for:
 ```
 Private chat with the bot
   → 📝 ផ្សាយដំណឹង
-  → text → picture → 🎤 voice
-  → check the preview
+  → type the news (messy is fine)
+    (AI off: text → picture → 🎤 voice)
+  → check the preview (✏️ កែ to fix)
   → ✅ choose the sangkat (or all 5)
   → done!
 

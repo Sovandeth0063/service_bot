@@ -12,27 +12,12 @@ from __future__ import annotations
 
 import argparse
 import asyncio
-import subprocess
-import tempfile
+import sys
 from pathlib import Path
 
-import edge_tts
-import imageio_ffmpeg
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-VOICES = ("km-KH-SreymomNeural", "km-KH-PisethNeural")
-
-
-async def synthesize(text: str, mp3: Path, voice: str) -> None:
-    await edge_tts.Communicate(text, voice, rate="-10%").save(str(mp3))  # a little slower for older listeners
-
-
-def to_voice_note(mp3: Path, ogg: Path) -> None:
-    """Telegram shows a playable voice bubble only for OGG/Opus."""
-    subprocess.run(
-        [imageio_ffmpeg.get_ffmpeg_exe(), "-y", "-loglevel", "error", "-i", str(mp3),
-         "-ac", "1", "-c:a", "libopus", "-b:a", "32k", str(ogg)],
-        check=True,
-    )
+from sangkat_bot.media import VOICES, make_voice_note  # noqa: E402
 
 
 def main() -> None:
@@ -42,10 +27,7 @@ def main() -> None:
     parser.add_argument("--voice", choices=VOICES, default=VOICES[0])
     args = parser.parse_args()
     text = args.speech.read_text(encoding="utf-8").strip()
-    with tempfile.TemporaryDirectory() as tmp:
-        mp3 = Path(tmp) / "speech.mp3"
-        asyncio.run(synthesize(text, mp3, args.voice))
-        to_voice_note(mp3, args.out)
+    asyncio.run(make_voice_note(text, args.out, args.voice))
     print(f"wrote {args.out} ({args.out.stat().st_size // 1024} KB, voice {args.voice})")
 
 

@@ -1,6 +1,6 @@
 # SangkatConnect (ជំនួយការឃុំ-សង្កាត់) — demo bot
 
-A Telegram bot for one commune group. Older residents get emergency numbers, hospitals, the commune hall, document guides and the latest news in **one or two taps**, in Khmer, with no typing. Clerks post news as **text + picture + voice** from their phone; it goes to the commune group and into the bot's news button.
+A Telegram bot for one commune group. Older residents get emergency numbers, hospitals, the commune hall, document guides and the latest news in **one or two taps**, in Khmer, with no typing. Clerks post news as **text + picture + voice** from their phone (or type rough notes and let the AI helper make all three); it goes to the commune group and into the bot's news button.
 
 Demo commune: **Sangkat Tonle Basak (`120101`), Khan Chamkar Mon, Phnom Penh.**
 
@@ -35,8 +35,23 @@ The bot uses long polling, so it runs on a laptop with no public URL. Re-running
 
 1. Add the bot to the commune group and **make it an admin first** (post + pin rights). Doing this can turn a small group into a "supergroup" with a new id, so bind afterwards. Then the clerk (as a normal admin, not "remain anonymous") sends **`/bind 120101`** (or `/bind@kh_svc_desk_x7_bot 120101`). The bot confirms, posts the welcome message with a **📱 សួរជំនួយការ** button, and pins it.
 2. The resident taps that button → the bot opens already set to Tonle Basak, with five big buttons.
-3. The clerk opens the bot privately and taps **📝 ផ្សាយដំណឹង** (or `/announce`): send text → a picture → a voice note (each can be skipped) → preview → tap **✅ the sangkat** it's for, or **✅ all sangkats**. Each sangkat gets its own copy (heading names that sangkat) in its 📢 feed and, if its group is linked with `/bind <code>`, in that group; the bot lists any groups not linked yet. `/cancel` stops at any step; `/delete_last` removes every copy of the clerk's latest post from the groups and the feeds.
+3. The clerk opens the bot privately and taps **📝 ផ្សាយដំណឹង** (or `/announce`). **With the AI helper on**, they just type the news, messy is fine; the bot makes clean text + a flyer + a Khmer voice note, and **✏️ កែ** under the preview remakes them with a correction (see below). Without it: send text → a picture → a voice note (each can be skipped). Then → preview → tap **✅ the sangkat** it's for, or **✅ all sangkats**. Each sangkat gets its own copy (heading names that sangkat) in its 📢 feed and, if its group is linked with `/bind <code>`, in that group; the bot lists any groups not linked yet. `/cancel` stops at any step; `/delete_last` removes every copy of the clerk's latest post from the groups and the feeds.
 4. **Guides:** residents tap **Menu → /help** in the bot for a step-by-step Khmer guide to every button. In the group, the clerk sends **`/guide`** to post and pin a short "how to start" message with the 📱 button. Guide wording lives under `guide` in `data/seed/bot_copy_kh.json`.
+
+## AI helper for clerks (optional)
+
+Put a Claude API key in `.env` as `ANTHROPIC_API_KEY=...`, install the extra once, and restart the bot:
+
+```powershell
+.venv\Scripts\python -m pip install -e ".[ai]"
+```
+
+The clerk's notes go to Claude (`claude-opus-5-5`), which returns JSON: the post text, a script to read aloud (numbers in words), and flyer fields. The bot then draws the flyer with Chrome (`sangkat_bot/media.py`, same template as below) and makes the voice with edge-tts. It costs about a cent per post and takes about half a minute.
+
+- Claude is told to use only facts in the notes and never guess. The preview asks the clerk to check date, time and place.
+- If anything fails (no internet, no Chrome, Claude down), the clerk is told and continues by hand with their notes kept.
+- No key: the bot posts by hand exactly as before.
+- Design: `docs/superpowers/specs/2026-11-21-ai-news-writer-design.md`.
 
 ## Demo news: text + picture + voice
 
@@ -69,6 +84,7 @@ Tests run fully offline: `tests/tg.py` is a fake Telegram that records what the 
 | `sangkat_bot/db.py`, `schema.sql` | Every SQL query (SQLite today; one file to change for PostgreSQL) |
 | `sangkat_bot/seed.py` | Loads all 1,661 DataEF communes + `data/seed/*.csv` |
 | `sangkat_bot/formatting.py`, `posts.py` | Card text; how a post becomes photo + caption + voice reply |
+| `sangkat_bot/news_ai.py`, `media.py` | AI helper: clerk notes → Claude JSON → flyer (Chrome) + voice (edge-tts) |
 | `sangkat_bot/keywords.py`, `khmer/` | Typed-Khmer matching with a normalizer copied from KAI_AI |
 | `data/seed/bot_copy_kh.json` | **All** Khmer text the bot shows — edit wording here |
 

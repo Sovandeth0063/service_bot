@@ -23,6 +23,7 @@ from sangkat_bot.copy import Copy, load_copy
 from sangkat_bot.db import connect
 from sangkat_bot.handlers import admin, group, resident
 from sangkat_bot.keywords import load_keywords
+from sangkat_bot.news_ai import make_news_maker
 
 log = logging.getLogger(__name__)
 
@@ -77,6 +78,7 @@ def build_dispatcher(settings: Settings) -> tuple[Bot, Dispatcher]:
     dp["conn"] = connect(settings.db_path)
     dp["copy_data"] = load_copy(settings.seed_dir / "bot_copy_kh.json")
     dp["keywords"] = load_keywords(settings.seed_dir / "keywords_kh.csv")
+    dp["news_maker"] = make_news_maker(settings)  # None: clerks post text/photo/voice by hand
     dp.errors.register(on_error)
     dp.include_router(group.make_router())
     dp.include_router(admin.make_router())

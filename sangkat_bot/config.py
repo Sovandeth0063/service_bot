@@ -21,6 +21,7 @@ class Settings:
     seed_dir: Path
     dataef_dir: Path
     demo_mode: bool
+    anthropic_api_key: str | None = None  # turns on the AI news writer
 
 
 def load_settings(env: Mapping[str, str] | None = None) -> Settings:
@@ -42,4 +43,5 @@ def load_settings(env: Mapping[str, str] | None = None) -> Settings:
         seed_dir=Path("data/seed"),
         dataef_dir=Path("data/raw/dataef"),
         demo_mode=env.get("DEMO_MODE", "true").strip().lower() not in _FALSE_VALUES,
+        anthropic_api_key=env.get("ANTHROPIC_API_KEY", "").strip() or None,
     )

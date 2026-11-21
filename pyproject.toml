@@ -14,7 +14,9 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest>=8", "pytest-asyncio>=0.24"]
-media = ["edge-tts>=7", "imageio-ffmpeg>=0.5"]  # scripts/make_voice.py only
+media = ["edge-tts>=7", "imageio-ffmpeg>=0.5"]  # voice notes (scripts/make_voice.py, AI writer)
+# AI news writer; jiter 0.19 is blocked by Windows App Control on the demo laptop
+ai = ["anthropic>=2", "jiter<0.19", "edge-tts>=7", "imageio-ffmpeg>=0.5"]
 
 [tool.setuptools.packages.find]
 include = ["sangkat_bot*"]
