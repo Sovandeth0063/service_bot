@@ -10,8 +10,9 @@ from pathlib import Path
 
 from aiogram import Bot, F, Router
 from aiogram.filters import Command, CommandObject, CommandStart
-from aiogram.types import CallbackQuery, FSInputFile, Message
+from aiogram.types import CallbackQuery, FSInputFile, InlineKeyboardMarkup, Message
 
+from sangkat_bot.clerks import role_of
 from sangkat_bot.config import Settings
 from sangkat_bot.copy import Copy
 from sangkat_bot.db import (
@@ -29,7 +30,7 @@ from sangkat_bot.db import (
 from sangkat_bot.formatting import emergency_card, hall_card, health_card, service_card
 from sangkat_bot.guide import resident_guide
 from sangkat_bot.handlers.common import active_codes, commune_or_none, copy_for
-from sangkat_bot.keyboards import commune_picker, resident_keyboard, services_menu
+from sangkat_bot.keyboards import commune_picker, map_row, resident_keyboard, services_menu
 from sangkat_bot.keywords import match_intent
 from sangkat_bot.posts import build_post, send_post_detailed
 
@@ -54,8 +55,8 @@ def _local_file(path: str | None) -> FSInputFile | None:
     return FSInputFile(path) if path and Path(path).is_file() else None
 
 
-def _keyboard(copy: Copy, user_id: int, settings: Settings):
-    return resident_keyboard(copy, is_admin=user_id in settings.admin_user_ids)
+def _keyboard(copy: Copy, user_id: int, settings: Settings, conn: sqlite3.Connection):
+    return resident_keyboard(copy, is_admin=role_of(conn, settings, user_id) is not None)
 
 
 async def _send_picker(message: Message, conn: sqlite3.Connection, copy_data: dict) -> None:
@@ -64,9 +65,11 @@ async def _send_picker(message: Message, conn: sqlite3.Connection, copy_data: di
     await message.answer(copy.t("pick_commune"), reply_markup=commune_picker(communes))
 
 
-async def _welcome(message: Message, commune: Row, copy_data: dict, settings: Settings, user_id: int) -> None:
+async def _welcome(
+    message: Message, commune: Row, copy_data: dict, settings: Settings, user_id: int, conn: sqlite3.Connection
+) -> None:
     copy = copy_for(copy_data, commune)
-    await message.answer(copy.t("welcome"), reply_markup=_keyboard(copy, user_id, settings))
+    await message.answer(copy.t("welcome"), reply_markup=_keyboard(copy, user_id, settings, conn))
 
 
 async def on_start(
@@ -78,7 +81,7 @@ async def on_start(
         await _send_picker(message, conn, copy_data)
         return
     upsert_user(conn, user_id, code)
-    await _welcome(message, commune_or_none(conn, code), copy_data, settings, user_id)
+    await _welcome(message, commune_or_none(conn, code), copy_data, settings, user_id, conn)
 
 
 async def on_help(message: Message, conn: sqlite3.Connection, copy_data: dict, settings: Settings) -> None:
@@ -90,7 +93,7 @@ async def on_help(message: Message, conn: sqlite3.Connection, copy_data: dict, s
         await message.answer(resident_guide(copy))
         await _send_picker(message, conn, copy_data)
         return
-    await message.answer(resident_guide(copy), reply_markup=_keyboard(copy, message.from_user.id, settings))
+    await message.answer(resident_guide(copy), reply_markup=_keyboard(copy, message.from_user.id, settings, conn))
 
 
 async def on_pick(callback: CallbackQuery, conn: sqlite3.Connection, copy_data: dict, settings: Settings) -> None:
@@ -100,7 +103,7 @@ async def on_pick(callback: CallbackQuery, conn: sqlite3.Connection, copy_data: 
         await _send_picker(callback.message, conn, copy_data)
         return
     upsert_user(conn, callback.from_user.id, code)
-    await _welcome(callback.message, commune_or_none(conn, code), copy_data, settings, callback.from_user.id)
+    await _welcome(callback.message, commune_or_none(conn, code), copy_data, settings, callback.from_user.id, conn)
 
 
 async def on_service(callback: CallbackQuery, conn: sqlite3.Connection, copy_data: dict) -> None:
@@ -116,7 +119,7 @@ async def answer_intent(
 ) -> None:
     """Send the card for one intent. Shared by buttons, typed keywords and (later) other routes."""
     code = commune["commune_code"]
-    keyboard = _keyboard(copy, message.from_user.id, settings)
+    keyboard = _keyboard(copy, message.from_user.id, settings, conn)
     if intent == "emergency":
         local = local_contacts(conn, code, ["police", "fire", "ambulance"]) + local_contacts(
             conn, code, ["hospital"], only_24h=True
@@ -134,7 +137,8 @@ async def answer_intent(
             photo = row["photo_file_id"] or _local_file(row["photo_path"])
             voice = row["voice_file_id"] or _local_file(row["voice_path"])
             sends = build_post(copy.t("announcement_header"), row["text_kh"], photo, voice)
-            posted = await send_post_detailed(bot, message.chat.id, sends, None)
+            markup = InlineKeyboardMarkup(inline_keyboard=map_row(copy, row["location_url"])) if row["location_url"] else None
+            posted = await send_post_detailed(bot, message.chat.id, sends, markup)
             if not row["photo_file_id"] or not row["voice_file_id"]:
                 cache_announcement_media(conn, row["id"], posted.photo_file_id, posted.voice_file_id)
     elif intent == "services":
@@ -177,7 +181,7 @@ async def on_other(message: Message, conn: sqlite3.Connection, copy_data: dict, 
         await _send_picker(message, conn, copy_data)
         return
     copy = copy_for(copy_data, commune_or_none(conn, code))
-    await message.answer(copy.t("non_text_fallback"), reply_markup=_keyboard(copy, message.from_user.id, settings))
+    await message.answer(copy.t("non_text_fallback"), reply_markup=_keyboard(copy, message.from_user.id, settings, conn))
 
 
 def make_router() -> Router:

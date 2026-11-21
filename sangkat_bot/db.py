@@ -31,7 +31,7 @@ def connect(db_path: Path) -> sqlite3.Connection:
 def _add_missing_columns(conn: sqlite3.Connection) -> None:
     """Bring a database made by an older version up to date (CREATE TABLE IF NOT EXISTS won't)."""
     have = {row["name"] for row in conn.execute("PRAGMA table_info(announcements)")}
-    for column in ("photo_path", "voice_path", "publish_id"):
+    for column in ("photo_path", "voice_path", "publish_id", "location_url"):
         if column not in have:
             conn.execute(f"ALTER TABLE announcements ADD COLUMN {column} TEXT")
     conn.commit()
@@ -176,12 +176,13 @@ def insert_announcement(
     photo_path: str | None = None,
     voice_path: str | None = None,
     publish_id: str | None = None,
+    location_url: str | None = None,
 ) -> int:
     cursor = conn.execute(
         """INSERT INTO announcements
            (commune_code, source, posted_by, text_kh, photo_file_id, voice_file_id, photo_path, voice_path,
-            publish_id, event_date, expires_at, created_at)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+            publish_id, location_url, event_date, expires_at, created_at)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
         (
             commune_code,
             source,
@@ -192,6 +193,7 @@ def insert_announcement(
             photo_path,
             voice_path,
             publish_id,
+            location_url,
             event_date,
             utc_iso(expires_at) if expires_at else None,
             utc_iso(created_at),
@@ -246,6 +248,68 @@ def last_admin_publish(conn: sqlite3.Connection, posted_by: int) -> list[Row]:
     return conn.execute(
         "SELECT * FROM announcements WHERE publish_id = ? AND is_deleted = 0 ORDER BY id", (latest["publish_id"],)
     ).fetchall()
+
+
+def clerk_for_user(conn: sqlite3.Connection, user_id: int) -> Row | None:
+    return conn.execute("SELECT * FROM clerks WHERE telegram_user_id = ?", (user_id,)).fetchone()
+
+
+def link_clerk(conn: sqlite3.Connection, user_id: int, username: str) -> Row | None:
+    """First contact: tie a waiting @username row to this account. Returns the row if newly linked.
+
+    An account that is already linked just has its stored username refreshed (they may have renamed).
+    """
+    linked = clerk_for_user(conn, user_id)
+    if linked is not None:
+        if linked["username"] != username and conn.execute(
+            "SELECT 1 FROM clerks WHERE username = ?", (username,)
+        ).fetchone() is None:
+            conn.execute("UPDATE clerks SET username = ? WHERE id = ?", (username, linked["id"]))
+            conn.commit()
+        return None
+    cursor = conn.execute(
+        "UPDATE clerks SET telegram_user_id = ? WHERE username = ? AND telegram_user_id IS NULL", (user_id, username)
+    )
+    conn.commit()
+    return clerk_for_user(conn, user_id) if cursor.rowcount else None
+
+
+def upsert_clerk(conn: sqlite3.Connection, username: str, commune_code: str, added_by: int) -> None:
+    """Add a clerk, or move an existing clerk to another sangkat (super rows are left alone)."""
+    conn.execute(
+        """INSERT INTO clerks (username, role, commune_code, added_by, added_at) VALUES (?, 'clerk', ?, ?, ?)
+           ON CONFLICT (username) DO UPDATE SET commune_code = excluded.commune_code WHERE role = 'clerk'""",
+        (username, commune_code, added_by, utc_iso(datetime.now(UTC))),
+    )
+    conn.commit()
+
+
+def get_clerk(conn: sqlite3.Connection, username: str) -> Row | None:
+    return conn.execute("SELECT * FROM clerks WHERE username = ?", (username,)).fetchone()
+
+
+def delete_clerk(conn: sqlite3.Connection, username: str) -> None:
+    conn.execute("DELETE FROM clerks WHERE username = ? AND role = 'clerk'", (username,))
+    conn.commit()
+
+
+def list_clerks(conn: sqlite3.Connection) -> list[Row]:
+    return conn.execute("SELECT * FROM clerks ORDER BY role DESC, commune_code, username").fetchall()
+
+
+def sync_super_usernames(conn: sqlite3.Connection, usernames: Sequence[str]) -> None:
+    """Make the 'super' rows match ADMIN_USERNAMES in .env (a clerk listed there is promoted)."""
+    wanted = set(usernames)
+    for row in conn.execute("SELECT username FROM clerks WHERE role = 'super'").fetchall():
+        if row["username"] not in wanted:
+            conn.execute("DELETE FROM clerks WHERE username = ?", (row["username"],))
+    for username in wanted:
+        conn.execute(
+            """INSERT INTO clerks (username, role, commune_code, added_at) VALUES (?, 'super', NULL, ?)
+               ON CONFLICT (username) DO UPDATE SET role = 'super', commune_code = NULL""",
+            (username, utc_iso(datetime.now(UTC))),
+        )
+    conn.commit()
 
 
 def mark_deleted(conn: sqlite3.Connection, ann_id: int) -> None:

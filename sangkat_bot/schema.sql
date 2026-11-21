@@ -122,6 +122,7 @@ CREATE TABLE IF NOT EXISTS announcements (
     photo_path             TEXT,  -- local file, uploaded on first send, then photo_file_id is cached
     voice_path             TEXT,
     publish_id             TEXT,  -- shared by the copies of one clerk post (one per sangkat)
+    location_url           TEXT,  -- 📍 map button under the post (that sangkat's hall, or the event's place)
     group_message_id       INTEGER,
     group_voice_message_id INTEGER,
     event_date             TEXT,
@@ -132,6 +133,20 @@ CREATE TABLE IF NOT EXISTS announcements (
 
 CREATE INDEX IF NOT EXISTS idx_announcements_feed
     ON announcements (commune_code, is_deleted, created_at);
+
+-- Who may post. Added by @username; telegram_user_id is filled the first time that username
+-- writes to the bot, and from then on the role belongs to that account (a renamed or recycled
+-- username can't take it). 'super' rows mirror ADMIN_USERNAMES in .env; commune_code is NULL there.
+-- No foreign key on commune_code: re-seeding reloads the communes table.
+CREATE TABLE IF NOT EXISTS clerks (
+    id               INTEGER PRIMARY KEY,
+    username         TEXT NOT NULL UNIQUE,
+    telegram_user_id INTEGER UNIQUE,
+    role             TEXT NOT NULL CHECK (role IN ('super', 'clerk')),
+    commune_code     TEXT,
+    added_by         INTEGER,
+    added_at         TEXT NOT NULL
+);
 
 CREATE TABLE IF NOT EXISTS audit_logs (
     id            INTEGER PRIMARY KEY,

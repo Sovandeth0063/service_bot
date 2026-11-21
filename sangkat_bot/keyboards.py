@@ -38,3 +38,13 @@ def services_menu(services: Sequence[Row]) -> InlineKeyboardMarkup:
 def open_bot_button(copy: Copy, bot_username: str, commune_code: str) -> InlineKeyboardMarkup:
     url = f"https://t.me/{bot_username}?start={commune_code}"
     return InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text=copy.t("open_bot_button"), url=url)]])
+
+
+def map_row(copy: Copy, location_url: str | None) -> list[list[InlineKeyboardButton]]:
+    return [[InlineKeyboardButton(text=copy.t("map_button"), url=location_url)]] if location_url else []
+
+
+def post_buttons(copy: Copy, bot_username: str, commune_code: str, location_url: str | None) -> InlineKeyboardMarkup:
+    """Under a group post: open the bot, then 📍 the place on a map (when the news has one)."""
+    rows = open_bot_button(copy, bot_username, commune_code).inline_keyboard + map_row(copy, location_url)
+    return InlineKeyboardMarkup(inline_keyboard=rows)

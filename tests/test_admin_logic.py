@@ -1,11 +1,5 @@
-from sangkat_bot.config import load_settings
 from sangkat_bot.db import get_commune, set_group
-from sangkat_bot.handlers.admin import is_admin, publish_target
-
-
-def test_is_admin():
-    s = load_settings({"BOT_TOKEN": "t", "ADMIN_USER_IDS": "7"})
-    assert is_admin(7, s) and not is_admin(8, s)
+from sangkat_bot.handlers.admin import publish_target
 
 
 def test_publish_target_unbound(conn):

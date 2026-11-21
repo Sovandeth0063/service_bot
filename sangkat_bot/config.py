@@ -22,6 +22,7 @@ class Settings:
     dataef_dir: Path
     demo_mode: bool
     anthropic_api_key: str | None = None  # turns on the AI news writer
+    admin_usernames: frozenset[str] = frozenset()  # super-admins by @username (lower-case, no @)
 
 
 def load_settings(env: Mapping[str, str] | None = None) -> Settings:
@@ -44,4 +45,7 @@ def load_settings(env: Mapping[str, str] | None = None) -> Settings:
         dataef_dir=Path("data/raw/dataef"),
         demo_mode=env.get("DEMO_MODE", "true").strip().lower() not in _FALSE_VALUES,
         anthropic_api_key=env.get("ANTHROPIC_API_KEY", "").strip() or None,
+        admin_usernames=frozenset(
+            part.strip().removeprefix("@").lower() for part in env.get("ADMIN_USERNAMES", "").split(",") if part.strip()
+        ),
     )

@@ -15,8 +15,9 @@ CLEAN = "📅 ចាប់ពីថ្ងៃទី១ ខែធ្នូ រថ�
 
 
 class FakeMaker:
-    def __init__(self, tmp_path, fail=False):
+    def __init__(self, tmp_path, fail=False, location=None, ask_kh=None):
         self.tmp_path, self.fail, self.calls = tmp_path, fail, []
+        self.location, self.ask_kh = location, ask_kh
 
     async def make(self, notes, corrections, want_flyer):
         self.calls.append((notes, list(corrections), want_flyer))
@@ -27,7 +28,7 @@ class FakeMaker:
         (folder / "flyer.png").write_bytes(b"png")
         (folder / "voice.ogg").write_bytes(b"ogg")
         text = CLEAN if not corrections else f"{CLEAN} ({corrections[-1]})"
-        return MadeNews(text, folder / "flyer.png" if want_flyer else None, folder / "voice.ogg")
+        return MadeNews(text, folder / "flyer.png" if want_flyer else None, folder / "voice.ogg", self.location, self.ask_kh)
 
 
 @pytest.fixture
@@ -141,3 +142,60 @@ async def test_without_a_key_the_manual_flow_is_unchanged(app, copy_tb):
     await feed(app, message_update(CLERK, text=NOTES))
     assert session.sent(SendMessage)[-1].text == copy_tb.t("admin.ask_photo")
     assert "ann:fix" not in str(session.sent(SendMessage)[-1].reply_markup)
+
+
+HALL_TB = "https://www.google.com/maps/search/?api=1&query=11.550436%2C104.931359"
+HALL_BT = "https://www.google.com/maps/search/?api=1&query=11.539254%2C104.921389"  # 120111
+
+
+def map_buttons(method):
+    rows = method.reply_markup.inline_keyboard if method.reply_markup else []
+    return [b.url for row in rows for b in row if b.url and "google.com/maps" in b.url or (b.url and "goo.gl" in b.url)]
+
+
+async def test_hall_event_gets_each_sangkats_own_map_button(ai_app, copy_tb, tmp_path):
+    dp, _, session = ai_app
+    dp["news_maker"] = FakeMaker(tmp_path, location="hall")
+    set_group(dp["conn"], "120101", GROUP)
+    await start(ai_app)
+    await feed(ai_app, message_update(CLERK, text=NOTES))
+    preview = session.sent(SendPhoto)[-1]
+    assert map_buttons(preview) == [HALL_TB]
+    assert [b.text for row in preview.reply_markup.inline_keyboard for b in row][-1] == copy_tb.t("map_button")
+
+    await feed(ai_app, callback_update(CLERK, "ann:publish:all"))
+    group_photo = [m for m in session.sent(SendPhoto) if m.chat_id == GROUP][-1]
+    assert map_buttons(group_photo) == [HALL_TB]
+    by_code = {r["commune_code"]: r["location_url"] for r in admin_rows(dp)}
+    assert by_code["120101"] == HALL_TB and by_code["120111"] == HALL_BT
+
+    resident = 4242
+    await feed(ai_app, message_update(resident, text="/start 120111"))
+    await feed(ai_app, message_update(resident, text=copy_tb.button("announcements")))
+    newest = [m for m in session.sent(SendPhoto) if m.chat_id == resident][-1]
+    assert map_buttons(newest) == [HALL_BT]
+
+
+async def test_pasted_map_link_is_used_as_is(ai_app, tmp_path):
+    dp, _, session = ai_app
+    dp["news_maker"] = FakeMaker(tmp_path, location="https://maps.app.goo.gl/AbC123")
+    await start(ai_app)
+    await feed(ai_app, message_update(CLERK, text=NOTES))
+    assert map_buttons(session.sent(SendPhoto)[-1]) == ["https://maps.app.goo.gl/AbC123"]
+
+
+async def test_missing_end_time_is_asked_in_the_preview(ai_app, copy_tb, tmp_path):
+    dp, _, session = ai_app
+    dp["news_maker"] = FakeMaker(tmp_path, ask_kh="ម៉ោងប៉ុន្មានចប់?")
+    await start(ai_app)
+    await feed(ai_app, message_update(CLERK, text=NOTES))
+    prompt = session.sent(SendMessage)[-1].text
+    assert prompt.startswith(copy_tb.t("admin.preview_ai")) and "❓ ម៉ោងប៉ុន្មានចប់?" in prompt
+    assert copy_tb.t("admin.ask_hint") in prompt
+
+
+async def test_no_location_means_no_map_button(ai_app):
+    _, _, session = ai_app
+    await start(ai_app)
+    await feed(ai_app, message_update(CLERK, text=NOTES))
+    assert map_buttons(session.sent(SendPhoto)[-1]) == []

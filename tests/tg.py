@@ -67,18 +67,18 @@ def make_bot() -> tuple[Bot, RecordingSession]:
     return Bot("123456:ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghi", session=session), session
 
 
-def user(user_id: int) -> User:
-    return User(id=user_id, is_bot=False, first_name=f"u{user_id}")
+def user(user_id: int, username: str | None = None) -> User:
+    return User(id=user_id, is_bot=False, first_name=f"u{user_id}", username=username)
 
 
-def message_update(user_id: int, chat_id: int | None = None, **fields) -> Update:
+def message_update(user_id: int, chat_id: int | None = None, username: str | None = None, **fields) -> Update:
     chat_id = user_id if chat_id is None else chat_id
     chat = Chat(id=chat_id, type="private" if chat_id > 0 else "supergroup")
-    msg = Message(message_id=next(_ids), date=datetime.now(), chat=chat, from_user=user(user_id), **fields)
+    msg = Message(message_id=next(_ids), date=datetime.now(), chat=chat, from_user=user(user_id, username), **fields)
     return Update(update_id=next(_ids), message=msg)
 
 
-def callback_update(user_id: int, data: str) -> Update:
+def callback_update(user_id: int, data: str, username: str | None = None) -> Update:
     msg = Message(message_id=next(_ids), date=datetime.now(), chat=Chat(id=user_id, type="private"))
-    cb = CallbackQuery(id=str(next(_ids)), from_user=user(user_id), chat_instance="c", data=data, message=msg)
+    cb = CallbackQuery(id=str(next(_ids)), from_user=user(user_id, username), chat_instance="c", data=data, message=msg)
     return Update(update_id=next(_ids), callback_query=cb)

@@ -11,6 +11,7 @@ import asyncio
 import json
 import logging
 import uuid
+from urllib.parse import quote_plus
 from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
 from pathlib import Path
@@ -35,12 +36,16 @@ Facts:
 - Use only facts that are in the notes or the corrections. Never invent or guess a date, time, \
 place, fee, phone number, name or requirement. If something is not given, leave it out.
 - Corrections come after the notes and override them.
+- Times: when the notes give a start and an end time, always write both as a range, \
+"start – end" (for example "៨:០០ – ១១:០០ ព្រឹក"), in the text, the speech and the flyer. If an event \
+or service has a start time but no end time, never invent the end time: leave it out and ask for it in ask_kh.
 - Do not name a specific sangkat or commune as the sender. The post header adds that, and one post \
 may go to several sangkats. Places that are part of the news (for example "at the sangkat hall") are fine.
 
 text_kh: the written post. Plain, polite, short sentences, most important facts first (what, when, \
 where, what to bring). At most 600 characters. Khmer digits are fine. No markdown or HTML. You may \
-start key lines with one emoji such as 📅 🕗 📍.
+start key lines with one emoji such as 📅 🕗 📍. Never put links in the text: the bot adds a map \
+button itself.
 
 speech_kh: what an announcer would read aloud, in Khmer, about 20 to 45 seconds long. Write every \
 number, date and time as Khmer words (for example "ម៉ោងប្រាំមួយល្ងាច", not "៦:០០"). Begin with \
@@ -53,6 +58,16 @@ flyer: a big, simple picture.
 - facts: 1 to 3 key facts, each with an emoji icon, a label of at most 10 characters and a value \
 of at most 14 characters.
 - note: one short line (at most 60 characters) such as what to bring, or "".
+
+Place (the bot turns this into a 📍 map button under the post):
+- at_sangkat_hall: true if it happens at the sangkat hall or sangkat office.
+- place_link: a map link (Google Maps, goo.gl) copied exactly from the notes, or "".
+- place_search: if it happens at another specific, named place (a pagoda, school, market, health \
+centre), a Google Maps search for it that includes "Phnom Penh", for example \
+"Wat Lanka, Phnom Penh"; otherwise "". Never guess a place that is not named.
+
+ask_kh: one short, polite Khmer question to the clerk about the most important missing fact, above \
+all a missing end time (for example "ម៉ោងប៉ុន្មានចប់?"), or "" when nothing important is missing.
 """
 
 _FACT = {
@@ -78,8 +93,12 @@ SCHEMA = {
             "required": ["icon", "title", "subtitle", "facts", "note"],
             "additionalProperties": False,
         },
+        "at_sangkat_hall": {"type": "boolean"},
+        "place_link": {"type": "string"},
+        "place_search": {"type": "string"},
+        "ask_kh": {"type": "string"},
     },
-    "required": ["text_kh", "speech_kh", "flyer"],
+    "required": ["text_kh", "speech_kh", "flyer", "at_sangkat_hall", "place_link", "place_search", "ask_kh"],
     "additionalProperties": False,
 }
 
@@ -93,6 +112,10 @@ class NewsDraft:
     text_kh: str
     speech_kh: str
     flyer: dict  # icon, title, subtitle | None, facts (≤3), note | None
+    at_hall: bool = False
+    place_link: str | None = None
+    place_search: str | None = None
+    ask_kh: str | None = None
 
 
 @dataclass(frozen=True)
@@ -100,6 +123,20 @@ class MadeNews:
     text_kh: str
     photo_path: Path | None  # None when the clerk sent their own photo
     voice_path: Path
+    location: str | None = None  # "hall" (each sangkat's own hall pin) or a map URL
+    ask_kh: str | None = None  # a question for the clerk, e.g. the missing end time
+
+
+def map_location(draft: NewsDraft) -> str | None:
+    """A pasted map link wins; then the sangkat hall; then a search for a named place."""
+    link = draft.place_link or ""
+    if link.startswith("https://") and any(host in link for host in ("google.", "goo.gl")):
+        return link
+    if draft.at_hall:
+        return "hall"
+    if draft.place_search:
+        return "https://www.google.com/maps/search/?api=1&query=" + quote_plus(draft.place_search)
+    return None
 
 
 def parse_draft(raw: str) -> NewsDraft:
@@ -117,11 +154,17 @@ def parse_draft(raw: str) -> NewsDraft:
             "facts": facts,
             "note": flyer["note"].strip() or None,
         }
+        extras = {
+            "at_hall": bool(data.get("at_sangkat_hall")),
+            "place_link": (data.get("place_link") or "").strip() or None,
+            "place_search": (data.get("place_search") or "").strip() or None,
+            "ask_kh": (data.get("ask_kh") or "").strip() or None,
+        }
     except (ValueError, KeyError, TypeError, AttributeError) as error:
         raise NewsAIError(f"unusable output: {type(error).__name__}") from error
     if not (text and speech and clean["title"]):
         raise NewsAIError("empty text, speech or title")
-    return NewsDraft(text, speech, clean)
+    return NewsDraft(text, speech, clean, **extras)
 
 
 def _user_message(notes: str, corrections: list[str]) -> str:
@@ -180,7 +223,7 @@ class NewsMaker:
         if want_flyer:
             jobs.append(asyncio.to_thread(self.render, flyer_spec(draft, self.demo_mode), photo))
         await asyncio.gather(*jobs)
-        return MadeNews(draft.text_kh, photo if want_flyer else None, voice)
+        return MadeNews(draft.text_kh, photo if want_flyer else None, voice, map_location(draft), draft.ask_kh)
 
 
 def make_news_maker(settings: Settings) -> NewsMaker | None:

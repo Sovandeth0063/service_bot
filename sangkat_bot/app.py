@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+import sqlite3
 
 from aiogram import Bot, Dispatcher, Router
 from aiogram.client.default import DefaultBotProperties
@@ -10,18 +11,18 @@ from aiogram.enums import ParseMode
 from aiogram.fsm.storage.memory import SimpleEventIsolation
 from aiogram.exceptions import TelegramAPIError
 from aiogram.types import (
-    BotCommand,
     BotCommandScopeAllChatAdministrators,
+    BotCommandScopeAllGroupChats,
     BotCommandScopeAllPrivateChats,
-    BotCommandScopeChat,
     CallbackQuery,
     ErrorEvent,
 )
 
 from sangkat_bot.config import Settings, load_settings
 from sangkat_bot.copy import Copy, load_copy
-from sangkat_bot.db import connect
-from sangkat_bot.handlers import admin, group, resident
+from sangkat_bot.clerks import RESIDENT_COMMANDS, link_on_first_contact, menu, set_poster_menu
+from sangkat_bot.db import connect, list_clerks, sync_super_usernames
+from sangkat_bot.handlers import admin, group, manage, resident
 from sangkat_bot.keywords import load_keywords
 from sangkat_bot.news_ai import make_news_maker
 
@@ -44,25 +45,20 @@ async def on_error(event: ErrorEvent, copy_data: dict, bot: Bot) -> bool:
     return True
 
 
-RESIDENT_COMMANDS = ("start", "help")
-CLERK_COMMANDS = RESIDENT_COMMANDS + ("announce", "delete_last", "cancel")
-GROUP_ADMIN_COMMANDS = ("bind", "guide")
+GROUP_COMMANDS = ("help",)  # any member: shows the open-bot button
+GROUP_ADMIN_COMMANDS = GROUP_COMMANDS + ("bind", "guide")
 
 
-async def setup_commands(bot: Bot, copy_data: dict, settings: Settings) -> None:
+async def setup_commands(bot: Bot, copy_data: dict, settings: Settings, conn: sqlite3.Connection | None = None) -> None:
     """Fill Telegram's Menu button, so nobody has to remember or type a command."""
-    labels = copy_data["commands"]
-
-    def menu(names: tuple[str, ...]) -> list[BotCommand]:
-        return [BotCommand(command=name, description=labels[name]) for name in names]
-
-    await bot.set_my_commands(menu(RESIDENT_COMMANDS), scope=BotCommandScopeAllPrivateChats())
-    await bot.set_my_commands(menu(GROUP_ADMIN_COMMANDS), scope=BotCommandScopeAllChatAdministrators())
+    await bot.set_my_commands(menu(copy_data, RESIDENT_COMMANDS), scope=BotCommandScopeAllPrivateChats())
+    await bot.set_my_commands(menu(copy_data, GROUP_COMMANDS), scope=BotCommandScopeAllGroupChats())
+    await bot.set_my_commands(menu(copy_data, GROUP_ADMIN_COMMANDS), scope=BotCommandScopeAllChatAdministrators())
     for user_id in settings.admin_user_ids:
-        try:
-            await bot.set_my_commands(menu(CLERK_COMMANDS), scope=BotCommandScopeChat(chat_id=user_id))
-        except TelegramAPIError:  # the clerk hasn't pressed Start yet
-            log.warning("event=commands_skipped admin=%s", user_id)
+        await set_poster_menu(bot, copy_data, user_id, is_super=True)
+    for row in list_clerks(conn) if conn is not None else []:
+        if row["telegram_user_id"] is not None and row["telegram_user_id"] not in settings.admin_user_ids:
+            await set_poster_menu(bot, copy_data, row["telegram_user_id"], is_super=row["role"] == "super")
 
 
 async def answer_leftover_tap(callback: CallbackQuery) -> None:
@@ -79,8 +75,11 @@ def build_dispatcher(settings: Settings) -> tuple[Bot, Dispatcher]:
     dp["copy_data"] = load_copy(settings.seed_dir / "bot_copy_kh.json")
     dp["keywords"] = load_keywords(settings.seed_dir / "keywords_kh.csv")
     dp["news_maker"] = make_news_maker(settings)  # None: clerks post text/photo/voice by hand
+    sync_super_usernames(dp["conn"], sorted(settings.admin_usernames))
+    dp.update.outer_middleware(link_on_first_contact)  # ties an added @username to its account
     dp.errors.register(on_error)
     dp.include_router(group.make_router())
+    dp.include_router(manage.make_router())  # super-admins: /addclerk /removeclerk /clerks
     dp.include_router(admin.make_router())
     dp.include_router(resident.make_router())  # resident last: it catches every remaining private message
     leftovers = Router(name="leftovers")
@@ -97,7 +96,7 @@ async def run() -> None:
     dp["bot_username"] = me.username
     log.info("event=start bot=@%s commune=%s demo_mode=%s", me.username, settings.demo_commune_code, settings.demo_mode)
     try:
-        await setup_commands(bot, dp["copy_data"], settings)
+        await setup_commands(bot, dp["copy_data"], settings, dp["conn"])
     except TelegramAPIError as error:  # a missing menu must never stop the bot
         log.warning("event=commands_failed error=%s", type(error).__name__)
     try:

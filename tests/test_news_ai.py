@@ -35,6 +35,10 @@ DRAFT = {
         ],
         "note": "",
     },
+    "at_sangkat_hall": False,
+    "place_link": "",
+    "place_search": "",
+    "ask_kh": "",
 }
 
 
@@ -130,3 +134,37 @@ async def test_maker_writes_flyer_and_voice_files(tmp_path):
 
     kept_photo = await maker.make("notes", [], want_flyer=False)
     assert kept_photo.photo_path is None and len(made_flyers) == 1
+
+
+def made_location(tmp_path, **fields):
+    async def speak(text, out):
+        out.write_bytes(b"ogg")
+
+    maker = NewsMaker(fake_client({**DRAFT, **fields}), tmp_path, demo_mode=True, render=lambda s, o: o.write_bytes(b"p"), speak=speak)
+    return maker
+
+
+@pytest.mark.parametrize("fields, expected", [
+    ({}, None),
+    ({"at_sangkat_hall": True}, "hall"),
+    ({"place_search": "Wat Tonle Bassac, Phnom Penh"}, "https://www.google.com/maps/search/?api=1&query=Wat+Tonle+Bassac%2C+Phnom+Penh"),
+    ({"at_sangkat_hall": True, "place_link": "https://maps.app.goo.gl/AbC123"}, "https://maps.app.goo.gl/AbC123"),
+    ({"place_link": "not a link", "place_search": ""}, None),
+])
+async def test_maker_picks_the_map_location(tmp_path, fields, expected):
+    made = await made_location(tmp_path, **fields).make("notes", [], want_flyer=False)
+    assert made.location == expected
+
+
+async def test_maker_passes_the_question_about_a_missing_end_time(tmp_path):
+    made = await made_location(tmp_path, ask_kh="  ម៉ោងប៉ុន្មានចប់?  ").make("notes", [], want_flyer=False)
+    assert made.ask_kh == "ម៉ោងប៉ុន្មានចប់?"
+    none = await made_location(tmp_path).make("notes", [], want_flyer=False)
+    assert none.ask_kh is None
+
+
+def test_prompt_asks_for_time_ranges_and_never_invents_an_end_time():
+    from sangkat_bot.news_ai import SCHEMA, SYSTEM_PROMPT
+
+    assert "end time" in SYSTEM_PROMPT and "ask_kh" in SYSTEM_PROMPT and "– " in SYSTEM_PROMPT
+    assert {"at_sangkat_hall", "place_link", "place_search", "ask_kh"} <= set(SCHEMA["required"])
