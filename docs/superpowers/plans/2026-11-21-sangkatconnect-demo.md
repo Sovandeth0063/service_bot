@@ -55,9 +55,9 @@
   def load_settings(env: Mapping[str, str] | None = None) -> Settings  # env=None → os.environ after load_dotenv()
   ```
 
-- [ ] **Step 1: Create `pyproject.toml`** — project `sangkat-bot`, `requires-python = ">=3.12"`, deps `aiogram>=3.33,<4`, `python-dotenv>=1.0`; optional `dev = ["pytest>=8", "pytest-asyncio>=0.24"]`; `[tool.pytest.ini_options] testpaths=["tests"]`, `asyncio_mode="auto"`; setuptools package-data `sangkat_bot = ["schema.sql", "khmer/resources/*.json"]`.
-- [ ] **Step 2: Create a venv and install** — `py -3 -m venv .venv && .venv\Scripts\python -m pip install -e ".[dev]"`. Expected: `Successfully installed aiogram-3.33...`.
-- [ ] **Step 3: Write `.env.example`**
+- [x] **Step 1: Create `pyproject.toml`** — project `sangkat-bot`, `requires-python = ">=3.12"`, deps `aiogram>=3.33,<4`, `python-dotenv>=1.0`; optional `dev = ["pytest>=8", "pytest-asyncio>=0.24"]`; `[tool.pytest.ini_options] testpaths=["tests"]`, `asyncio_mode="auto"`; setuptools package-data `sangkat_bot = ["schema.sql", "khmer/resources/*.json"]`.
+- [x] **Step 2: Create a venv and install** — `py -3 -m venv .venv && .venv\Scripts\python -m pip install -e ".[dev]"`. Expected: `Successfully installed aiogram-3.33...`.
+- [x] **Step 3: Write `.env.example`**
   ```
   BOT_TOKEN=123456:replace-me
   ADMIN_USER_IDS=111111111
@@ -65,7 +65,7 @@
   DB_PATH=data/sangkat.db
   DEMO_MODE=true
   ```
-- [ ] **Step 4: Write failing tests `tests/test_config.py`**
+- [x] **Step 4: Write failing tests `tests/test_config.py`**
   ```python
   def test_load_settings_parses_values():
       s = load_settings({"BOT_TOKEN": "t", "ADMIN_USER_IDS": "1, 22", "DEMO_MODE": "false"})
@@ -80,12 +80,12 @@
   def test_empty_admin_list_is_allowed():
       assert load_settings({"BOT_TOKEN": "t"}).admin_user_ids == frozenset()
   ```
-- [ ] **Step 5: Run** `.venv\Scripts\python -m pytest tests/test_config.py -v` → FAIL (import error).
-- [ ] **Step 6: Implement `load_settings`** in `sangkat_bot/config.py` (`DEMO_MODE` true unless value is `false`/`0`/`no`, case-insensitive).
-- [ ] **Step 7: Run** the tests → PASS.
-- [ ] **Step 8: Write `scripts/phone_check.py`** — sends one message to every `ADMIN_USER_IDS` user (they must have pressed Start on the bot) with these lines, each on its own line: `117`, `023 426 948`, `023426948`, `+855 23 426 948`, `012 786 693`.
+- [x] **Step 5: Run** `.venv\Scripts\python -m pytest tests/test_config.py -v` → FAIL (import error).
+- [x] **Step 6: Implement `load_settings`** in `sangkat_bot/config.py` (`DEMO_MODE` true unless value is `false`/`0`/`no`, case-insensitive).
+- [x] **Step 7: Run** the tests → PASS.
+- [x] **Step 8: Write `scripts/phone_check.py`** — sends one message to every `ADMIN_USER_IDS` user (they must have pressed Start on the bot) with these lines, each on its own line: `117`, `023 426 948`, `023426948`, `+855 23 426 948`, `012 786 693`.
 - [ ] **Step 9: Manual check (needs a real phone).** Run `.venv\Scripts\python scripts/phone_check.py`; on Android and iOS note which lines are tappable. Record the result in the spec §5.3 under "Phone display rules" (one line: winning format). If spaced local numbers work, keep data as-is; otherwise Task 4's `format_phone` converts to the winning format.
-- [ ] **Step 10: Commit** — `git add -A && git commit -m "chore: scaffold project, settings, phone-link check"`
+- [x] **Step 10: Commit** — `git add -A && git commit -m "chore: scaffold project, settings, phone-link check"`
 
 ---
 
@@ -106,8 +106,8 @@
   def match_intent(text: str, keywords: list[tuple[str, str]]) -> str | None
   ```
 
-- [ ] **Step 1: Copy (do not edit the source)** `E:\KAI_AI\shared\kai_khmer\{normalizer,constants,exceptions,resources}.py` and `resources\normalizer_rules.json` into `sangkat_bot/khmer/`. In the copies only, replace `kai_khmer` with `sangkat_bot.khmer` in imports and in `resources.py`'s default package name. Add to the top of each copied file: `# Vendored from KAI_AI shared/kai_khmer (same author), 2026-11-21. Do not edit here; re-copy instead.` Remove references to dictionary/model resources if they make import fail (only `NORMALIZER_RULES` is needed).
-- [ ] **Step 2: Write failing tests `tests/test_keywords.py`** (load `data/seed/keywords_kh.csv`)
+- [x] **Step 1: Copy (do not edit the source)** `E:\KAI_AI\shared\kai_khmer\{normalizer,constants,exceptions,resources}.py` and `resources\normalizer_rules.json` into `sangkat_bot/khmer/`. In the copies only, replace `kai_khmer` with `sangkat_bot.khmer` in imports and in `resources.py`'s default package name. Add to the top of each copied file: `# Vendored from KAI_AI shared/kai_khmer (same author), 2026-11-21. Do not edit here; re-copy instead.` Remove references to dictionary/model resources if they make import fail (only `NORMALIZER_RULES` is needed).
+- [x] **Step 2: Write failing tests `tests/test_keywords.py`** (load `data/seed/keywords_kh.csv`)
   ```python
   @pytest.mark.parametrize("text,intent", [
       ("ផ្ទះ\u200bខ្ញុំ\u200bឆេះ", "emergency"),
@@ -123,10 +123,10 @@
   @pytest.mark.parametrize("text", ["hello", "", "   ", "👍", "\u200b"])
   def test_blank_and_emoji_do_not_match(text, keywords): assert match_intent(text, keywords) is None
   ```
-- [ ] **Step 3: Run** `.venv\Scripts\python -m pytest tests/test_keywords.py -v` → FAIL.
-- [ ] **Step 4: Implement** `keywords.py`: keywords are normalized at load time with the same `normalize_text`; `match_intent` returns the intent of the first keyword (CSV order) that is a substring of the normalized text; empty normalized text → `None`.
-- [ ] **Step 5: Run** → PASS. If `"សាលាសង្កាត់បើកម៉ោងប៉ុន្មាន"` resolves to `announcements` or similar, fix keyword *order* in the CSV, not the code.
-- [ ] **Step 6: Commit** — `git commit -am "feat: vendor Khmer normalizer, add keyword intent matching"` (use `git add -A` first).
+- [x] **Step 3: Run** `.venv\Scripts\python -m pytest tests/test_keywords.py -v` → FAIL.
+- [x] **Step 4: Implement** `keywords.py`: keywords are normalized at load time with the same `normalize_text`; `match_intent` returns the intent of the first keyword (CSV order) that is a substring of the normalized text; empty normalized text → `None`.
+- [x] **Step 5: Run** → PASS. If `"សាលាសង្កាត់បើកម៉ោងប៉ុន្មាន"` resolves to `announcements` or similar, fix keyword *order* in the CSV, not the code.
+- [x] **Step 6: Commit** — `git commit -am "feat: vendor Khmer normalizer, add keyword intent matching"` (use `git add -A` first).
 
 ---
 
@@ -165,9 +165,9 @@
   # `python -m sangkat_bot.seed` → load_settings(), connect(), run_seed(), print counts
   ```
 
-- [ ] **Step 1: Write `schema.sql`** — tables from spec §5.2 (columns as listed there and in `data/seed/*.csv` headers). `communes.commune_type TEXT`, `announcements.source TEXT CHECK (source IN ('seed','admin'))`, `announcements.is_deleted INTEGER NOT NULL DEFAULT 0`. All `CREATE TABLE IF NOT EXISTS`.
-- [ ] **Step 2: Write `tests/conftest.py`** — fixture `conn(tmp_path)` → `connect(tmp_path/"t.db")` then `run_seed(conn, Path("data/raw/dataef"), Path("data/seed"))`.
-- [ ] **Step 3: Write failing tests `tests/test_seed_and_db.py`**
+- [x] **Step 1: Write `schema.sql`** — tables from spec §5.2 (columns as listed there and in `data/seed/*.csv` headers). `communes.commune_type TEXT`, `announcements.source TEXT CHECK (source IN ('seed','admin'))`, `announcements.is_deleted INTEGER NOT NULL DEFAULT 0`. All `CREATE TABLE IF NOT EXISTS`.
+- [x] **Step 2: Write `tests/conftest.py`** — fixture `conn(tmp_path)` → `connect(tmp_path/"t.db")` then `run_seed(conn, Path("data/raw/dataef"), Path("data/seed"))`.
+- [x] **Step 3: Write failing tests `tests/test_seed_and_db.py`**
   ```python
   def test_counts(conn):
       c = run_seed(conn, DATAEF, SEED)
@@ -214,11 +214,11 @@
       assert rid not in [r["id"] for r in latest_announcements(conn, "120101", NOW)]
   ```
   (`NOW = datetime(2026, 11, 21, 12, tzinfo=UTC)`; `DATAEF`, `SEED` are the repo paths.)
-- [ ] **Step 4: Run** `.venv\Scripts\python -m pytest tests/test_seed_and_db.py -v` → FAIL.
-- [ ] **Step 5: Implement `db.py`** with the signatures above (parameterised SQL only; `audit` stores `metadata` with `json.dumps(..., ensure_ascii=False)`).
-- [ ] **Step 6: Implement `run_seed`** — in one transaction: delete + reload `provinces`, `districts`, `communes` (from `provinces_2025.csv`, `districts_2025.csv`, `communes_2025.csv`; set `commune_type='sangkat'` where `province_code='12'`), `villages` (`seed/demo_villages.csv`), `emergency_numbers`, `local_contacts`, `public_services`; upsert `commune_configs` **keeping an existing `telegram_group_id`**; delete `announcements where source='seed'` and insert `demo_announcements.csv` (convert `expires_at`/`created_at` to UTC). Return counts with keys used in `test_counts`.
-- [ ] **Step 7: Run** → PASS. Then `.venv\Scripts\python -m sangkat_bot.seed` → prints the same counts and creates `data/sangkat.db`.
-- [ ] **Step 8: Commit** — `git add -A && git commit -m "feat: sqlite schema, queries and idempotent seed loader"`
+- [x] **Step 4: Run** `.venv\Scripts\python -m pytest tests/test_seed_and_db.py -v` → FAIL.
+- [x] **Step 5: Implement `db.py`** with the signatures above (parameterised SQL only; `audit` stores `metadata` with `json.dumps(..., ensure_ascii=False)`).
+- [x] **Step 6: Implement `run_seed`** — in one transaction: delete + reload `provinces`, `districts`, `communes` (from `provinces_2025.csv`, `districts_2025.csv`, `communes_2025.csv`; set `commune_type='sangkat'` where `province_code='12'`), `villages` (`seed/demo_villages.csv`), `emergency_numbers`, `local_contacts`, `public_services`; upsert `commune_configs` **keeping an existing `telegram_group_id`**; delete `announcements where source='seed'` and insert `demo_announcements.csv` (convert `expires_at`/`created_at` to UTC). Return counts with keys used in `test_counts`.
+- [x] **Step 7: Run** → PASS. Then `.venv\Scripts\python -m sangkat_bot.seed` → prints the same counts and creates `data/sangkat.db`.
+- [x] **Step 8: Commit** — `git add -A && git commit -m "feat: sqlite schema, queries and idempotent seed loader"`
 
 ---
 
@@ -249,8 +249,8 @@
   def service_card(service: Row, copy: Copy) -> str  # title, docs as "☐ item" lines (split on "|"), fee or fee_conditions_kh, where_kh, who_must_come_kh
   ```
 
-- [ ] **Step 1: Add copy keys** to `bot_copy_kh.json`: `"map_link": "🗺️ មើលផែនទី"`, `"hours_24h": "បើក 24 ម៉ោង"`, `"demo_footer": "⚠️ ទិន្នន័យសាកល្បង — សូមផ្ទៀងផ្ទាត់មុនប្រើពិតប្រាកដ"`, `"services_header": "📄 សូមជ្រើសរើសសេវា៖"`, `"docs_needed": "ឯកសារត្រូវយកមក៖"`, `"fee": "តម្លៃ៖"`, `"where": "កន្លែង៖"`, `"who": "អ្នកត្រូវមក៖"`, `"health_header": "🏥 មន្ទីរពេទ្យ និងមណ្ឌលសុខភាព"`, `"hall_header": "📍 សាលា{commune_type_kh}{commune_kh}"`, and under `admin`: `"skip": "⏭️ រំលង"`, `"ask_photo": "សូមផ្ញើរូបភាព (ឬចុច រំលង)។"`, `"ask_voice": "សូមផ្ញើសារជាសំឡេង (ឬចុច រំលង)។"`, `"need_something": "សូមផ្ញើយ៉ាងហោចណាស់ អត្ថបទ រូបភាព ឬសំឡេង មួយ។"`, `"wrong_type": "សូមផ្ញើតាមប្រភេទដែលបានស្នើ ឬចុច រំលង។"`, `"no_group": "⚠️ មិនទាន់ភ្ជាប់ក្រុមទេ។ សូមវាយ /bind {commune_code} នៅក្នុងក្រុម។"`, `"nothing_to_delete": "មិនមានដំណឹងដែលអាចលុបបានទេ។"`, `"bound": "✅ ក្រុមនេះបានភ្ជាប់ជាមួយ{commune_type_kh}{commune_kh}។"`, `"pin_failed": "⚠️ មិនអាចខ្ទាស់សារបានទេ — សូមផ្តល់សិទ្ធិ ខ្ទាស់សារ ដល់ជំនួយការ។"`. (`{commune_code}` is filled by the caller with `.format`.)
-- [ ] **Step 2: Write failing tests `tests/test_formatting.py`** (use the seeded `conn` fixture)
+- [x] **Step 1: Add copy keys** to `bot_copy_kh.json`: `"map_link": "🗺️ មើលផែនទី"`, `"hours_24h": "បើក 24 ម៉ោង"`, `"demo_footer": "⚠️ ទិន្នន័យសាកល្បង — សូមផ្ទៀងផ្ទាត់មុនប្រើពិតប្រាកដ"`, `"services_header": "📄 សូមជ្រើសរើសសេវា៖"`, `"docs_needed": "ឯកសារត្រូវយកមក៖"`, `"fee": "តម្លៃ៖"`, `"where": "កន្លែង៖"`, `"who": "អ្នកត្រូវមក៖"`, `"health_header": "🏥 មន្ទីរពេទ្យ និងមណ្ឌលសុខភាព"`, `"hall_header": "📍 សាលា{commune_type_kh}{commune_kh}"`, and under `admin`: `"skip": "⏭️ រំលង"`, `"ask_photo": "សូមផ្ញើរូបភាព (ឬចុច រំលង)។"`, `"ask_voice": "សូមផ្ញើសារជាសំឡេង (ឬចុច រំលង)។"`, `"need_something": "សូមផ្ញើយ៉ាងហោចណាស់ អត្ថបទ រូបភាព ឬសំឡេង មួយ។"`, `"wrong_type": "សូមផ្ញើតាមប្រភេទដែលបានស្នើ ឬចុច រំលង។"`, `"no_group": "⚠️ មិនទាន់ភ្ជាប់ក្រុមទេ។ សូមវាយ /bind {commune_code} នៅក្នុងក្រុម។"`, `"nothing_to_delete": "មិនមានដំណឹងដែលអាចលុបបានទេ។"`, `"bound": "✅ ក្រុមនេះបានភ្ជាប់ជាមួយ{commune_type_kh}{commune_kh}។"`, `"pin_failed": "⚠️ មិនអាចខ្ទាស់សារបានទេ — សូមផ្តល់សិទ្ធិ ខ្ទាស់សារ ដល់ជំនួយការ។"`. (`{commune_code}` is filled by the caller with `.format`.)
+- [x] **Step 2: Write failing tests `tests/test_formatting.py`** (use the seeded `conn` fixture)
   ```python
   def test_copy_fills_sangkat(copy_tb): assert copy_tb.button("location") == "📍 សាលាសង្កាត់"
   def test_copy_khum_default(): assert commune_type_kh(None) == "ឃុំ"
@@ -276,10 +276,10 @@
       assert card.count("☐") == 4 and "សាលាសង្កាត់" in card
   ```
   (`copy_tb` fixture: `Copy(load_copy(SEED/"bot_copy_kh.json"), "sangkat", "ទន្លេបាសាក់")`. `contact_block` must accept any mapping with those keys.)
-- [ ] **Step 3: Run** `.venv\Scripts\python -m pytest tests/test_formatting.py -v` → FAIL.
-- [ ] **Step 4: Implement `copy.py` and `formatting.py`.** Map link = `<a href="{url}">{t("map_link")}</a>` only when a URL exists. Blocks separated by a blank line; national numbers as `<b>{name_kh}</b>  {number}`.
-- [ ] **Step 5: Run** → PASS.
-- [ ] **Step 6: Commit** — `git add -A && git commit -m "feat: Khmer copy loader and message formatting"`
+- [x] **Step 3: Run** `.venv\Scripts\python -m pytest tests/test_formatting.py -v` → FAIL.
+- [x] **Step 4: Implement `copy.py` and `formatting.py`.** Map link = `<a href="{url}">{t("map_link")}</a>` only when a URL exists. Blocks separated by a blank line; national numbers as `<b>{name_kh}</b>  {number}`.
+- [x] **Step 5: Run** → PASS.
+- [x] **Step 6: Commit** — `git add -A && git commit -m "feat: Khmer copy loader and message formatting"`
 
 ---
 
@@ -305,7 +305,7 @@
       # returns (lead message_id, voice message_id or None); used for group publish, admin preview and the 📢 feed
   ```
 
-- [ ] **Step 1: Write failing tests `tests/test_posts.py`**
+- [x] **Step 1: Write failing tests `tests/test_posts.py`**
   ```python
   H = "📢 ដំណឹងពីសង្កាត់ទន្លេបាសាក់"
   def test_text_only(): assert build_post(H, "សួស្តី", None, None) == [Send("text", announcement_body(H, "សួស្តី"), None, True, False)]
@@ -322,10 +322,10 @@
       with pytest.raises(ValueError): build_post(H, None, None, None)
   def test_text_is_escaped(): assert "&lt;script&gt;" in build_post(H, "<script>", None, None)[0].text
   ```
-- [ ] **Step 2: Run** `.venv\Scripts\python -m pytest tests/test_posts.py -v` → FAIL.
-- [ ] **Step 3: Implement `build_post`** (blank/whitespace `text_kh` counts as no text; length check uses `len(announcement_body(...))`) and `send_post` (`send_message` / `send_photo(caption=…)` / `send_voice(reply_to_message_id=lead_id)`; `parse_mode="HTML"`; markup only on the lead).
-- [ ] **Step 4: Run** → PASS.
-- [ ] **Step 5: Commit** — `git add -A && git commit -m "feat: announcement post rendering (text + photo + voice)"`
+- [x] **Step 2: Run** `.venv\Scripts\python -m pytest tests/test_posts.py -v` → FAIL.
+- [x] **Step 3: Implement `build_post`** (blank/whitespace `text_kh` counts as no text; length check uses `len(announcement_body(...))`) and `send_post` (`send_message` / `send_photo(caption=…)` / `send_voice(reply_to_message_id=lead_id)`; `parse_mode="HTML"`; markup only on the lead).
+- [x] **Step 4: Run** → PASS.
+- [x] **Step 5: Commit** — `git add -A && git commit -m "feat: announcement post rendering (text + photo + voice)"`
 
 ---
 
@@ -353,7 +353,7 @@
       # opens DB, loads copy + keywords, puts conn/settings/copy_data/keywords into dp workflow data, includes routers (group, admin, resident — resident last)
   ```
 
-- [ ] **Step 1: Write failing tests `tests/test_resident_logic.py`**
+- [x] **Step 1: Write failing tests `tests/test_resident_logic.py`**
   ```python
   A = {"120101"}
   def test_payload_wins(): assert resolve_commune("120101", None, A) == "120101"
@@ -367,18 +367,18 @@
       assert [len(r) for r in kb.keyboard] == [1, 2, 2] and kb.is_persistent and kb.resize_keyboard
       assert len(resident_keyboard(copy_tb, is_admin=True).keyboard) == 4
   ```
-- [ ] **Step 2: Run** `.venv\Scripts\python -m pytest tests/test_resident_logic.py -v` → FAIL.
-- [ ] **Step 3: Implement `keyboards.py`, `resolve_commune`, `resolve_intent`** → run tests → PASS.
-- [ ] **Step 4: Implement resident handlers** (private chats only, `F.chat.type == "private"`):
+- [x] **Step 2: Run** `.venv\Scripts\python -m pytest tests/test_resident_logic.py -v` → FAIL.
+- [x] **Step 3: Implement `keyboards.py`, `resolve_commune`, `resolve_intent`** → run tests → PASS.
+- [x] **Step 4: Implement resident handlers** (private chats only, `F.chat.type == "private"`):
   * `CommandStart(deep_link=True)` and plain `/start` → `resolve_commune` → `upsert_user` + welcome + `resident_keyboard`, or `commune_picker`.
   * `pick:<code>` callback → bind + welcome.
   * Any text → if user has no commune → picker; else `resolve_intent` → `emergency` (national + local `["police","fire","ambulance","hospital"]`, `only_24h=True` for hospitals — query hospitals separately and concatenate), `health` (`["health_center","hospital"]`), `announcements` (`latest_announcements(now=datetime.now(UTC))` → `send_post` each with `open_bot_button`; none → `no_announcements`), `services` (`services_header` + `services_menu`), `location` (`hall_card` + `bot.send_location(lat, lon)` if both set), `None` → `fallback`.
   * `svc:<key>` callback → `service_card`.
   * Non-text messages (voice, sticker, photo…) → `non_text_fallback`.
   * Every reply re-attaches `resident_keyboard`.
-- [ ] **Step 5: Implement `app.py` + `__main__.py`** — `logging.basicConfig(level=INFO)`; `asyncio.run(dp.start_polling(bot))`; `DefaultBotProperties(parse_mode="HTML")`.
+- [x] **Step 5: Implement `app.py` + `__main__.py`** — `logging.basicConfig(level=INFO)`; `asyncio.run(dp.start_polling(bot))`; `DefaultBotProperties(parse_mode="HTML")`.
 - [ ] **Step 6: Manual check** — `.venv\Scripts\python -m sangkat_bot.seed` then `.venv\Scripts\python -m sangkat_bot`. On the resident phone open `https://t.me/<bot>?start=120101`: welcome in Khmer + 5 buttons; each button answers; typing `ភ្លើង` gives the emergency card; a sticker gives the non-text fallback; `/start` with no payload from a fresh account shows the picker. Note any Khmer wording problems in `docs/superpowers/plans/NOTES.md`.
-- [ ] **Step 7: Commit** — `git add -A && git commit -m "feat: resident menu, picker, keyword fallback"`
+- [x] **Step 7: Commit** — `git add -A && git commit -m "feat: resident menu, picker, keyword fallback"`
 
 ---
 
@@ -398,15 +398,15 @@
   ```
   Callback data: `ann:skip`, `ann:publish`, `ann:cancel`. FSM data keys: `text_kh`, `photo_file_id`, `voice_file_id`.
 
-- [ ] **Step 1: Write failing tests `tests/test_admin_logic.py`**
+- [x] **Step 1: Write failing tests `tests/test_admin_logic.py`**
   ```python
   def test_is_admin(): s = load_settings({"BOT_TOKEN": "t", "ADMIN_USER_IDS": "7"}); assert is_admin(7, s) and not is_admin(8, s)
   def test_publish_target_unbound(conn): assert publish_target(get_commune(conn, "120101")) is None
   def test_publish_target_bound(conn): set_group(conn, "120101", -100500); assert publish_target(get_commune(conn, "120101")) == -100500
   def test_publish_target_missing(): assert publish_target(None) is None
   ```
-- [ ] **Step 2: Run** `.venv\Scripts\python -m pytest tests/test_admin_logic.py -v` → FAIL → implement `is_admin`, `publish_target` → PASS.
-- [ ] **Step 3: Implement the FSM** (private chat, admins only; non-admins tapping the label get the normal resident fallback):
+- [x] **Step 2: Run** `.venv\Scripts\python -m pytest tests/test_admin_logic.py -v` → FAIL → implement `is_admin`, `publish_target` → PASS.
+- [x] **Step 3: Implement the FSM** (private chat, admins only; non-admins tapping the label get the normal resident fallback):
   * Trigger: text == `t("admin.announce_button")` or `/announce` → state `text`, send `admin.ask_content` with inline `[⏭️ រំលង]` (`ann:skip`).
   * `text` state: text message → store; skip → none. Then state `photo` + `admin.ask_photo`.
   * `photo` state: photo → store largest size `file_id`; skip; anything else → `admin.wrong_type` (stay). Then state `voice` + `admin.ask_voice`.
@@ -415,7 +415,7 @@
   * `ann:cancel` or `/cancel` in any state → clear + `admin.cancelled`.
   * `/delete_last` → `last_admin_announcement`; none → `nothing_to_delete`; else delete both group messages (ignore "message not found" errors), `mark_deleted`, `audit("delete")`, `admin.deleted`.
 - [ ] **Step 4: Manual check (needs the group from Task 8 — do Task 8 first if `/bind` isn't done):** as clerk, post text + flyer + voice → preview in private chat → ✅ → group shows photo with caption and 📱 button, voice as a reply underneath. Resident taps 📢 → sees the same post. Then `/delete_last` → both messages gone from group and feed. Also try: sticker at the photo step (re-prompt), skip everything (need-something), publish before `/bind` (no_group).
-- [ ] **Step 5: Commit** — `git add -A && git commit -m "feat: clerk news flow with text, photo, voice, preview, delete"`
+- [x] **Step 5: Commit** — `git add -A && git commit -m "feat: clerk news flow with text, photo, voice, preview, delete"`
 
 ---
 
@@ -432,16 +432,16 @@
   router: Router
   ```
 
-- [ ] **Step 1: Write failing tests `tests/test_group_logic.py`**
+- [x] **Step 1: Write failing tests `tests/test_group_logic.py`**
   ```python
   def test_parse_bind_valid(): assert parse_bind_args(" 120101 ", {"120101"}) == "120101"
   @pytest.mark.parametrize("a", [None, "", "999999", "12010"])
   def test_parse_bind_invalid(a): assert parse_bind_args(a, {"120101"}) is None
   ```
-- [ ] **Step 2: Run** → FAIL → implement → PASS.
-- [ ] **Step 3: Implement `/bind <code>`** in groups/supergroups (`F.chat.type.in_({"group","supergroup"})`), admins only (others: ignore silently): `set_group`, `audit("bind")`, reply `admin.bound`, send onboarding message (`welcome` + `open_bot_button`) and try `pin_chat_message`; on failure reply `admin.pin_failed`. Ignore all other group messages (no handler).
+- [x] **Step 2: Run** → FAIL → implement → PASS.
+- [x] **Step 3: Implement `/bind <code>`** in groups/supergroups (`F.chat.type.in_({"group","supergroup"})`), admins only (others: ignore silently): `set_group`, `audit("bind")`, reply `admin.bound`, send onboarding message (`welcome` + `open_bot_button`) and try `pin_chat_message`; on failure reply `admin.pin_failed`. Ignore all other group messages (no handler).
 - [ ] **Step 4: Manual check** — add the bot to the test group as admin, send `/bind 120101` → confirmation + pinned onboarding message; tapping its button opens the bot already bound to Tonle Basak. If the group upgrades to a supergroup (id changes), `/bind` again.
-- [ ] **Step 5: Commit** — `git add -A && git commit -m "feat: /bind group to commune and pin onboarding link"`
+- [x] **Step 5: Commit** — `git add -A && git commit -m "feat: /bind group to commune and pin onboarding link"`
 
 ---
 
@@ -454,12 +454,12 @@
 **Interfaces:**
 - Consumes: everything above.
 
-- [ ] **Step 1: Add a global error handler** (`dp.errors.register`) that logs `event=error`, exception type and update id (no text), and, when the update has a private chat, replies with `fallback` + `resident_keyboard`. Add one INFO log per resident intent: `event=intent intent=<x> commune=<code> latency_ms=<n>`.
+- [x] **Step 1: Add a global error handler** (`dp.errors.register`) that logs `event=error`, exception type and update id (no text), and, when the update has a private chat, replies with `fallback` + `resident_keyboard`. Add one INFO log per resident intent: `event=intent intent=<x> commune=<code> latency_ms=<n>`.
 - [ ] **Step 2: Manual check** — temporarily rename `data/sangkat.db` while the bot runs and tap a button → bot replies with the fallback and keeps running; restore the file. Confirm logs show no Khmer user text.
-- [ ] **Step 3: Write `README.md`** — what it is (2 lines + link to spec), prerequisites (Python 3.14, bot token, test group, 2 accounts), setup (`venv`, `pip install -e ".[dev]"`, copy `.env.example` → `.env`, `python -m sangkat_bot.seed`, `python -m sangkat_bot`), `/bind`, how to get your user id (@userinfobot), tests (`python -m pytest`), data sources and verification status (link `data/README.md`), "Never modify E:\KAI_AI".
-- [ ] **Step 4: Write `docs/demo-runsheet.md`** — for the teammate recording the video: before-recording checklist (fresh seed, bot running, group bound, pinned message visible, flyer + voice file ready, phone font size large, Do-Not-Disturb on); shot list for the three story moments in spec §1 with the exact taps; the 30-second "under the hood" talking points (1,661 DataEF communes, source + verification status per contact, Khmer normalizer examples `ឣ→អ`, add-a-commune = add rows, `pytest` output on screen); known limits to *not* show (missing phones say "កំពុងផ្ទៀងផ្ទាត់").
+- [x] **Step 3: Write `README.md`** — what it is (2 lines + link to spec), prerequisites (Python 3.14, bot token, test group, 2 accounts), setup (`venv`, `pip install -e ".[dev]"`, copy `.env.example` → `.env`, `python -m sangkat_bot.seed`, `python -m sangkat_bot`), `/bind`, how to get your user id (@userinfobot), tests (`python -m pytest`), data sources and verification status (link `data/README.md`), "Never modify E:\KAI_AI".
+- [x] **Step 4: Write `docs/demo-runsheet.md`** — for the teammate recording the video: before-recording checklist (fresh seed, bot running, group bound, pinned message visible, flyer + voice file ready, phone font size large, Do-Not-Disturb on); shot list for the three story moments in spec §1 with the exact taps; the 30-second "under the hood" talking points (1,661 DataEF communes, source + verification status per contact, Khmer normalizer examples `ឣ→អ`, add-a-commune = add rows, `pytest` output on screen); known limits to *not* show (missing phones say "កំពុងផ្ទៀងផ្ទាត់").
 - [ ] **Step 5: Full verification** — `.venv\Scripts\python -m pytest -v` → all pass; run the whole run-sheet once end-to-end on real phones.
-- [ ] **Step 6: Commit** — `git add -A && git commit -m "docs: README and demo run-sheet; global error handler"`
+- [x] **Step 6: Commit** — `git add -A && git commit -m "docs: README and demo run-sheet; global error handler"`
 
 ---
 
