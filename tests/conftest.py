@@ -11,3 +11,14 @@ def keywords():
     from sangkat_bot.keywords import load_keywords
 
     return load_keywords(SEED / "keywords_kh.csv")
+
+
+@pytest.fixture
+def conn(tmp_path):
+    from sangkat_bot.db import connect
+    from sangkat_bot.seed import run_seed
+
+    connection = connect(tmp_path / "t.db")
+    run_seed(connection, DATAEF, SEED)
+    yield connection
+    connection.close()
