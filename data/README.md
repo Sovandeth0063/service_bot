@@ -86,6 +86,10 @@ Multi-value fields (`phone_numbers`, `required_docs_kh`) use ` | ` as the separa
 
 ---
 
+## Extra demo sangkats
+
+So the commune picker shows a real choice, the other four sangkats of Khan Chamkar Mon are active too: Tuol Tumpung 2 (120109), Tuol Tumpung 1 (120110), Boeng Trabaek (120111), Phsar Daeum Thkov (120112). Each gets its own administrative police post number (Open Development Cambodia, 2020, unverified, no location) plus copies of the Khan-level hospitals, fire brigades and Khan police with distances from its own centre point (DataEF boundary centroid). Hall details are placeholders. Tonle Basak (120101) stays the main demo commune with the news and flyers.
+
 ## Gaps to fill (in priority order)
 
 1. **Tonle Basak administrative police post** — now filled from a 2020 brochure (012 496 065): **test-call to verify**, and confirm opening hours.

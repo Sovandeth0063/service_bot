@@ -121,6 +121,7 @@ CREATE TABLE IF NOT EXISTS announcements (
     voice_file_id          TEXT,
     photo_path             TEXT,  -- local file, uploaded on first send, then photo_file_id is cached
     voice_path             TEXT,
+    publish_id             TEXT,  -- shared by the copies of one clerk post (one per sangkat)
     group_message_id       INTEGER,
     group_voice_message_id INTEGER,
     event_date             TEXT,

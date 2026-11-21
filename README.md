@@ -8,6 +8,8 @@ Demo commune: **Sangkat Tonle Basak (`120101`), Khan Chamkar Mon, Phnom Penh.**
 - Build plan (tick-box tasks): [`docs/superpowers/plans/2026-11-21-sangkatconnect-demo.md`](docs/superpowers/plans/2026-11-21-sangkatconnect-demo.md)
 - **Pending manual checks:** [`docs/superpowers/plans/NOTES.md`](docs/superpowers/plans/NOTES.md)
 - Filming the demo video: [`docs/demo-runsheet.md`](docs/demo-runsheet.md)
+- How clerks post news: [`docs/clerk-guide.md`](docs/clerk-guide.md)
+- How residents use the bot: [`docs/resident-guide.md`](docs/resident-guide.md)
 - Data sources & what is verified: [`data/README.md`](data/README.md)
 
 ## You need
@@ -33,7 +35,7 @@ The bot uses long polling, so it runs on a laptop with no public URL. Re-running
 
 1. Add the bot to the commune group and **make it an admin first** (post + pin rights). Doing this can turn a small group into a "supergroup" with a new id, so bind afterwards. Then the clerk (as a normal admin, not "remain anonymous") sends **`/bind 120101`** (or `/bind@kh_svc_desk_x7_bot 120101`). The bot confirms, posts the welcome message with a **📱 សួរជំនួយការ** button, and pins it.
 2. The resident taps that button → the bot opens already set to Tonle Basak, with five big buttons.
-3. The clerk opens the bot privately and taps **📝 ផ្សាយដំណឹង** (or `/announce`): send text → a picture → a voice note (each can be skipped) → preview → **✅ ផ្សាយ**. `/cancel` stops at any step; `/delete_last` removes the clerk's latest post from the group and the feed.
+3. The clerk opens the bot privately and taps **📝 ផ្សាយដំណឹង** (or `/announce`): send text → a picture → a voice note (each can be skipped) → preview → tap **✅ the sangkat** it's for, or **✅ all sangkats**. Each sangkat gets its own copy (heading names that sangkat) in its 📢 feed and, if its group is linked with `/bind <code>`, in that group; the bot lists any groups not linked yet. `/cancel` stops at any step; `/delete_last` removes every copy of the clerk's latest post from the groups and the feeds.
 4. **Guides:** residents tap **Menu → /help** in the bot for a step-by-step Khmer guide to every button. In the group, the clerk sends **`/guide`** to post and pin a short "how to start" message with the 📱 button. Guide wording lives under `guide` in `data/seed/bot_copy_kh.json`.
 
 ## Demo news: text + picture + voice

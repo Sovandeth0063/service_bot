@@ -46,7 +46,19 @@ async def test_plain_start_from_new_user_shows_picker(app):
     _, _, session = app
     await feed(app, message_update(RESIDENT, text="/start"))
     reply = session.sent(SendMessage)[-1]
-    assert reply.reply_markup.inline_keyboard[0][0].callback_data == "pick:120101"
+    assert [row[0].callback_data for row in reply.reply_markup.inline_keyboard] == [
+        "pick:120101", "pick:120109", "pick:120110", "pick:120111", "pick:120112"
+    ]
+
+
+async def test_picking_another_sangkat_gives_its_own_police_post(app, copy_tb):
+    dp, _, session = app
+    await feed(app, callback_update(RESIDENT, "pick:120111"))
+    assert get_user_commune(dp["conn"], RESIDENT) == "120111"
+    assert "សង្កាត់បឹងត្របែក" in session.sent(SendMessage)[-1].text
+    await feed(app, message_update(RESIDENT, text=copy_tb.button("emergency")))
+    card = session.sent(SendMessage)[-1].text
+    assert "078 803 525" in card and "012 496 065" not in card
 
 
 async def test_picker_callback_binds(app):

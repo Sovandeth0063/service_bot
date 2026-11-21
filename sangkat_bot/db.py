@@ -31,7 +31,7 @@ def connect(db_path: Path) -> sqlite3.Connection:
 def _add_missing_columns(conn: sqlite3.Connection) -> None:
     """Bring a database made by an older version up to date (CREATE TABLE IF NOT EXISTS won't)."""
     have = {row["name"] for row in conn.execute("PRAGMA table_info(announcements)")}
-    for column in ("photo_path", "voice_path"):
+    for column in ("photo_path", "voice_path", "publish_id"):
         if column not in have:
             conn.execute(f"ALTER TABLE announcements ADD COLUMN {column} TEXT")
     conn.commit()
@@ -175,12 +175,13 @@ def insert_announcement(
     created_at: datetime,
     photo_path: str | None = None,
     voice_path: str | None = None,
+    publish_id: str | None = None,
 ) -> int:
     cursor = conn.execute(
         """INSERT INTO announcements
            (commune_code, source, posted_by, text_kh, photo_file_id, voice_file_id, photo_path, voice_path,
-            event_date, expires_at, created_at)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+            publish_id, event_date, expires_at, created_at)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
         (
             commune_code,
             source,
@@ -190,6 +191,7 @@ def insert_announcement(
             voice_file_id,
             photo_path,
             voice_path,
+            publish_id,
             event_date,
             utc_iso(expires_at) if expires_at else None,
             utc_iso(created_at),
@@ -228,6 +230,22 @@ def last_admin_announcement(conn: sqlite3.Connection, commune_code: str, posted_
            ORDER BY created_at DESC, id DESC LIMIT 1""",
         (commune_code, posted_by),
     ).fetchone()
+
+
+def last_admin_publish(conn: sqlite3.Connection, posted_by: int) -> list[Row]:
+    """Every live copy of this clerk's latest post (one row per sangkat it was published for)."""
+    latest = conn.execute(
+        """SELECT * FROM announcements WHERE posted_by = ? AND source = 'admin' AND is_deleted = 0
+           ORDER BY created_at DESC, id DESC LIMIT 1""",
+        (posted_by,),
+    ).fetchone()
+    if latest is None:
+        return []
+    if latest["publish_id"] is None:
+        return [latest]
+    return conn.execute(
+        "SELECT * FROM announcements WHERE publish_id = ? AND is_deleted = 0 ORDER BY id", (latest["publish_id"],)
+    ).fetchall()
 
 
 def mark_deleted(conn: sqlite3.Connection, ann_id: int) -> None:

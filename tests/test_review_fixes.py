@@ -20,7 +20,7 @@ async def test_photo_with_caption_at_first_step(app, copy_tb):
     await feed(app, message_update(CLERK, photo=PHOTOS, caption="ដំណឹងរូបភាព"))
     assert session.sent(SendMessage)[-1].text == copy_tb.t("admin.ask_voice")
     await feed(app, callback_update(CLERK, "ann:skip:voice"))
-    await feed(app, callback_update(CLERK, "ann:publish"))
+    await feed(app, callback_update(CLERK, "ann:publish:120101"))
     (row,) = admin_rows(dp)
     assert row["text_kh"] == "ដំណឹងរូបភាព" and row["photo_file_id"] == "big"
 
@@ -39,8 +39,8 @@ async def test_double_tap_publish_posts_once_without_fallback(app, copy_tb):
     await compose_all_three(app)
     session.delay = 0.02
     await asyncio.gather(
-        dp.feed_update(bot, callback_update(CLERK, "ann:publish")),
-        dp.feed_update(bot, callback_update(CLERK, "ann:publish")),
+        dp.feed_update(bot, callback_update(CLERK, "ann:publish:120101")),
+        dp.feed_update(bot, callback_update(CLERK, "ann:publish:120101")),
     )
     assert len(admin_rows(dp)) == 1
     texts = [m.text for m in session.sent(SendMessage) if m.chat_id == CLERK]
@@ -71,9 +71,9 @@ async def test_late_publish_tap_is_answered(app):
     dp, _, session = app
     set_group(dp["conn"], "120101", GROUP)
     await compose_all_three(app)
-    await feed(app, callback_update(CLERK, "ann:publish"))
+    await feed(app, callback_update(CLERK, "ann:publish:120101"))
     answered = len([r for r in session.requests if isinstance(r, AnswerCallbackQuery)])
-    await feed(app, callback_update(CLERK, "ann:publish"))  # state already cleared
+    await feed(app, callback_update(CLERK, "ann:publish:120101"))  # state already cleared
     assert len([r for r in session.requests if isinstance(r, AnswerCallbackQuery)]) == answered + 1
     assert len(admin_rows(dp)) == 1
 
@@ -92,7 +92,7 @@ async def test_group_upgraded_to_supergroup_is_followed(app, copy_tb):
     session.fail_on[SendPhoto] = lambda m: (
         TelegramMigrateToChat(method=m, message="group upgraded", migrate_to_chat_id=-100555) if m.chat_id == -100 else None
     )
-    await feed(app, callback_update(CLERK, "ann:publish"))
+    await feed(app, callback_update(CLERK, "ann:publish:120101"))
     assert get_commune(dp["conn"], "120101")["telegram_group_id"] == -100555
     assert [m.chat_id for m in session.sent(SendPhoto)][-1] == -100555
     assert len(admin_rows(dp)) == 1 and session.sent(SendMessage)[-1].text == copy_tb.t("admin.published")
@@ -103,7 +103,7 @@ async def test_network_error_tells_clerk(app, copy_tb):
     set_group(dp["conn"], "120101", GROUP)
     await compose_all_three(app)
     session.fail_on[SendPhoto] = lambda m: TelegramNetworkError(method=m, message="timeout") if m.chat_id == GROUP else None
-    await feed(app, callback_update(CLERK, "ann:publish"))
+    await feed(app, callback_update(CLERK, "ann:publish:120101"))
     assert session.sent(SendMessage)[-1].text == copy_tb.t("admin.error_not_admin_in_group")
     assert admin_rows(dp) == []
 
@@ -113,7 +113,7 @@ async def test_voice_failure_after_lead_still_saves_for_delete(app, copy_tb):
     set_group(dp["conn"], "120101", GROUP)
     await compose_all_three(app)
     session.fail_on[SendVoice] = lambda m: TelegramNetworkError(method=m, message="timeout") if m.chat_id == GROUP else None
-    await feed(app, callback_update(CLERK, "ann:publish"))
+    await feed(app, callback_update(CLERK, "ann:publish:120101"))
     (row,) = admin_rows(dp)
     assert row["group_message_id"] is not None and row["group_voice_message_id"] is None
     assert session.sent(SendMessage)[-1].text == copy_tb.t("admin.voice_failed")

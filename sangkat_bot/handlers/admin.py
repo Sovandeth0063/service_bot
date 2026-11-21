@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import logging
 import sqlite3
+import uuid
 from datetime import UTC, datetime
 
 from aiogram import Bot, F, Router
@@ -14,13 +15,14 @@ from aiogram.fsm.state import State, StatesGroup
 from aiogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup, Message
 
 from sangkat_bot.config import Settings
-from sangkat_bot.copy import Copy
+from sangkat_bot.copy import Copy, commune_type_kh
 from sangkat_bot.db import (
     Row,
     audit,
     get_commune,
     insert_announcement,
-    last_admin_announcement,
+    last_admin_publish,
+    list_active_communes,
     mark_deleted,
     set_announcement_messages,
     set_group,
@@ -61,13 +63,22 @@ def _skip_markup(copy: Copy, step: str) -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(inline_keyboard=[[button]])
 
 
-def _confirm_markup(copy: Copy) -> InlineKeyboardMarkup:
-    return InlineKeyboardMarkup(
-        inline_keyboard=[[
-            InlineKeyboardButton(text=copy.t("admin.publish"), callback_data="ann:publish"),
-            InlineKeyboardButton(text=copy.t("admin.cancel"), callback_data="ann:cancel"),
-        ]]
-    )
+def _confirm_markup(copy: Copy, communes: list[Row]) -> InlineKeyboardMarkup:
+    """One ✅ per sangkat, then ✅ all of them, then ❌ — the clerk picks who the post is for."""
+    rows = [
+        [InlineKeyboardButton(text=copy.t("admin.publish_to").replace("{name}", c["commune_kh"]),
+                              callback_data=f"ann:publish:{c['commune_code']}")]
+        for c in communes
+    ]
+    if len(communes) > 1:
+        label = copy.t("admin.publish_all").replace("{count}", str(len(communes)))
+        rows.append([InlineKeyboardButton(text=label, callback_data="ann:publish:all")])
+    rows.append([InlineKeyboardButton(text=copy.t("admin.cancel"), callback_data="ann:cancel")])
+    return InlineKeyboardMarkup(inline_keyboard=rows)
+
+
+def _commune_name(commune: Row) -> str:
+    return f"{commune_type_kh(commune['commune_type'])}{commune['commune_kh']}"
 
 
 def _context(conn: sqlite3.Connection, settings: Settings, copy_data: dict) -> tuple[Row | None, Copy]:
@@ -86,7 +97,8 @@ async def _ask_voice(message: Message, state: FSMContext, copy: Copy) -> None:
 
 
 async def _preview(
-    message: Message, state: FSMContext, copy: Copy, commune: Row | None, bot: Bot, bot_username: str
+    message: Message, state: FSMContext, copy: Copy, commune: Row | None, bot: Bot, bot_username: str,
+    conn: sqlite3.Connection,
 ) -> None:
     data = await state.get_data()
     if not (data.get("text_kh") or data.get("photo_file_id") or data.get("voice_file_id")):
@@ -97,7 +109,7 @@ async def _preview(
     sends = build_post(copy.t("announcement_header"), data.get("text_kh"), data.get("photo_file_id"), data.get("voice_file_id"))
     code = commune["commune_code"] if commune else ""
     await send_post(bot, message.chat.id, sends, open_bot_button(copy, bot_username, code))
-    await message.answer(copy.t("admin.preview"), reply_markup=_confirm_markup(copy))
+    await message.answer(copy.t("admin.preview"), reply_markup=_confirm_markup(copy, list_active_communes(conn)))
 
 
 async def start_announce(message: Message, state: FSMContext, conn: sqlite3.Connection, settings: Settings, copy_data: dict) -> None:
@@ -126,7 +138,7 @@ async def on_text_step(
         await _ask_voice(message, state, copy)
     elif message.voice or message.audio:
         await state.update_data(voice_file_id=(message.voice or message.audio).file_id)
-        await _preview(message, state, copy, commune, bot, bot_username)
+        await _preview(message, state, copy, commune, bot, bot_username, conn)
     else:
         await message.answer(copy.t("admin.wrong_type"), reply_markup=_skip_markup(copy, "text"))
 
@@ -167,7 +179,7 @@ async def on_voice_step(
         await message.answer(copy.t("admin.wrong_type"), reply_markup=_skip_markup(copy, "voice"))
         return
     await state.update_data(voice_file_id=media.file_id)
-    await _preview(message, state, copy, commune, bot, bot_username)
+    await _preview(message, state, copy, commune, bot, bot_username, conn)
 
 
 async def on_skip(
@@ -184,7 +196,7 @@ async def on_skip(
     elif current == AnnounceForm.photo.state:
         await _ask_voice(callback.message, state, copy)
     elif current == AnnounceForm.voice.state:
-        await _preview(callback.message, state, copy, commune, bot, bot_username)
+        await _preview(callback.message, state, copy, commune, bot, bot_username, conn)
 
 
 async def on_cancel_button(callback: CallbackQuery, state: FSMContext, conn: sqlite3.Connection, settings: Settings, copy_data: dict) -> None:
@@ -198,65 +210,94 @@ async def on_publish(
     callback: CallbackQuery, state: FSMContext, conn: sqlite3.Connection, settings: Settings, copy_data: dict, bot: Bot, bot_username: str
 ) -> None:
     await callback.answer()
-    commune, copy = _context(conn, settings, copy_data)
+    _, copy = _context(conn, settings, copy_data)
+    choice = callback.data.removeprefix("ann:publish:")
+    active = list_active_communes(conn)
+    targets = active if choice == "all" else [c for c in active if c["commune_code"] == choice]
+    if not targets:
+        return  # an old button for a sangkat that is no longer active: keep the draft
     data = await state.get_data()
     await state.clear()
     if not (data.get("text_kh") or data.get("photo_file_id") or data.get("voice_file_id")):
-        return  # a second tap on the publish button after the post already went out
+        return  # a second tap on a publish button after the post already went out
+    publish_id = uuid.uuid4().hex
+    outcomes = [
+        (commune, await _publish_one(commune, data, publish_id, callback.from_user.id, conn, copy_data, bot, bot_username))
+        for commune in targets
+    ]
     keyboard = resident_keyboard(copy, is_admin=True)
-    target = publish_target(commune)
-    if target is None:
-        await callback.message.answer(
-            copy.t("admin.no_group").replace("{commune_code}", settings.demo_commune_code), reply_markup=keyboard
-        )
-        return
-    code = commune["commune_code"]
-    sends = build_post(copy.t("announcement_header"), data.get("text_kh"), data.get("photo_file_id"), data.get("voice_file_id"))
-    markup = open_bot_button(copy, bot_username, code)
-    reply = "admin.published"
-    try:
-        try:
-            lead_id, voice_id = await send_post(bot, target, sends, markup)
-        except TelegramMigrateToChat as moved:  # the group became a supergroup: follow it once
-            set_group(conn, code, moved.migrate_to_chat_id)
-            lead_id, voice_id = await send_post(bot, moved.migrate_to_chat_id, sends, markup)
-    except PartialSendError as partial:  # the post is in the group but the voice reply failed
-        log.warning("event=publish_partial commune=%s error=%s", code, type(partial.cause).__name__)
-        lead_id, voice_id, reply = partial.lead_id, None, "admin.voice_failed"
-    except TelegramAPIError as error:
-        log.warning("event=publish_failed commune=%s error=%s", code, type(error).__name__)
+    failed = [commune for commune, outcome in outcomes if outcome == "failed"]
+    if len(failed) == len(outcomes):
         await callback.message.answer(copy.t("admin.error_not_admin_in_group"), reply_markup=keyboard)
         return
+    partial = any(outcome == "partial" for _, outcome in outcomes)
+    parts = [copy.t("admin.voice_failed" if partial else "admin.published")]
+    unbound = [commune for commune, outcome in outcomes if outcome == "unbound"]
+    if unbound:
+        lines = [f"• {_commune_name(c)} — /bind {c['commune_code']}" for c in unbound]
+        parts.append("\n".join([copy.t("admin.not_bound"), *lines]))
+    if failed:
+        parts.append("\n".join([copy.t("admin.group_failed"), *(f"• {_commune_name(c)}" for c in failed)]))
+    await callback.message.answer("\n\n".join(parts), reply_markup=keyboard)
+
+
+async def _publish_one(
+    commune: Row, data: dict, publish_id: str, user_id: int,
+    conn: sqlite3.Connection, copy_data: dict, bot: Bot, bot_username: str,
+) -> str:
+    """Post to one sangkat's group (if linked) and its 📢 feed. Returns posted / partial / unbound / failed."""
+    code = commune["commune_code"]
+    copy = copy_for(copy_data, commune)  # the heading names this sangkat
+    group = publish_target(commune)
+    lead_id = voice_id = None
+    outcome = "unbound" if group is None else "posted"
+    if group is not None:
+        sends = build_post(copy.t("announcement_header"), data.get("text_kh"), data.get("photo_file_id"), data.get("voice_file_id"))
+        markup = open_bot_button(copy, bot_username, code)
+        try:
+            try:
+                lead_id, voice_id = await send_post(bot, group, sends, markup)
+            except TelegramMigrateToChat as moved:  # the group became a supergroup: follow it once
+                set_group(conn, code, moved.migrate_to_chat_id)
+                lead_id, voice_id = await send_post(bot, moved.migrate_to_chat_id, sends, markup)
+        except PartialSendError as partial:  # the post is in the group but the voice reply failed
+            log.warning("event=publish_partial commune=%s error=%s", code, type(partial.cause).__name__)
+            lead_id, outcome = partial.lead_id, "partial"
+        except TelegramAPIError as error:
+            log.warning("event=publish_failed commune=%s error=%s", code, type(error).__name__)
+            return "failed"
     ann_id = insert_announcement(
-        conn, commune_code=code, source="admin", posted_by=callback.from_user.id, text_kh=data.get("text_kh"),
+        conn, commune_code=code, source="admin", posted_by=user_id, text_kh=data.get("text_kh"),
         photo_file_id=data.get("photo_file_id"), voice_file_id=data.get("voice_file_id"),
-        event_date=None, expires_at=None, created_at=datetime.now(UTC),
+        event_date=None, expires_at=None, created_at=datetime.now(UTC), publish_id=publish_id,
     )
     set_announcement_messages(conn, ann_id, lead_id, voice_id)
-    audit(conn, callback.from_user.id, code, "publish", str(ann_id), {
-        "photo": bool(data.get("photo_file_id")), "voice": bool(data.get("voice_file_id")),
+    audit(conn, user_id, code, "publish", str(ann_id), {
+        "photo": bool(data.get("photo_file_id")), "voice": bool(data.get("voice_file_id")), "group": outcome,
     })
-    log.info("event=publish commune=%s announcement=%s", code, ann_id)
-    await callback.message.answer(copy.t(reply), reply_markup=keyboard)
+    log.info("event=publish commune=%s announcement=%s group=%s", code, ann_id, outcome)
+    return outcome
 
 
 async def delete_last(message: Message, conn: sqlite3.Connection, settings: Settings, copy_data: dict, bot: Bot) -> None:
-    commune, copy = _context(conn, settings, copy_data)
+    """Remove every copy of the clerk's latest post: from each linked group and from 📢."""
+    _, copy = _context(conn, settings, copy_data)
     keyboard = resident_keyboard(copy, is_admin=True)
-    row = last_admin_announcement(conn, settings.demo_commune_code, message.from_user.id)
-    if row is None:
+    rows = last_admin_publish(conn, message.from_user.id)
+    if not rows:
         await message.answer(copy.t("admin.nothing_to_delete"), reply_markup=keyboard)
         return
-    group_id = publish_target(commune)
-    if group_id is not None:
-        for message_id in (row["group_message_id"], row["group_voice_message_id"]):
-            if message_id:
-                try:
-                    await bot.delete_message(group_id, message_id)
-                except TelegramAPIError:
-                    pass  # already deleted by hand, too old, or the bot lost its rights
-    mark_deleted(conn, row["id"])
-    audit(conn, message.from_user.id, settings.demo_commune_code, "delete", str(row["id"]), {})
+    for row in rows:
+        group_id = publish_target(get_commune(conn, row["commune_code"]))
+        if group_id is not None:
+            for message_id in (row["group_message_id"], row["group_voice_message_id"]):
+                if message_id:
+                    try:
+                        await bot.delete_message(group_id, message_id)
+                    except TelegramAPIError:
+                        pass  # already deleted by hand, too old, or the bot lost its rights
+        mark_deleted(conn, row["id"])
+        audit(conn, message.from_user.id, row["commune_code"], "delete", str(row["id"]), {})
     await message.answer(copy.t("admin.deleted"), reply_markup=keyboard)
 
 
@@ -276,5 +317,5 @@ def make_router() -> Router:
     router.message.register(on_voice_step, AnnounceForm.voice)
     router.callback_query.register(on_skip, F.data.startswith("ann:skip:"))
     router.callback_query.register(on_cancel_button, F.data == "ann:cancel")
-    router.callback_query.register(on_publish, F.data == "ann:publish", AnnounceForm.preview)
+    router.callback_query.register(on_publish, F.data.startswith("ann:publish:"), AnnounceForm.preview)
     return router

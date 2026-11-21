@@ -27,8 +27,9 @@ NOW = datetime(2026, 11, 21, 12, tzinfo=UTC)
 def test_counts(conn):
     c = run_seed(conn, DATAEF, SEED)
     assert c["provinces"] == 25 and c["districts"] == 210 and c["communes"] == 1661
-    assert c["villages"] == 16 and c["emergency_numbers"] == 5 and c["local_contacts"] == 10
-    assert c["public_services"] == 3 and c["seed_announcements"] == 4
+    # 10 for Tonle Basak + 4 extra sangkats x (own police post + 8 shared Khan contacts)
+    assert c["villages"] == 16 and c["emergency_numbers"] == 5 and c["local_contacts"] == 46
+    assert c["public_services"] == 3 and c["seed_announcements"] == 4 and c["commune_configs"] == 5
 
 
 def test_codes_are_zero_padded_and_type_set(conn):
@@ -42,8 +43,8 @@ def test_unknown_commune_is_none(conn):
     assert get_commune(conn, "999999") is None
 
 
-def test_active_communes_is_demo_only(conn):
-    assert [r["commune_code"] for r in list_active_communes(conn)] == ["120101"]
+def test_active_communes_are_the_five_chamkar_mon_sangkats(conn):
+    assert [r["commune_code"] for r in list_active_communes(conn)] == ["120101", "120109", "120110", "120111", "120112"]
 
 
 def test_666_only_in_phnom_penh(conn):
@@ -181,3 +182,27 @@ def test_unposted_admin_announcement_finds_feed_only_item(conn):
     assert unposted_admin_announcement(conn, "120101", "news")["id"] == ann
     set_announcement_messages(conn, ann, 10, 11)
     assert unposted_admin_announcement(conn, "120101", "news") is None
+
+
+def test_every_chamkar_mon_sangkat_has_its_police_post_and_shared_khan_contacts(conn):
+    posts = {"120109": "011 797 863", "120110": "012 929 683", "120111": "078 803 525", "120112": "012 332 266"}
+    for code, phone in posts.items():
+        police = local_contacts(conn, code, ["police"])
+        assert police[0]["phone_numbers"] == phone and police[0]["verification_status"] == "unverified_published"
+        assert police[1]["name_en"] == "Chamkar Mon District Police Inspectorate"
+        assert [r["name_en"] for r in local_contacts(conn, code, ["hospital"], only_24h=True)][0] == "Calmette Hospital"
+        assert len(local_contacts(conn, code, ["fire"])) == 2
+
+
+def test_last_admin_publish_returns_every_copy_of_the_latest_post(conn):
+    from sangkat_bot.db import last_admin_publish
+
+    assert last_admin_publish(conn, 5) == []
+    common = dict(source="admin", posted_by=5, text_kh="a", photo_file_id=None, voice_file_id=None,
+                  event_date=None, expires_at=None, created_at=NOW)
+    insert_announcement(conn, commune_code="120101", **common, publish_id="old")
+    a = insert_announcement(conn, commune_code="120101", **common, publish_id="new")
+    b = insert_announcement(conn, commune_code="120111", **common, publish_id="new")
+    assert sorted(r["id"] for r in last_admin_publish(conn, 5)) == [a, b]
+    legacy = insert_announcement(conn, commune_code="120101", **common)
+    assert [r["id"] for r in last_admin_publish(conn, 5)] == [legacy]

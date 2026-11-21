@@ -56,11 +56,12 @@ async def test_full_flow_publishes_photo_caption_button_and_voice_reply(app, cop
     await compose_all_three(app)
     preview_prompt = session.sent(SendMessage)[-1]
     assert preview_prompt.text == copy_tb.t("admin.preview")
-    assert [b.callback_data for b in preview_prompt.reply_markup.inline_keyboard[0]] == ["ann:publish", "ann:cancel"]
+    rows = preview_prompt.reply_markup.inline_keyboard
+    assert rows[0][0].callback_data == "ann:publish:120101" and rows[-1][0].callback_data == "ann:cancel"
     preview_photo = session.sent(SendPhoto)[-1]
     assert preview_photo.chat_id == CLERK and preview_photo.photo == "big"
 
-    await feed(app, callback_update(CLERK, "ann:publish"))
+    await feed(app, callback_update(CLERK, "ann:publish:120101"))
     group_photo = [m for m in session.sent(SendPhoto) if m.chat_id == GROUP][-1]
     group_voice = [m for m in session.sent(SendVoice) if m.chat_id == GROUP][-1]
     assert "ការចាក់វ៉ាក់សាំងកុមារ" in group_photo.caption and "សង្កាត់ទន្លេបាសាក់" in group_photo.caption
@@ -73,12 +74,15 @@ async def test_full_flow_publishes_photo_caption_button_and_voice_reply(app, cop
     assert dp["conn"].execute("select action from audit_logs").fetchone()["action"] == "publish"
 
 
-async def test_publish_before_bind_saves_nothing(app):
+async def test_publish_before_bind_goes_to_feed_and_says_how_to_link_group(app, copy_tb):
     dp, _, session = app
     await compose_all_three(app)
-    await feed(app, callback_update(CLERK, "ann:publish"))
-    assert "/bind 120101" in session.sent(SendMessage)[-1].text
-    assert admin_rows(dp) == []
+    await feed(app, callback_update(CLERK, "ann:publish:120101"))
+    reply = session.sent(SendMessage)[-1].text
+    assert reply.startswith(copy_tb.t("admin.published")) and "/bind 120101" in reply
+    (row,) = admin_rows(dp)
+    assert row["group_message_id"] is None
+    assert [m for m in session.sent(SendPhoto) if m.chat_id < 0] == []
 
 
 async def test_telegram_refusal_saves_nothing(app, copy_tb):
@@ -86,7 +90,7 @@ async def test_telegram_refusal_saves_nothing(app, copy_tb):
     set_group(dp["conn"], "120101", GROUP)
     await compose_all_three(app)
     session.fail_on[SendPhoto] = TelegramForbiddenError(method=None, message="bot was kicked")
-    await feed(app, callback_update(CLERK, "ann:publish"))
+    await feed(app, callback_update(CLERK, "ann:publish:120101"))
     assert session.sent(SendMessage)[-1].text == copy_tb.t("admin.error_not_admin_in_group")
     assert admin_rows(dp) == []
 
@@ -120,7 +124,7 @@ async def test_text_only_preview_and_publish(app):
     await feed(app, message_update(CLERK, text="សួស្តី"))
     await feed(app, callback_update(CLERK, "ann:skip:photo"))
     await feed(app, callback_update(CLERK, "ann:skip:voice"))
-    await feed(app, callback_update(CLERK, "ann:publish"))
+    await feed(app, callback_update(CLERK, "ann:publish:120101"))
     group_msgs = [m for m in session.sent(SendMessage) if m.chat_id == GROUP]
     assert len(group_msgs) == 1 and "សួស្តី" in group_msgs[0].text
     assert admin_rows(dp)[0]["group_voice_message_id"] is None
@@ -153,7 +157,7 @@ async def test_delete_last_removes_both_messages(app, copy_tb):
     dp, _, session = app
     set_group(dp["conn"], "120101", GROUP)
     await compose_all_three(app)
-    await feed(app, callback_update(CLERK, "ann:publish"))
+    await feed(app, callback_update(CLERK, "ann:publish:120101"))
     row = admin_rows(dp)[0]
     await feed(app, message_update(CLERK, text="/delete_last"))
     deleted = {m.message_id for m in session.requests if isinstance(m, DeleteMessage)}
