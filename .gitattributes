@@ -1,0 +1,6 @@
+* text=auto eol=lf
+*.png binary
+*.ogg binary
+*.jpg binary
+# downloaded source data: keep byte-for-byte as published
+data/raw/** -text

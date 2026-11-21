@@ -12,3 +12,5 @@ __pycache__/
 data/raw/dataef/commune_boundaries.geojson
 data/raw/dataef/villages_2025.csv
 data/raw/dataef/geographical_list_2025.csv
+# local working files (build ledger, bot log)
+.superpowers/
