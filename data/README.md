@@ -50,6 +50,10 @@ Overpass query around the sangkat reference point (11.5504, 104.9314): hospitals
 
 OSM gave good **names (Khmer + English) and coordinates** but almost **no phone numbers** for public facilities, and **no** Tonle Basak sangkat hall, administrative police post, or health center.
 
+### Open Development Cambodia — `raw/odc/chamkarmon_admin_police_posts_2020.csv`
+
+[Contact numbers of the fourteen inspection de la police khan](https://data.opendevelopmentmekong.net/en/dataset/contact-numbers-fourteen-inspection-de-la-police-khan), from the Phnom Penh Municipal Police Commissariat brochure (2020-04-27). Gave the **Tonle Bassac administrative police post** phone and location, and independently confirms OSM's Chamkar Mon inspectorate location (within ~10 m). The extract keeps only office rows; rows that list named officers' personal mobiles are left out on purpose.
+
 ### Web sources for phone numbers
 See the `source` / `source_ref` columns in each seed file (UK FCDO, Australian/German/Canadian embassy lists, Phnom Penh Post, expat.com).
 
@@ -84,10 +88,10 @@ Multi-value fields (`phone_numbers`, `required_docs_kh`) use ` | ` as the separa
 
 ## Gaps to fill (in priority order)
 
-1. **Tonle Basak administrative police post** — name, phone, location (also needed for the residence/family book guide).
+1. **Tonle Basak administrative police post** — now filled from a 2020 brochure (012 496 065): **test-call to verify**, and confirm opening hours.
 2. **Sangkat hall** — real phone, exact map pin, office hours.
 3. **Health center** serving Tonle Basak.
-4. **Phones** for Preah Ang Duong, Phnom Penh Municipal, Kantha Bopha, Koh Pich fire, Chamkar Mon police.
+4. **Phones** for Preah Ang Duong, Phnom Penh Municipal, Kantha Bopha, Koh Pich fire, Chamkar Mon police (office line, not the inspector's mobile).
 5. **Resolve** Khmer-Soviet Hospital's number (023 217 524 / 217 384 / 217 764).
 6. **Fees and processing times** for the 3 service guides.
 7. Test-call every number from a Cambodian SIM and set `verification_status=verified`.

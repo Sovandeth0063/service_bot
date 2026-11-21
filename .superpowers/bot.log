@@ -1,3 +1,0 @@
-2026-11-21 09:29:45,209 INFO sangkat_bot.app event=start bot=@kh_svc_desk_x7_bot commune=120101 demo_mode=True
-2026-11-21 09:29:46,417 INFO aiogram.dispatcher Start polling
-2026-11-21 09:29:46,646 INFO aiogram.dispatcher Run polling for bot @kh_svc_desk_x7_bot id=9018372235 - 'service_bot'

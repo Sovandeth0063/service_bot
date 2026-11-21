@@ -59,12 +59,19 @@ def test_emergency_numbers_sorted(conn):
 def test_inactive_contacts_hidden(conn):
     names = [r["name_en"] for r in local_contacts(conn, "120101", ["health_center", "police"])]
     assert "Health Center (TBD)" not in names
-    assert "Tonle Basak Administrative Police Post" not in names
+
+
+def test_tonle_basak_police_post_listed_first_with_number_and_map(conn):
+    post, khan = local_contacts(conn, "120101", ["police"])
+    assert post["name_en"] == "Tonle Basak Administrative Police Post"
+    assert post["phone_numbers"] == "012 496 065" and post["verification_status"] == "unverified_published"
+    assert (post["lat"], post["lon"]) == (11.55458, 104.9326) and "11.55458" in post["google_maps_url"]
+    assert khan["name_en"] == "Chamkar Mon District Police Inspectorate"
 
 
 def test_contacts_ordered_by_category_then_sort(conn):
     rows = local_contacts(conn, "120101", ["fire", "police"])
-    assert [r["category"] for r in rows] == ["fire", "fire", "police"]
+    assert [r["category"] for r in rows] == ["fire", "fire", "police", "police"]
     assert rows[0]["name_en"] == "Phnom Penh Fire Brigade"
 
 

@@ -10,5 +10,7 @@ Built unattended on 2026-11-21. Everything that needs a real bot token or a phon
 - [ ] **Task 8 step 4 — `/bind 120101`** in the test group (bot is group admin) → confirmation + pinned onboarding message.
 - [ ] **Task 9 — live resilience + full run-sheet** (`docs/demo-runsheet.md`) end-to-end.
 
+- [ ] **Test-call 012 496 065** (Tonle Bassac administrative police post, from a 2020 brochure) before filming the 🚨 card. If it's wrong, set its `phone_numbers` empty in `data/seed/local_contacts.csv` and re-seed.
+
 ## Khmer wording to review
 (Add anything that reads oddly during the manual checks.)
