@@ -120,6 +120,25 @@ def commune_for_group(conn: sqlite3.Connection, group_id: int) -> str | None:
     return row["commune_code"] if row else None
 
 
+def unposted_admin_announcement(conn: sqlite3.Connection, commune_code: str, text_kh: str) -> Row | None:
+    """A clerk's news item that is in the feed but was never posted to the group (no group was bound)."""
+    return conn.execute(
+        "SELECT * FROM announcements WHERE source = 'admin' AND commune_code = ? AND text_kh = ?"
+        " AND group_message_id IS NULL AND is_deleted = 0 ORDER BY id DESC LIMIT 1",
+        (commune_code, text_kh),
+    ).fetchone()
+
+
+def hide_seed_duplicates(conn: sqlite3.Connection, commune_code: str, text_kh: str) -> int:
+    """Hide seeded copies of a news text once a clerk publishes it for real; returns rows hidden."""
+    cursor = conn.execute(
+        "UPDATE announcements SET is_deleted = 1 WHERE source = 'seed' AND commune_code = ? AND text_kh = ?",
+        (commune_code, text_kh),
+    )
+    conn.commit()
+    return cursor.rowcount
+
+
 def insert_announcement(
     conn: sqlite3.Connection,
     *,

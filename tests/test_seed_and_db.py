@@ -151,3 +151,26 @@ def test_audit_keeps_khmer(conn):
     audit(conn, 5, "120101", "publish", "1", {"note": "ដំណឹង"})
     stored = conn.execute("select metadata_json from audit_logs").fetchone()[0]
     assert "ដំណឹង" in stored
+
+
+def test_hide_seed_duplicates_only_hides_matching_seed_rows(conn):
+    from sangkat_bot.db import hide_seed_duplicates
+
+    text = conn.execute("select text_kh from announcements where source='seed' and text_kh like '%សំរាម%'").fetchone()[0]
+    assert hide_seed_duplicates(conn, "120101", text) == 1
+    assert conn.execute("select is_deleted from announcements where text_kh = ?", (text,)).fetchone()[0] == 1
+    assert conn.execute("select count(*) from announcements where source='seed' and is_deleted=0").fetchone()[0] == 3
+
+
+def test_unposted_admin_announcement_finds_feed_only_item(conn):
+    from datetime import UTC, datetime
+
+    from sangkat_bot.db import insert_announcement, set_announcement_messages, unposted_admin_announcement
+
+    assert unposted_admin_announcement(conn, "120101", "news") is None
+    ann = insert_announcement(conn, commune_code="120101", source="admin", posted_by=1, text_kh="news",
+                              photo_file_id="P", voice_file_id="V", event_date=None, expires_at=None,
+                              created_at=datetime.now(UTC))
+    assert unposted_admin_announcement(conn, "120101", "news")["id"] == ann
+    set_announcement_messages(conn, ann, 10, 11)
+    assert unposted_admin_announcement(conn, "120101", "news") is None
